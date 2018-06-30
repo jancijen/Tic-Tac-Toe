@@ -11,7 +11,9 @@
 		0A15EF0B20E82E5B000273EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A15EF0A20E82E5B000273EB /* Assets.xcassets */; };
 		0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1A20E82F74000273EB /* MenuViewController.swift */; };
 		0A15EF1D20E8310F000273EB /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1C20E8310F000273EB /* GameViewController.swift */; };
-		0A15EF1F20E83118000273EB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1E20E83118000273EB /* SettingsViewController.swift */; };
+		0ABD6D1620E8392200B251A8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD6D1520E8392200B251A8 /* SettingsViewController.swift */; };
+		0ABD6D1920E8395A00B251A8 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD6D1820E8395A00B251A8 /* ThemeManager.swift */; };
+		DA9CAC626AB075037A208EB3 /* Pods_Tic_Tac_Toe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34910912F169AB5AB745239B /* Pods_Tic_Tac_Toe.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,7 +23,11 @@
 		0A15EF0F20E82E5B000273EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A15EF1A20E82F74000273EB /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		0A15EF1C20E8310F000273EB /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		0A15EF1E20E83118000273EB /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		0ABD6D1520E8392200B251A8 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		0ABD6D1820E8395A00B251A8 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		21974D2D3E155CDADC57CAAC /* Pods-Tic-Tac-Toe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tic-Tac-Toe.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tic-Tac-Toe/Pods-Tic-Tac-Toe.release.xcconfig"; sourceTree = "<group>"; };
+		34910912F169AB5AB745239B /* Pods_Tic_Tac_Toe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tic_Tac_Toe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4967BF605F75112CE3B9BC51 /* Pods-Tic-Tac-Toe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tic-Tac-Toe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tic-Tac-Toe/Pods-Tic-Tac-Toe.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +35,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA9CAC626AB075037A208EB3 /* Pods_Tic_Tac_Toe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04FDCCC688F8318D0395F5B8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				34910912F169AB5AB745239B /* Pods_Tic_Tac_Toe.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0A15EEF720E82E59000273EB = {
 			isa = PBXGroup;
 			children = (
 				0A15EF0220E82E59000273EB /* Tic-Tac-Toe */,
 				0A15EF0120E82E59000273EB /* Products */,
+				CA349BCCBE339A88EF270BD0 /* Pods */,
+				04FDCCC688F8318D0395F5B8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,6 +71,7 @@
 		0A15EF0220E82E59000273EB /* Tic-Tac-Toe */ = {
 			isa = PBXGroup;
 			children = (
+				0ABD6D1720E8394D00B251A8 /* Utils */,
 				0A15EF1920E82EE3000273EB /* Controller */,
 				0A15EF1820E82EDD000273EB /* Model */,
 				0A15EF1620E82EC5000273EB /* View */,
@@ -83,9 +101,26 @@
 			children = (
 				0A15EF1A20E82F74000273EB /* MenuViewController.swift */,
 				0A15EF1C20E8310F000273EB /* GameViewController.swift */,
-				0A15EF1E20E83118000273EB /* SettingsViewController.swift */,
+				0ABD6D1520E8392200B251A8 /* SettingsViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		0ABD6D1720E8394D00B251A8 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0ABD6D1820E8395A00B251A8 /* ThemeManager.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		CA349BCCBE339A88EF270BD0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4967BF605F75112CE3B9BC51 /* Pods-Tic-Tac-Toe.debug.xcconfig */,
+				21974D2D3E155CDADC57CAAC /* Pods-Tic-Tac-Toe.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,9 +130,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0A15EF1220E82E5B000273EB /* Build configuration list for PBXNativeTarget "Tic-Tac-Toe" */;
 			buildPhases = (
+				E66DDE5D756F38E96393E5E8 /* [CP] Check Pods Manifest.lock */,
 				0A15EEFC20E82E59000273EB /* Sources */,
 				0A15EEFD20E82E59000273EB /* Frameworks */,
 				0A15EEFE20E82E59000273EB /* Resources */,
+				596DBD4F8F66EC7F710488C8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -152,6 +189,45 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		596DBD4F8F66EC7F710488C8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Tic-Tac-Toe/Pods-Tic-Tac-Toe-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tic-Tac-Toe/Pods-Tic-Tac-Toe-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E66DDE5D756F38E96393E5E8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Tic-Tac-Toe-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0A15EEFC20E82E59000273EB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -159,8 +235,9 @@
 			files = (
 				0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */,
 				0A15EF1D20E8310F000273EB /* GameViewController.swift in Sources */,
+				0ABD6D1920E8395A00B251A8 /* ThemeManager.swift in Sources */,
 				0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */,
-				0A15EF1F20E83118000273EB /* SettingsViewController.swift in Sources */,
+				0ABD6D1620E8392200B251A8 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +360,7 @@
 		};
 		0A15EF1320E82E5B000273EB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4967BF605F75112CE3B9BC51 /* Pods-Tic-Tac-Toe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -302,6 +380,7 @@
 		};
 		0A15EF1420E82E5B000273EB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21974D2D3E155CDADC57CAAC /* Pods-Tic-Tac-Toe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

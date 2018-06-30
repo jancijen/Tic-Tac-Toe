@@ -7,12 +7,49 @@
 //
 
 import UIKit
+import SnapKit
 
 class MenuViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.backgroundColor = .white
 
-        // Do any additional setup after loading the view.
+        // Play option
+        let playButton = UIButton()
+        playButton.backgroundColor = ThemeManager.menuButtonColor
+        playButton.setTitleColor(.white, for: .normal)
+        playButton.setTitle("Play", for: .normal)
+        
+        playButton.snp.makeConstraints { make in
+            make.width.equalTo(100)
+        }
+        
+        // Settings option
+        let settingsButton = UIButton()
+        settingsButton.backgroundColor = ThemeManager.menuButtonColor
+        settingsButton.setTitleColor(.white, for: .normal)
+        settingsButton.setTitle("Settings", for: .normal)
+        
+        settingsButton.snp.makeConstraints { make in
+            make.width.equalTo(100)
+        }
+        
+        // Stack view (all menu options)
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.spacing = 16.0
+        
+        stackView.addArrangedSubview(playButton)
+        stackView.addArrangedSubview(settingsButton)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.view.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
 }
