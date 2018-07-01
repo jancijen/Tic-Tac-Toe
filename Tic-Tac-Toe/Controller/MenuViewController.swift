@@ -21,6 +21,7 @@ class MenuViewController: UIViewController {
         playButton.backgroundColor = ThemeManager.menuButtonColor
         playButton.setTitleColor(.white, for: .normal)
         playButton.setTitle("Play", for: .normal)
+        playButton.addTarget(self, action: #selector(playTapped), for: .touchUpInside)
         
         playButton.snp.makeConstraints { make in
             make.width.equalTo(100)
@@ -51,5 +52,13 @@ class MenuViewController: UIViewController {
         stackView.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
+    }
+}
+
+// MARK: - Button callbacks
+extension MenuViewController {
+    private func playTapped() {
+        let gameVC = GameViewController()
+        self.navigationController?.pushViewController(GameViewController(), animated: <#T##Bool#>)
     }
 }

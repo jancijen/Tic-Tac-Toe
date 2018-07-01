@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// Class for UI appearance management.
-class ThemeManager: NSObject {
+class ThemeManager {
     // MARK: - Public attributes
     static let menuButtonColor = UIColor.black
 }

@@ -15,10 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        // Create menu and show it
-        let menuVC = MenuViewController()
+        // Create and show navigation VC with menu
+        let navVC = UINavigationController(rootViewController: MenuViewController())
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = menuVC
+        window?.rootViewController = navVC
         window?.makeKeyAndVisible()
         
         return true
