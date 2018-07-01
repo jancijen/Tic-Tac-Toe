@@ -15,10 +15,24 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
-
+        
+        // Title
+        let titleLabel = UILabel()
+        titleLabel.font = ThemeManager.appFont(size: 80) // TODO
+        titleLabel.text = "Tic-Tac-Toe"
+        
+        self.view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            make.centerX.equalToSuperview()
+        }
+        
+        let buttonFont = ThemeManager.appFont(size: 20)
+        
         // Play option
         let playButton = UIButton()
         playButton.backgroundColor = ThemeManager.menuButtonColor
+        playButton.titleLabel?.font = buttonFont
         playButton.setTitleColor(.white, for: .normal)
         playButton.setTitle("Play", for: .normal)
         playButton.addTarget(self, action: #selector(playTapped), for: .touchUpInside)
@@ -30,6 +44,7 @@ class MenuViewController: UIViewController {
         // Settings option
         let settingsButton = UIButton()
         settingsButton.backgroundColor = ThemeManager.menuButtonColor
+        settingsButton.titleLabel?.font = buttonFont
         settingsButton.setTitleColor(.white, for: .normal)
         settingsButton.setTitle("Settings", for: .normal)
         

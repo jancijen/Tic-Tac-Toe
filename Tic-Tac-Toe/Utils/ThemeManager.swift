@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+// TODO - Singleton?
+
 /// Class for UI appearance management.
 class ThemeManager {
     // MARK - Private attributes
@@ -18,7 +20,7 @@ class ThemeManager {
     static let menuButtonColor = UIColor.black
     
     // MARK: - Public methods
-    func appFont(size: CGFloat) -> UIFont {
+    static func appFont(size: CGFloat) -> UIFont {
         guard let customFont = UIFont(name: ThemeManager.fontName, size: size) else {
             fatalError("Failed to load the \(ThemeManager.fontName) font.")
         }
