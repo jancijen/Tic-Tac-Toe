@@ -11,6 +11,18 @@ import UIKit
 
 /// Class for UI appearance management.
 class ThemeManager {
+    // MARK - Private attributes
+    static let fontName = "BebasNeue-Regular"
+    
     // MARK: - Public attributes
     static let menuButtonColor = UIColor.black
+    
+    // MARK: - Public methods
+    func appFont(size: CGFloat) -> UIFont {
+        guard let customFont = UIFont(name: ThemeManager.fontName, size: size) else {
+            fatalError("Failed to load the \(ThemeManager.fontName) font.")
+        }
+        
+        return UIFontMetrics.default.scaledFont(for: customFont)
+    }
 }

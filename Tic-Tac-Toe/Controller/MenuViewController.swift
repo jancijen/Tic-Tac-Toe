@@ -57,8 +57,8 @@ class MenuViewController: UIViewController {
 
 // MARK: - Button callbacks
 extension MenuViewController {
-    private func playTapped() {
+    @objc private func playTapped() {
         let gameVC = GameViewController()
-        self.navigationController?.pushViewController(GameViewController(), animated: <#T##Bool#>)
+        self.navigationController?.pushViewController(GameViewController(), animated: true)
     }
 }
