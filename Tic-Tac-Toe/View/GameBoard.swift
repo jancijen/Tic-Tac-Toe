@@ -19,17 +19,45 @@ class GameBoard: UIView {
     init(boardSize: Int) {
         super.init(frame: CGRect.zero) // TODO
         
-        // Create empty board
-        for _ in 0...boardSize {
+        // View configuration
+        self.backgroundColor = .black
+        
+        // Verical stack view for rows of tiles
+        let verticalSV = UIStackView()
+        verticalSV.axis = .vertical
+        verticalSV.distribution = .equalSpacing
+        verticalSV.alignment = .center
+        verticalSV.spacing = 4.0
+        verticalSV.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Create empty board and add tiles to stack views
+        for _ in 0..<boardSize {
             var tmpArray = [Tile]()
-            for _ in 0...boardSize {
+            
+            // Horizontal stack view - row of tiles
+            let horizontalSV = UIStackView()
+            horizontalSV.axis = .horizontal
+            horizontalSV.distribution = .equalSpacing
+            horizontalSV.alignment = .center
+            horizontalSV.spacing = 4.0
+            horizontalSV.translatesAutoresizingMaskIntoConstraints = false
+            
+            for _ in 0..<boardSize {
                 let tile = Tile()
                 tile.currentTurnCallback = self.currentTurnCallback
 
                 tmpArray.append(tile)
+                horizontalSV.addArrangedSubview(tile)
             }
             
             self.board.append(tmpArray)
+            verticalSV.addArrangedSubview(horizontalSV)
+        }
+        
+        // Add rows of tiles as subview
+        self.addSubview(verticalSV)
+        verticalSV.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
     }
     

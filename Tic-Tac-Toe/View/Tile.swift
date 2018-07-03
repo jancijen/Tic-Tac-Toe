@@ -15,13 +15,32 @@ class Tile: UIView {
     var currentTurnCallback: (() -> Player)? = nil
     // MARK: - Private attrbitues
     private var tileState: Player = .undef // TODO
+    private let tileSize: CGFloat = 100
     
     // MARK: - Public methods
+    init() {
+        super.init(frame: CGRect.zero)
+        
+        self.configure()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Private methods
     private func configure() {
+        // Configure view
+        self.backgroundColor = .white
+        self.snp.makeConstraints { make in
+            make.width.height.equalTo(self.tileSize)
+        }
+        
         // Create button over whole tile
         let tileButton = UIButton()
+        tileButton.backgroundColor = .white
+        
+        self.addSubview(tileButton)
         tileButton.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -34,6 +53,7 @@ class Tile: UIView {
 // MARK: - Button callbacks
 extension Tile {
     @objc private func tileTapped() {
+        print("TILE TAPPED")
         switch self.tileState {
         case .undef:
             // Change tile state to corresponding symbol

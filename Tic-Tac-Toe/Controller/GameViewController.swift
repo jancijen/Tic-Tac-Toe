@@ -13,12 +13,14 @@ class GameViewController: UIViewController {
     private let playersSymbole: Player
     private let currentTurn: Player
     private let gameBoard: GameBoard
+    private let boardSize: Int
     
     // MARK: - Public methods
     init(boardSize: Int, firstTurn: Player, playersSymbole: Player) {
         self.playersSymbole = playersSymbole
         self.currentTurn = firstTurn
         self.gameBoard = GameBoard(boardSize: boardSize)
+        self.boardSize = boardSize
         
         super.init(nibName: nil, bundle: nil)
         self.gameBoard.currentTurnCallback = { return self.currentTurn }
@@ -31,13 +33,18 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        self.configure()
     }
     
     // MARK: - Private methods
+    private func configure() {
+        // View configuration
+        self.view.backgroundColor = .white
+        
+        // Show game board
+        self.view.addSubview(self.gameBoard)
+        self.gameBoard.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+    }
 }
