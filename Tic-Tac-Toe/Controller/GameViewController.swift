@@ -14,13 +14,17 @@ class GameViewController: UIViewController {
     private var currentTurn: Player
     private let gameBoard: GameBoard
     private let boardSize: Int
+    private let isSinglePlayerGame: Bool
+    private let AI: GameAI// TODO
     
     // MARK: - Public methods
-    init(boardSize: Int, firstTurn: Player, playersSymbole: Player) {
+    init(boardSize: Int, firstTurn: Player, playersSymbole: Player, isSinglePlayer: Bool) {
+        self.isSinglePlayerGame = isSinglePlayer
         self.playersSymbole = playersSymbole
         self.currentTurn = firstTurn
         self.gameBoard = GameBoard(boardSize: boardSize)
         self.boardSize = boardSize
+        self.AI = GameAI(symboleAI: playersSymbole.opposite())
         
         super.init(nibName: nil, bundle: nil)
         self.gameBoard.gameVCDelagate = self
@@ -101,6 +105,11 @@ extension GameViewController: GameViewControllerDelegate {
         
         // Change turn
         self.currentTurn = self.currentTurn.opposite()
+        
+        if isSinglePlayerGame {
+            // Let AI make a move
+            self.AI.makeBestMove(gameBoard: gameBoard)
+        }
     }
 }
 

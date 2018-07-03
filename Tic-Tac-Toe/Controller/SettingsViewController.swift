@@ -137,7 +137,8 @@ extension SettingsViewController {
         // Create and show game VC
         self.navigationController?.pushViewController(GameViewController(boardSize: 3,
                                                                          firstTurn: firstTurn,
-                                                                         playersSymbole: playersSymbole),
+                                                                         playersSymbole: playersSymbole,
+                                                                         isSinglePlayer: true), // todo
                                                       animated: true)
     }
     

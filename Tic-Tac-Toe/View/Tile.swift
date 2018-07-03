@@ -38,6 +38,10 @@ class Tile: UIView {
         return self.tileState
     }
     
+    func setTileState(value: Player) {
+        self.tileState = value
+    }
+    
     // MARK: - Private methods
     private func configure() {
         // Configure view
@@ -61,7 +65,7 @@ class Tile: UIView {
 
 // MARK: - Button callbacks
 extension Tile {
-    @objc private func tileTapped() {
+    @objc func tileTapped() {
         switch self.tileState {
         case .undef:
             // Change tile state to corresponding symbol

@@ -86,6 +86,18 @@ class GameBoard: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func getBoardSize() -> Int {
+        return self.boardSize
+    }
+    
+    func getTile(row: Int, col: Int) -> Tile {
+        return self.board[row][col]
+    }
+ 
+    func setTile(row: Int, col: Int, value: Player){
+        self.board[row][col].setTileState(value: value)
+    }
+    
     func isWon() -> Bool {
         // Rows check
         for i in 0..<self.boardSize {
@@ -189,26 +201,5 @@ extension GameBoard: GameBoardDelegate {
     func nextTurn() {
         self.filledTiles += 1
         self.gameVCDelagate?.nextTurn()
-    }
-}
-
-// MARK: - GameBoardAIDelegate
-extension GameBoard: GameBoardAIDelegate {
-    func terminalState() -> GameState {
-        if isWon() {
-            let currentTurn = getCurrentTurn()
-            
-            if currentTurn == .X {
-                return .winX
-            }
-            
-            return .winO
-        }
-        
-        if isFullyFilled() {
-            return .tie
-        }
-        
-        return .notFinished
     }
 }
