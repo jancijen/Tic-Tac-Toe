@@ -15,7 +15,7 @@ class GameViewController: UIViewController {
     private let gameBoard: GameBoard
     private let boardSize: Int
     private let isSinglePlayerGame: Bool
-    private let AI: GameAI// TODO
+    private let AI: GameAI // TODO
     
     // MARK: - Public methods
     init(boardSize: Int, firstTurn: Player, playersSymbole: Player, isSinglePlayer: Bool) {
@@ -106,8 +106,8 @@ extension GameViewController: GameViewControllerDelegate {
         // Change turn
         self.currentTurn = self.currentTurn.opposite()
         
-        if isSinglePlayerGame {
-            // Let AI make a move
+        // Let AI make a move, if it is on turn
+        if isSinglePlayerGame && self.currentTurn == self.playersSymbole.opposite() {
             self.AI.makeBestMove(gameBoard: gameBoard)
         }
     }

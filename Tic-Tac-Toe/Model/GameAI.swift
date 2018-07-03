@@ -107,7 +107,7 @@ class GameAI {
                     // Check whether tile is empty
                     if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
                         // Make move
-                        gameBoard.setTile(row: i, col: j, value: self.symboleAI)
+                        gameBoard.setTile(row: i, col: j, value: self.symboleAI.opposite())
                         
                         // Recursively call minimax
                         bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer))
