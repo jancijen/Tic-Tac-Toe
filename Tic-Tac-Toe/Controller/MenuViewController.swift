@@ -27,18 +27,18 @@ class MenuViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-        let buttonFont = ThemeManager.appFont(size: 20)
+        let buttonFont = ThemeManager.appFont(size: 30)
         
         // Play option
         let playButton = UIButton()
         playButton.backgroundColor = ThemeManager.menuButtonColor
         playButton.titleLabel?.font = buttonFont
         playButton.setTitleColor(.white, for: .normal)
-        playButton.setTitle("Play", for: .normal)
+        playButton.setTitle("New game", for: .normal)
         playButton.addTarget(self, action: #selector(playTapped), for: .touchUpInside)
         
         playButton.snp.makeConstraints { make in
-            make.width.equalTo(100)
+            make.width.equalTo(160)
         }
         
         // Settings option
@@ -49,7 +49,7 @@ class MenuViewController: UIViewController {
         settingsButton.setTitle("Settings", for: .normal)
         
         settingsButton.snp.makeConstraints { make in
-            make.width.equalTo(100)
+            make.width.equalTo(160)
         }
         
         // Stack view (all menu options)
@@ -73,7 +73,7 @@ class MenuViewController: UIViewController {
 // MARK: - Button callbacks
 extension MenuViewController {
     @objc private func playTapped() {
-        let gameVC = GameViewController()
-        self.navigationController?.pushViewController(GameViewController(), animated: true)
+        //let gameVC = GameViewController(boardSize: <#T##Int#>, firstTurn: <#T##Player#>)
+        self.navigationController?.pushViewController(SettingsViewController(), animated: true)
     }
 }
