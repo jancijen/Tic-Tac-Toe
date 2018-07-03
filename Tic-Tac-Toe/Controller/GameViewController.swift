@@ -41,6 +41,29 @@ class GameViewController: UIViewController {
         // View configuration
         self.view.backgroundColor = .white
         
+        // Title
+        let titleLabel = UILabel()
+        titleLabel.font = ThemeManager.appFont(size: 60) // TODO
+        titleLabel.text = "Game"
+        
+        self.view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            make.centerX.equalToSuperview()
+        }
+        
+        // ---------------- Back button ----------------
+        let backButton = UIButton()
+        backButton.setImage(#imageLiteral(resourceName: "leftArrow"), for: .normal)
+        backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        
+        self.view.addSubview(backButton)
+        backButton.snp.makeConstraints { make in
+            make.height.width.equalTo(48)
+            make.left.equalToSuperview().offset(10)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
+        }
+        
         // Show game board
         self.view.addSubview(self.gameBoard)
         self.gameBoard.snp.makeConstraints { make in
@@ -78,5 +101,12 @@ extension GameViewController: GameViewControllerDelegate {
         
         // Change turn
         self.currentTurn = self.currentTurn.opposite()
+    }
+}
+
+// MARK: - Button callbacks
+extension GameViewController {
+    @objc private func backTapped() {
+        self.navigationController?.popViewController(animated: true)
     }
 }

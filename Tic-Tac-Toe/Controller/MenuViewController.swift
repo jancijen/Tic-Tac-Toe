@@ -14,9 +14,15 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.configure()
+    }
+    
+    // MARK: - Private methods
+    private func configure() {
+        // Configure view
         self.view.backgroundColor = .white
         
-        // Title
+        // ---------------- Title ----------------
         let titleLabel = UILabel()
         titleLabel.font = ThemeManager.appFont(size: 80) // TODO
         titleLabel.text = "Tic-Tac-Toe"
@@ -29,26 +35,27 @@ class MenuViewController: UIViewController {
         
         let buttonFont = ThemeManager.appFont(size: 30)
         
-        // Play option
-        let playButton = UIButton()
-        playButton.backgroundColor = ThemeManager.menuButtonColor
-        playButton.titleLabel?.font = buttonFont
-        playButton.setTitleColor(.white, for: .normal)
-        playButton.setTitle("New game", for: .normal)
-        playButton.addTarget(self, action: #selector(playTapped), for: .touchUpInside)
+        // ---------------- Singleplayer option ----------------
+        let singlePButton = UIButton()
+        singlePButton.backgroundColor = ThemeManager.menuButtonColor
+        singlePButton.titleLabel?.font = buttonFont
+        singlePButton.setTitleColor(.white, for: .normal)
+        singlePButton.setTitle("Singleplayer", for: .normal)
+        singlePButton.addTarget(self, action: #selector(singlePTapped), for: .touchUpInside)
         
-        playButton.snp.makeConstraints { make in
+        singlePButton.snp.makeConstraints { make in
             make.width.equalTo(160)
         }
         
-        // Settings option
-        let settingsButton = UIButton()
-        settingsButton.backgroundColor = ThemeManager.menuButtonColor
-        settingsButton.titleLabel?.font = buttonFont
-        settingsButton.setTitleColor(.white, for: .normal)
-        settingsButton.setTitle("Settings", for: .normal)
+        // ---------------- Multiplayer option ----------------
+        let multiPButton = UIButton()
+        multiPButton.backgroundColor = ThemeManager.menuButtonColor
+        multiPButton.titleLabel?.font = buttonFont
+        multiPButton.setTitleColor(.white, for: .normal)
+        multiPButton.setTitle("Multiplayer", for: .normal)
+        multiPButton.addTarget(self, action: #selector(multiPTapped), for: .touchUpInside)
         
-        settingsButton.snp.makeConstraints { make in
+        multiPButton.snp.makeConstraints { make in
             make.width.equalTo(160)
         }
         
@@ -59,8 +66,8 @@ class MenuViewController: UIViewController {
         stackView.alignment = .center
         stackView.spacing = 16.0
         
-        stackView.addArrangedSubview(playButton)
-        stackView.addArrangedSubview(settingsButton)
+        stackView.addArrangedSubview(singlePButton)
+        stackView.addArrangedSubview(multiPButton)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         self.view.addSubview(stackView)
@@ -72,8 +79,11 @@ class MenuViewController: UIViewController {
 
 // MARK: - Button callbacks
 extension MenuViewController {
-    @objc private func playTapped() {
-        //let gameVC = GameViewController(boardSize: <#T##Int#>, firstTurn: <#T##Player#>)
+    @objc private func singlePTapped() {
+        self.navigationController?.pushViewController(SettingsViewController(), animated: true)
+    }
+    
+    @objc private func multiPTapped() {
         self.navigationController?.pushViewController(SettingsViewController(), animated: true)
     }
 }

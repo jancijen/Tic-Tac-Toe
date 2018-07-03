@@ -88,7 +88,7 @@ class GameBoard: UIView {
         
         // Columns check
         for i in 0..<self.boardSize {
-            if sameSymbolsRow(row: i) {
+            if sameSymbolsColumn(column: i) {
                 return true
             }
         }
