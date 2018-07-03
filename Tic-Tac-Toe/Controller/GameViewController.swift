@@ -56,7 +56,27 @@ extension GameViewController: GameViewControllerDelegate {
     }
     
     func nextTurn() {
-        print("NEXT TURN")
+        // Victory check
+        if gameBoard.isWon() {
+            let popUp = UIAlertController(title: "VICTORY", message: "...", preferredStyle: .alert)
+            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
+                self.navigationController?.popToRootViewController(animated: true)
+            })
+            self.present(popUp, animated: true, completion: nil)
+            return
+        }
+        
+        // Tie check
+        if gameBoard.isFullyFilled() {
+            let popUp = UIAlertController(title: "TIE", message: "...", preferredStyle: .alert)
+            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
+                self.navigationController?.popToRootViewController(animated: true)
+            })
+            self.present(popUp, animated: true, completion: nil)
+            return
+        }
+        
+        // Change turn
         self.currentTurn = self.currentTurn.opposite()
     }
 }

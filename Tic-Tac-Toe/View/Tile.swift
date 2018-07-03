@@ -34,6 +34,10 @@ class Tile: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func getTileState() -> Player {
+        return self.tileState
+    }
+    
     // MARK: - Private methods
     private func configure() {
         // Configure view
@@ -66,12 +70,10 @@ extension Tile {
                 
                 switch currentTurn {
                 case .X:
-                    print("--------- X -----------")
                     self.tileButton.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
                     self.tileState = .X
                     self.gameBoardDelegate?.nextTurn()
                 case .O:
-                    print("--------- O ----------")
                     self.tileButton.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
                     self.tileState = .O
                     self.gameBoardDelegate?.nextTurn()
