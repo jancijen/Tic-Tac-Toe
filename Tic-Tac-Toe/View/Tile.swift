@@ -9,11 +9,17 @@
 import UIKit
 import SnapKit
 
+protocol GameBoardDelegate {
+    func getCurrentTurn() -> Player
+    func nextTurn() -> Void
+}
+
 /// Representing one tile on game board.
 class Tile: UIView {
     // MARK: - Public attributes
-    var currentTurnCallback: (() -> Player)? = nil
+    var gameBoardDelegate: GameBoardDelegate? = nil
     // MARK: - Private attrbitues
+    private let tileButton: UIButton = UIButton()
     private var tileState: Player = .undef // TODO
     private let tileSize: CGFloat = 100
     
@@ -37,7 +43,6 @@ class Tile: UIView {
         }
         
         // Create button over whole tile
-        let tileButton = UIButton()
         tileButton.backgroundColor = .white
         
         self.addSubview(tileButton)
@@ -53,23 +58,26 @@ class Tile: UIView {
 // MARK: - Button callbacks
 extension Tile {
     @objc private func tileTapped() {
-        print("TILE TAPPED")
         switch self.tileState {
         case .undef:
             // Change tile state to corresponding symbol
-            if let currTurnCallback = self.currentTurnCallback {
-                let currentTurn = currTurnCallback()
+            if let delegate = self.gameBoardDelegate {
+                let currentTurn = delegate.getCurrentTurn()
                 
-                // TODO
                 switch currentTurn {
                 case .X:
-                    break
+                    print("--------- X -----------")
+                    self.tileButton.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
+                    self.tileState = .X
+                    self.gameBoardDelegate?.nextTurn()
                 case .O:
-                    break
+                    print("--------- O ----------")
+                    self.tileButton.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
+                    self.tileState = .O
+                    self.gameBoardDelegate?.nextTurn()
                 default:
                     break
                 }
-                break
             }
         default:
             // Do nothing (tile has been already tapped)

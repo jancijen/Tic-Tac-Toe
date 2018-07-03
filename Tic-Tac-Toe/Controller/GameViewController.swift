@@ -11,7 +11,7 @@ import UIKit
 class GameViewController: UIViewController {
     // MARK: - Private attributes
     private let playersSymbole: Player
-    private let currentTurn: Player
+    private var currentTurn: Player
     private let gameBoard: GameBoard
     private let boardSize: Int
     
@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
         self.boardSize = boardSize
         
         super.init(nibName: nil, bundle: nil)
-        self.gameBoard.currentTurnCallback = { return self.currentTurn }
+        self.gameBoard.gameVCDelagate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,5 +46,17 @@ class GameViewController: UIViewController {
         self.gameBoard.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
+    }
+}
+
+// MARK: - GameViewControllerDelegate
+extension GameViewController: GameViewControllerDelegate {
+    func getCurrentTurn() -> Player {
+        return self.currentTurn
+    }
+    
+    func nextTurn() {
+        print("NEXT TURN")
+        self.currentTurn = self.currentTurn.opposite()
     }
 }

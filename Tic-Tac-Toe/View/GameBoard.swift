@@ -8,10 +8,15 @@
 
 import UIKit
 
+protocol GameViewControllerDelegate {
+    func getCurrentTurn() -> Player
+    func nextTurn() -> Void
+}
+
 /// View representing game board.
 class GameBoard: UIView {
     // MARK: - Public attributes
-    var currentTurnCallback: (() -> Player)? = nil
+    var gameVCDelagate: GameViewControllerDelegate? = nil
     // MARK: - Private attributes
     private var board: [[Tile]] = [[Tile]]()
     
@@ -44,8 +49,8 @@ class GameBoard: UIView {
             
             for _ in 0..<boardSize {
                 let tile = Tile()
-                tile.currentTurnCallback = self.currentTurnCallback
-
+                tile.gameBoardDelegate = self
+                
                 tmpArray.append(tile)
                 horizontalSV.addArrangedSubview(tile)
             }
@@ -63,5 +68,20 @@ class GameBoard: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - GameBoardDelegate
+extension GameBoard: GameBoardDelegate {
+    func getCurrentTurn() -> Player {
+        if let delegate = gameVCDelagate {
+            return delegate.getCurrentTurn()
+        }
+        
+        return .undef
+    }
+    
+    func nextTurn() {
+        self.gameVCDelagate?.nextTurn()
     }
 }
