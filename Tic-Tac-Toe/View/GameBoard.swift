@@ -13,6 +13,14 @@ protocol GameViewControllerDelegate {
     func nextTurn() -> Void
 }
 
+/// Possible game states
+enum GameState {
+    case winX
+    case winO
+    case tie
+    case notFinished
+}
+
 /// View representing game board.
 class GameBoard: UIView {
     // MARK: - Public attributes
@@ -181,5 +189,26 @@ extension GameBoard: GameBoardDelegate {
     func nextTurn() {
         self.filledTiles += 1
         self.gameVCDelagate?.nextTurn()
+    }
+}
+
+// MARK: - GameBoardAIDelegate
+extension GameBoard: GameBoardAIDelegate {
+    func terminalState() -> GameState {
+        if isWon() {
+            let currentTurn = getCurrentTurn()
+            
+            if currentTurn == .X {
+                return .winX
+            }
+            
+            return .winO
+        }
+        
+        if isFullyFilled() {
+            return .tie
+        }
+        
+        return .notFinished
     }
 }

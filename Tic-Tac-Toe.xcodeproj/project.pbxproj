@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A11E4FE20EC1D4000E98C86 /* GameAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E4FD20EC1D4000E98C86 /* GameAI.swift */; };
 		0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF0320E82E59000273EB /* AppDelegate.swift */; };
 		0A15EF0B20E82E5B000273EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A15EF0A20E82E5B000273EB /* Assets.xcassets */; };
 		0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1A20E82F74000273EB /* MenuViewController.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A11E4FD20EC1D4000E98C86 /* GameAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
 		0A15EF0020E82E59000273EB /* Tic-Tac-Toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic-Tac-Toe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A15EF0320E82E59000273EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A15EF0A20E82E5B000273EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				0ABD6D2C20EBD71A00B251A8 /* Player.swift */,
+				0A11E4FD20EC1D4000E98C86 /* GameAI.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */,
 				0A15EF1D20E8310F000273EB /* GameViewController.swift in Sources */,
 				0ABD6D1F20E8EF0700B251A8 /* TwoChoicesViewController.swift in Sources */,
+				0A11E4FE20EC1D4000E98C86 /* GameAI.swift in Sources */,
 				0ABD6D2920EBB95B00B251A8 /* Tile.swift in Sources */,
 				0ABD6D2B20EBBA0200B251A8 /* GameBoard.swift in Sources */,
 				0ABD6D1920E8395A00B251A8 /* ThemeManager.swift in Sources */,
