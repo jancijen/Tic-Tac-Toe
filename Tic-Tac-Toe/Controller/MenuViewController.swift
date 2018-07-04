@@ -37,7 +37,7 @@ class MenuViewController: UIViewController {
         
         self.view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
             make.centerX.equalToSuperview()
         }
         
@@ -79,7 +79,8 @@ class MenuViewController: UIViewController {
         
         self.view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.top.equalTo(titleLabel.snp.bottom).offset(50)
         }
     }
 }

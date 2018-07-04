@@ -28,7 +28,7 @@ class GameAI {
         for i in 0..<boardSize {
             for j in 0..<boardSize {
                 // Check whether tile is empty
-                if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
+                if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
                     // Make move
                     gameBoard.setTile(row: i, col: j, value: self.symboleAI)
                     
@@ -83,7 +83,7 @@ class GameAI {
             for i in 0..<boardSize {
                 for j in 0..<boardSize {
                     // Check whether tile is empty
-                    if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
+                    if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
                         // Make move
                         gameBoard.setTile(row: i, col: j, value: self.symboleAI)
                         
@@ -107,7 +107,7 @@ class GameAI {
             for i in 0..<boardSize {
                 for j in 0..<boardSize {
                     // Check whether tile is empty
-                    if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
+                    if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
                         // Make move
                         gameBoard.setTile(row: i, col: j, value: self.symboleAI.opposite())
                         

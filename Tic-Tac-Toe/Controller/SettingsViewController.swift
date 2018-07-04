@@ -8,15 +8,20 @@
 
 import UIKit
 
+/// View controller for pre-game settings.
 class SettingsViewController: UIViewController {
+    // MARK: - Private static attributes
+    private static let horizontalOffset: CGFloat = 40  // TODO
     // MARK: - Private attributes
     private let isSinglePlayer: Bool
+    private let verticalOffset: CGFloat // TODO
     private let symbolSwitch: UISwitch = UISwitch()
     private let turnSwitch: UISwitch = UISwitch()
     
     // MARK: - Public methods
     init(isSinglePlayer: Bool) {
         self.isSinglePlayer = isSinglePlayer
+        self.verticalOffset = isSinglePlayer ? 100 : 0
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,6 +37,9 @@ class SettingsViewController: UIViewController {
      }
     
     // MARK: - Private methods
+    /**
+     Configure view and its subviews.
+     */
     private func configure() {
         // View configuration
         self.view.backgroundColor = .white
@@ -68,7 +76,7 @@ class SettingsViewController: UIViewController {
             make.width.equalTo(60)
             make.height.equalTo(20)
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-100)
+            make.centerY.equalToSuperview().offset(-self.verticalOffset)
         }
         
         // Cross image
@@ -77,7 +85,7 @@ class SettingsViewController: UIViewController {
         self.view.addSubview(crossImageView)
         crossImageView.snp.makeConstraints { make in
             make.height.width.equalTo(64)
-            make.right.equalTo(symbolSwitch.snp.left).offset(-40)
+            make.right.equalTo(symbolSwitch.snp.left).offset(-SettingsViewController.horizontalOffset)
             make.centerY.equalTo(symbolSwitch)
         }
         
@@ -87,7 +95,7 @@ class SettingsViewController: UIViewController {
         self.view.addSubview(circleImageView)
         circleImageView.snp.makeConstraints { make in
             make.height.width.equalTo(64)
-            make.left.equalTo(symbolSwitch.snp.right).offset(40)
+            make.left.equalTo(symbolSwitch.snp.right).offset(SettingsViewController.horizontalOffset)
             make.centerY.equalTo(symbolSwitch)
         }
         
@@ -100,7 +108,7 @@ class SettingsViewController: UIViewController {
                 make.width.equalTo(60)
                 make.height.equalTo(20)
                 make.centerX.equalToSuperview()
-                make.centerY.equalToSuperview().offset(100)
+                make.centerY.equalToSuperview().offset(self.verticalOffset)
             }
             
             // Player image
@@ -109,7 +117,7 @@ class SettingsViewController: UIViewController {
             self.view.addSubview(playerImageView)
             playerImageView.snp.makeConstraints { make in
                 make.height.width.equalTo(64)
-                make.right.equalTo(turnSwitch.snp.left).offset(-40)
+                make.right.equalTo(turnSwitch.snp.left).offset(-SettingsViewController.horizontalOffset)
                 make.centerY.equalTo(turnSwitch)
             }
             
@@ -119,7 +127,7 @@ class SettingsViewController: UIViewController {
             self.view.addSubview(robotImageView)
             robotImageView.snp.makeConstraints { make in
                 make.height.width.equalTo(64)
-                make.left.equalTo(turnSwitch.snp.right).offset(40)
+                make.left.equalTo(turnSwitch.snp.right).offset(SettingsViewController.horizontalOffset)
                 make.centerY.equalTo(turnSwitch)
             }
         }
@@ -143,6 +151,9 @@ class SettingsViewController: UIViewController {
 
 // MENU: - Button callbacks
 extension SettingsViewController {
+    /**
+     Callback to be called after play button has been tapped.
+     */
     @objc private func playTapped() {
         let playersSymbole = self.symbolSwitch.isOn ? Player.O : Player.X
         let firstTurn = self.turnSwitch.isOn ? playersSymbole.opposite() : playersSymbole
@@ -158,6 +169,9 @@ extension SettingsViewController {
         }
     }
     
+    /**
+     Callback to be called after back button has been tapped.
+     */
     @objc private func backTapped() {
         self.navigationController?.popViewController(animated: true)
     }
