@@ -84,7 +84,7 @@ extension GameViewController: GameViewControllerDelegate {
     
     func nextTurn() {
         // Victory check
-        if gameBoard.isWon() {
+        if gameBoard.isWon() != .undef {
             let popUp = UIAlertController(title: "VICTORY", message: "...", preferredStyle: .alert)
             popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
                 self.navigationController?.popToRootViewController(animated: true)

@@ -21,7 +21,7 @@ class GameAI {
     func makeBestMove(gameBoard: GameBoard) {
         let boardSize = gameBoard.getBoardSize()
         
-        var bestMove = Int.min
+        var bestMove = -1000//Int.min
         var bestMoveRow = -1
         var bestMoveCol = -1
         
@@ -53,10 +53,9 @@ class GameAI {
     
     // MARK: - Private methods
     private func evaluateBoard(gameBoard: GameBoard) -> Int {
-        if gameBoard.isWon() {
-            let currentTurn = gameBoard.getCurrentTurn()
-            
-            return currentTurn == self.symboleAI ? 10 : -10
+        let winner = gameBoard.isWon()
+        if winner != .undef {
+            return winner == self.symboleAI ? 10 : -10
         }
         
         return 0
@@ -67,14 +66,17 @@ class GameAI {
         let boardScore = evaluateBoard(gameBoard: gameBoard)
     
         if boardScore != 0 { // WIN
-            return boardScore
-        } else if gameBoard.isFullyFilled() { // TIE
+            // Optimization
+            let toAdd = gameBoard.getCurrentTurn() == self.symboleAI ? depth : -1 * depth
+            return boardScore + toAdd
+            //return boardScore
+        } else if gameBoard.noEmptyTiles() { // TIE
             return 0
         }
         
         // -------------- MAXIMIZER --------------
         if isMaximizer {
-            var bestMove = Int.min
+            var bestMove = -1000//Int.min
             
             // Check move for every empty tile
             let boardSize = gameBoard.getBoardSize()
@@ -98,7 +100,7 @@ class GameAI {
         }
         // -------------- MINIMIZER --------------
         else {
-            var bestMove = Int.max
+            var bestMove = 1000//Int.max
             
             // Check move for every empty tile
             let boardSize = gameBoard.getBoardSize()

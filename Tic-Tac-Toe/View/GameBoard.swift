@@ -98,18 +98,20 @@ class GameBoard: UIView {
         self.board[row][col].setTileState(value: value)
     }
     
-    func isWon() -> Bool {
+    func isWon() -> Player {
         // Rows check
         for i in 0..<self.boardSize {
-            if sameSymbolsRow(row: i) {
-                return true
+            let rowWinner = sameSymbolsRow(row: i)
+            if rowWinner != .undef {
+                return rowWinner
             }
         }
         
         // Columns check
         for i in 0..<self.boardSize {
-            if sameSymbolsColumn(column: i) {
-                return true
+            let colWinner = sameSymbolsColumn(column: i)
+            if colWinner != .undef {
+                return colWinner
             }
         }
         
@@ -117,44 +119,58 @@ class GameBoard: UIView {
         return sameSymbolsDiag()
     }
     
+    // TODO
+    func noEmptyTiles() -> Bool {
+        // Check whether whole board is filled
+        for (_,row) in self.board.enumerated() {
+            for (_,tile) in row.enumerated() {
+                if tile.getTileState() != .undef {
+                    return false
+                }
+            }
+        }
+        
+        return true
+    }
+    
     func isFullyFilled() -> Bool {
         return self.filledTiles == self.boardSize * self.boardSize // TODO - pow?
     }
     
     // MARK: - Private methods
-    private func sameSymbolsRow(row: Int) -> Bool {
+    private func sameSymbolsRow(row: Int) -> Player {
         let symbol = self.board[row][0].getTileState()
         
         if symbol == .undef {
-            return false
+            return .undef
         }
         
         for i in self.board[row] {
             if i.getTileState() != symbol {
-                return false
+                return .undef
             }
         }
         
-        return true
+        return symbol
     }
     
-    private func sameSymbolsColumn(column: Int) -> Bool {
+    private func sameSymbolsColumn(column: Int) -> Player {
         let symbol = self.board[0][column].getTileState()
         
         if symbol == .undef {
-            return false
+            return .undef
         }
         
         for i in 1..<self.boardSize {
             if self.board[i][column].getTileState() != symbol {
-                return false
+                return .undef
             }
         }
         
-        return true
+        return symbol
     }
     
-    private func sameSymbolsDiag() -> Bool {
+    private func sameSymbolsDiag() -> Player {
         var toReturn = true
         
         var symbol = self.board[0][0].getTileState()
@@ -169,22 +185,22 @@ class GameBoard: UIView {
         }
         
         if toReturn {
-            return true
+            return symbol
         }
         
         symbol = self.board[0][self.boardSize - 1].getTileState()
         if symbol == .undef {
-            return false
+            return .undef
         }
         var col = self.boardSize - 2
         for i in 1..<self.boardSize {
             if self.board[i][col].getTileState() != symbol {
-                return false
+                return .undef
             }
             col -= 1
         }
         
-        return true
+        return symbol
     }
 }
 
