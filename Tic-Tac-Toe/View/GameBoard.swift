@@ -124,7 +124,7 @@ class GameBoard: UIView {
         // Check whether whole board is filled
         for (_,row) in self.board.enumerated() {
             for (_,tile) in row.enumerated() {
-                if tile.getTileState() != .undef {
+                if tile.getTileState() == .undef {
                     return false
                 }
             }
@@ -135,6 +135,26 @@ class GameBoard: UIView {
     
     func isFullyFilled() -> Bool {
         return self.filledTiles == self.boardSize * self.boardSize // TODO - pow?
+    }
+    
+    // DEBUG PRINT
+    func printBoard() {
+        for (_,row) in self.board.enumerated() {
+            for (_,tile) in row.enumerated() {
+                let symbole: String
+                switch tile.getTileState() {
+                case .X:
+                    symbole = "X"
+                case .O:
+                    symbole = "O"
+                default:
+                    symbole = "_"
+                }
+                
+                print(symbole, separator: "")
+            }
+            print()
+        }
     }
     
     // MARK: - Private methods

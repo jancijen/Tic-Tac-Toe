@@ -19,36 +19,38 @@ class GameAI {
     }
     
     func makeBestMove(gameBoard: GameBoard) {
-        let boardSize = gameBoard.getBoardSize()
+//        let boardSize = gameBoard.getBoardSize()
+//
+//        var bestMove = -1000//Int.min
+//        var bestMoveRow = -1
+//        var bestMoveCol = -1
+//
+//        for i in 0..<boardSize {
+//            for j in 0..<boardSize {
+//                // Check whether tile is empty
+//                if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
+//                    // Make move
+//                    gameBoard.setTile(row: i, col: j, value: self.symboleAI)
+//
+//                    // Recursively call minimax
+//                    let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false)
+//
+//                    // Undo move
+//                    gameBoard.setTile(row: i, col: j, value: .undef)
+//
+//                    if tmpMove > bestMove {
+//                        bestMove = tmpMove
+//                        bestMoveRow = i
+//                        bestMoveCol = j
+//                    }
+//                }
+//            }
+//        }
         
-        var bestMove = -1000//Int.min
-        var bestMoveRow = -1
-        var bestMoveCol = -1
-        
-        for i in 0..<boardSize {
-            for j in 0..<boardSize {
-                // Check whether tile is empty
-                if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
-                    // Make move
-                    gameBoard.setTile(row: i, col: j, value: self.symboleAI)
-                    
-                    // Recursively call minimax
-                    let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false)
-                    
-                    // Undo move
-                    gameBoard.setTile(row: i, col: j, value: .undef)
-                    
-                    if tmpMove > bestMove {
-                        bestMove = tmpMove
-                        bestMoveRow = i
-                        bestMoveCol = j
-                    }
-                }
-            }
-        }
+        let bestMove = minimax(gameBoard: gameBoard, depth: 0, player: self.symboleAI)
         
         // Make best move (simulate tap)
-        gameBoard.getTile(row: bestMoveRow, col: bestMoveCol).tileTapped()
+        gameBoard.getTile(row: bestMove.moveRow(), col: bestMove.moveCol()).tileTapped()
     }
     
     // MARK: - Private methods
@@ -61,66 +63,81 @@ class GameAI {
         return 0
     }
     
-    private func minimax(gameBoard: GameBoard, depth: Int, isMaximizer: Bool) -> Int {
+    private func bestMoveIndex(from moves: [AIMove], isMaximizer: Bool) -> Int {
+        // MAXIMIZER
+        if isMaximizer {
+            if let (maxIndex, _) = moves.enumerated().max(by: { $0.element.score < $1.element.score }) {
+                return maxIndex
+            } else {
+                return -1 // TODO - empty array
+            }
+        }
+        // MINIMIZER
+        else {
+            if let (minIndex, _) = moves.enumerated().min(by: { $0.element.score < $1.element.score }) {
+                return minIndex
+            } else {
+                return -1 // TODO - empty array
+            }
+        }
+    }
+    
+    private func minimax(gameBoard: GameBoard, depth: Int, player: Player) -> AIMove {
         // Check whether board is in terminal state
         let boardScore = evaluateBoard(gameBoard: gameBoard)
     
         if boardScore != 0 { // WIN
             // Optimization
             let toAdd = gameBoard.getCurrentTurn() == self.symboleAI ? depth : -1 * depth
-            return boardScore + toAdd
+            return AIMove(index: (-1, -1), score: boardScore + toAdd)
             //return boardScore
         } else if gameBoard.noEmptyTiles() { // TIE
-            return 0
+            return AIMove(index: (-1, -1), score: 0)
         }
         
-        // -------------- MAXIMIZER --------------
-        if isMaximizer {
-            var bestMove = -1000//Int.min
-            
-            // Check move for every empty tile
-            let boardSize = gameBoard.getBoardSize()
-            for i in 0..<boardSize {
-                for j in 0..<boardSize {
-                    // Check whether tile is empty
-                    if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
-                        // Make move
-                        gameBoard.setTile(row: i, col: j, value: self.symboleAI)
-                        
-                        // Recursively call minimax
-                        bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer))
-                        
-                        // Undo move
-                        gameBoard.setTile(row: i, col: j, value: .undef)
+        var possibleMoves = [AIMove]()
+        let boardSize = gameBoard.getBoardSize()
+        
+        // Iterate over empty tiles
+        for i in 0..<boardSize {
+            for j in 0..<boardSize {
+                // Check whether tile is empty
+                if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
+                    // Current tmpMove
+                    var tmpMove = AIMove()
+                    tmpMove.index = (i, j)
+                    
+                    // Make move
+                    gameBoard.setTile(row: i, col: j, value: player)
+                    
+                    // MAXIMIZER
+                    if player == self.symboleAI {
+                        tmpMove.score = minimax(gameBoard: gameBoard, depth: depth + 1, player: self.symboleAI.opposite()).score
                     }
+                    // MINIMIZER
+                    else {
+                        tmpMove.score = minimax(gameBoard: gameBoard, depth: depth + 1, player: self.symboleAI).score
+                    }
+                    
+                    // Undo move
+                    gameBoard.setTile(row: i, col: j, value: .undef)
+                    
+                    // Add move to possible moves
+                    possibleMoves.append(tmpMove)
                 }
             }
-            
-            return bestMove
+        }
+        
+        var moveIndex: Int
+        // -------------- MAXIMIZER --------------
+        if player == self.symboleAI {
+            moveIndex = bestMoveIndex(from: possibleMoves, isMaximizer: true)
         }
         // -------------- MINIMIZER --------------
         else {
-            var bestMove = 1000//Int.max
-            
-            // Check move for every empty tile
-            let boardSize = gameBoard.getBoardSize()
-            for i in 0..<boardSize {
-                for j in 0..<boardSize {
-                    // Check whether tile is empty
-                    if gameBoard.getTile(row: i, col: j).getTileState() == .undef {
-                        // Make move
-                        gameBoard.setTile(row: i, col: j, value: self.symboleAI.opposite())
-                        
-                        // Recursively call minimax
-                        bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer))
-                        
-                        // Undo move
-                        gameBoard.setTile(row: i, col: j, value: .undef)
-                    }
-                }
-            }
-            
-            return bestMove
+            moveIndex = bestMoveIndex(from: possibleMoves, isMaximizer: false)
         }
+        
+        return possibleMoves[moveIndex]
     }
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A11E4FE20EC1D4000E98C86 /* GameAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E4FD20EC1D4000E98C86 /* GameAI.swift */; };
+		0A11E50020ED60BB00E98C86 /* AIMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E4FF20ED60BB00E98C86 /* AIMove.swift */; };
 		0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF0320E82E59000273EB /* AppDelegate.swift */; };
 		0A15EF0B20E82E5B000273EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A15EF0A20E82E5B000273EB /* Assets.xcassets */; };
 		0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1A20E82F74000273EB /* MenuViewController.swift */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		0A11E4FD20EC1D4000E98C86 /* GameAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
+		0A11E4FF20ED60BB00E98C86 /* AIMove.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMove.swift; sourceTree = "<group>"; };
 		0A15EF0020E82E59000273EB /* Tic-Tac-Toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic-Tac-Toe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A15EF0320E82E59000273EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A15EF0A20E82E5B000273EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			children = (
 				0ABD6D2C20EBD71A00B251A8 /* Player.swift */,
 				0A11E4FD20EC1D4000E98C86 /* GameAI.swift */,
+				0A11E4FF20ED60BB00E98C86 /* AIMove.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */,
 				0ABD6D2D20EBD71A00B251A8 /* Player.swift in Sources */,
 				0ABD6D1620E8392200B251A8 /* SettingsViewController.swift in Sources */,
+				0A11E50020ED60BB00E98C86 /* AIMove.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
