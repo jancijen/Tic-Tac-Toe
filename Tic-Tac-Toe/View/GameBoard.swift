@@ -124,7 +124,7 @@ class GameBoard: UIView {
         // Check whether whole board is filled
         for (_,row) in self.board.enumerated() {
             for (_,tile) in row.enumerated() {
-                if tile.getTileState() != .undef {
+                if tile.getTileState() == .undef {
                     return false
                 }
             }
