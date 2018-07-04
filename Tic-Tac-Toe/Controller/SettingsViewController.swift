@@ -10,10 +10,21 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     // MARK: - Private attributes
-    let symbolSwitch: UISwitch = UISwitch()
-    let turnSwitch: UISwitch = UISwitch()
+    private let isSinglePlayer: Bool
+    private let symbolSwitch: UISwitch = UISwitch()
+    private let turnSwitch: UISwitch = UISwitch()
     
     // MARK: - Public methods
+    init(isSinglePlayer: Bool) {
+        self.isSinglePlayer = isSinglePlayer
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,7 +38,7 @@ class SettingsViewController: UIViewController {
         
         // ---------------- Title ----------------
         let titleLabel = UILabel()
-        titleLabel.font = ThemeManager.appFont(size: 60) // TODO
+        titleLabel.font = ThemeManager.appFont(size: ThemeManager.titleFontSize)
         titleLabel.text = "Settings"
         
         self.view.addSubview(titleLabel)
@@ -80,41 +91,43 @@ class SettingsViewController: UIViewController {
             make.centerY.equalTo(symbolSwitch)
         }
         
-        // ---------------- First turn choice ----------------
-        // Switch
-        turnSwitch.onTintColor = .black
-        self.view.addSubview(turnSwitch)
-        turnSwitch.snp.makeConstraints { make in
-            make.width.equalTo(60)
-            make.height.equalTo(20)
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(100)
-        }
-        
-        // Player image
-        let playerImageView = UIImageView(image: #imageLiteral(resourceName: "human"))
-        
-        self.view.addSubview(playerImageView)
-        playerImageView.snp.makeConstraints { make in
-            make.height.width.equalTo(64)
-            make.right.equalTo(turnSwitch.snp.left).offset(-40)
-            make.centerY.equalTo(turnSwitch)
-        }
-        
-        // PC image
-        let robotImageView = UIImageView(image: #imageLiteral(resourceName: "robot"))
-        
-        self.view.addSubview(robotImageView)
-        robotImageView.snp.makeConstraints { make in
-            make.height.width.equalTo(64)
-            make.left.equalTo(turnSwitch.snp.right).offset(40)
-            make.centerY.equalTo(turnSwitch)
+        if isSinglePlayer {
+            // ---------------- First turn choice ----------------
+            // Switch
+            turnSwitch.onTintColor = .black
+            self.view.addSubview(turnSwitch)
+            turnSwitch.snp.makeConstraints { make in
+                make.width.equalTo(60)
+                make.height.equalTo(20)
+                make.centerX.equalToSuperview()
+                make.centerY.equalToSuperview().offset(100)
+            }
+            
+            // Player image
+            let playerImageView = UIImageView(image: #imageLiteral(resourceName: "human"))
+            
+            self.view.addSubview(playerImageView)
+            playerImageView.snp.makeConstraints { make in
+                make.height.width.equalTo(64)
+                make.right.equalTo(turnSwitch.snp.left).offset(-40)
+                make.centerY.equalTo(turnSwitch)
+            }
+            
+            // PC image
+            let robotImageView = UIImageView(image: #imageLiteral(resourceName: "robot"))
+            
+            self.view.addSubview(robotImageView)
+            robotImageView.snp.makeConstraints { make in
+                make.height.width.equalTo(64)
+                make.left.equalTo(turnSwitch.snp.right).offset(40)
+                make.centerY.equalTo(turnSwitch)
+            }
         }
         
         // ---------------- Play button ----------------
-        let playButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+        let playButton = UIButton()
         playButton.backgroundColor = ThemeManager.menuButtonColor
-        playButton.titleLabel?.font = ThemeManager.appFont(size: 30)
+        playButton.titleLabel?.font = ThemeManager.appFont(size: ThemeManager.buttonFontSize)
         playButton.setTitleColor(.white, for: .normal)
         playButton.setTitle("Play", for: .normal)
         playButton.addTarget(self, action: #selector(playTapped), for: .touchUpInside)
@@ -123,7 +136,7 @@ class SettingsViewController: UIViewController {
         playButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-60)
             make.centerX.equalToSuperview()
-            make.width.equalTo(160)
+            make.width.equalTo(200)
         }
     }
 }
@@ -134,12 +147,15 @@ extension SettingsViewController {
         let playersSymbole = self.symbolSwitch.isOn ? Player.O : Player.X
         let firstTurn = self.turnSwitch.isOn ? playersSymbole.opposite() : playersSymbole
         
-        // Create and show game VC
-        self.navigationController?.pushViewController(GameViewController(boardSize: 3,
-                                                                         firstTurn: firstTurn,
-                                                                         playersSymbole: playersSymbole,
-                                                                         isSinglePlayer: true), // todo
-                                                      animated: true)
+        // Create and show game
+        if self.isSinglePlayer {
+            let gameVC = SinglePlayerViewController(boardSize: 3, firstTurn: firstTurn, aiPlayer: playersSymbole.opposite())
+            self.navigationController?.pushViewController(gameVC, animated: true)
+        } else {
+            let gameVC = MultiPlayerViewController(boardSize: 3,
+                                                   firstTurn: firstTurn)
+            self.navigationController?.pushViewController(gameVC, animated: true)
+        }
     }
     
     @objc private func backTapped() {

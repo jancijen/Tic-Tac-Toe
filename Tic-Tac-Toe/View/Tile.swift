@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 
+/// Protocol defining required methods from game board.
 protocol GameBoardDelegate {
     func getCurrentTurn() -> Player
     func nextTurn() -> Void
@@ -20,7 +21,7 @@ class Tile: UIView {
     var gameBoardDelegate: GameBoardDelegate? = nil
     // MARK: - Private attrbitues
     private let tileButton: UIButton = UIButton()
-    private var tileState: Player = .undef // TODO
+    private var tileSymbole: Player = .undef // TODO
     private let tileSize: CGFloat = 100
     
     // MARK: - Public methods
@@ -34,15 +35,28 @@ class Tile: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getTileState() -> Player {
-        return self.tileState
+    /**
+     Getter for symbole on tile.
+     
+     - returns: Symbole on tile.
+     */
+    func getTileSymbole() -> Player {
+        return self.tileSymbole
     }
     
-    func setTileState(value: Player) {
-        self.tileState = value
+    /**
+     Setter for symbole on tile.
+     
+     - parameter value: Value to be set.
+     */
+    func setTileSymbole(value: Player) {
+        self.tileSymbole = value
     }
     
     // MARK: - Private methods
+    /**
+     Configure view and its subviews.
+     */
     private func configure() {
         // Configure view
         self.backgroundColor = .white
@@ -65,21 +79,24 @@ class Tile: UIView {
 
 // MARK: - Button callbacks
 extension Tile {
+    /**
+     Callback to be called after tile has been tapped.
+     */
     @objc func tileTapped() {
-        switch self.tileState {
+        switch self.tileSymbole {
         case .undef:
-            // Change tile state to corresponding symbol
+            // Change tile state to symbole which is on turn
             if let delegate = self.gameBoardDelegate {
                 let currentTurn = delegate.getCurrentTurn()
                 
                 switch currentTurn {
                 case .X:
                     self.tileButton.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
-                    self.tileState = .X
+                    self.tileSymbole = .X
                     self.gameBoardDelegate?.nextTurn()
                 case .O:
                     self.tileButton.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
-                    self.tileState = .O
+                    self.tileSymbole = .O
                     self.gameBoardDelegate?.nextTurn()
                 default:
                     break

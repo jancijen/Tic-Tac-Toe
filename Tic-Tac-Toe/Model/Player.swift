@@ -14,6 +14,11 @@ enum Player {
     case O
     case undef
     
+    /**
+     Get opposite symbole.
+     
+     - returns: Opposite symbole.
+     */
     func opposite() -> Player {
         switch self {
         case .X:

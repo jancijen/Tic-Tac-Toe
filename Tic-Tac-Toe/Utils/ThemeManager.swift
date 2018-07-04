@@ -9,17 +9,25 @@
 import Foundation
 import UIKit
 
-// TODO - Singleton?
-
 /// Class for UI appearance management.
 class ThemeManager {
     // MARK - Private attributes
-    static let fontName = "BebasNeue-Regular"
+    private static let fontName: String = "BebasNeue-Regular"
     
     // MARK: - Public attributes
-    static let menuButtonColor = UIColor.black
+    static let menuButtonColor: UIColor = UIColor.black
+    static let bigTitleFontSize: CGFloat = 80
+    static let titleFontSize: CGFloat = 60
+    static let buttonFontSize: CGFloat = 30
     
     // MARK: - Public methods
+    /**
+     Getter for application font.
+     
+     - parameter size: Wanted size of font.
+     
+     - returns: Application font with given size.
+     */
     static func appFont(size: CGFloat) -> UIFont {
         guard let customFont = UIFont(name: ThemeManager.fontName, size: size) else {
             fatalError("Failed to load the \(ThemeManager.fontName) font.")

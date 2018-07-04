@@ -9,8 +9,13 @@
 import UIKit
 import SnapKit
 
+/// Menu screen view controller.
 class MenuViewController: UIViewController {
-
+    // MARK: Private attributes
+    static let spacing: CGFloat = 32
+    static let buttonWidth: CGFloat = 200
+    
+    // MARK: - Public methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -18,13 +23,16 @@ class MenuViewController: UIViewController {
     }
     
     // MARK: - Private methods
+    /**
+     Configure view and its subviews.
+     */
     private func configure() {
         // Configure view
         self.view.backgroundColor = .white
         
         // ---------------- Title ----------------
         let titleLabel = UILabel()
-        titleLabel.font = ThemeManager.appFont(size: 80) // TODO
+        titleLabel.font = ThemeManager.appFont(size: ThemeManager.bigTitleFontSize) // TODO
         titleLabel.text = "Tic-Tac-Toe"
         
         self.view.addSubview(titleLabel)
@@ -33,8 +41,7 @@ class MenuViewController: UIViewController {
             make.centerX.equalToSuperview()
         }
         
-        let buttonFont = ThemeManager.appFont(size: 30)
-        
+        let buttonFont = ThemeManager.appFont(size: ThemeManager.buttonFontSize)
         // ---------------- Singleplayer option ----------------
         let singlePButton = UIButton()
         singlePButton.backgroundColor = ThemeManager.menuButtonColor
@@ -44,7 +51,7 @@ class MenuViewController: UIViewController {
         singlePButton.addTarget(self, action: #selector(singlePTapped), for: .touchUpInside)
         
         singlePButton.snp.makeConstraints { make in
-            make.width.equalTo(160)
+            make.width.equalTo(MenuViewController.buttonWidth)
         }
         
         // ---------------- Multiplayer option ----------------
@@ -56,7 +63,7 @@ class MenuViewController: UIViewController {
         multiPButton.addTarget(self, action: #selector(multiPTapped), for: .touchUpInside)
         
         multiPButton.snp.makeConstraints { make in
-            make.width.equalTo(160)
+            make.width.equalTo(MenuViewController.buttonWidth)
         }
         
         // Stack view (all menu options)
@@ -64,7 +71,7 @@ class MenuViewController: UIViewController {
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
         stackView.alignment = .center
-        stackView.spacing = 16.0
+        stackView.spacing = MenuViewController.spacing
         
         stackView.addArrangedSubview(singlePButton)
         stackView.addArrangedSubview(multiPButton)
@@ -79,11 +86,17 @@ class MenuViewController: UIViewController {
 
 // MARK: - Button callbacks
 extension MenuViewController {
+    /**
+     Singleplayer button callback.
+     */
     @objc private func singlePTapped() {
-        self.navigationController?.pushViewController(SettingsViewController(), animated: true)
+        self.navigationController?.pushViewController(SettingsViewController(isSinglePlayer: true), animated: true)
     }
     
+    /**
+     Multiplayer button callback.
+     */
     @objc private func multiPTapped() {
-        self.navigationController?.pushViewController(SettingsViewController(), animated: true)
+        self.navigationController?.pushViewController(SettingsViewController(isSinglePlayer: false), animated: true)
     }
 }

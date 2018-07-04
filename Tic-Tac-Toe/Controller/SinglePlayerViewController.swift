@@ -1,30 +1,29 @@
 //
-//  GameViewController.swift
+//  SinglePlayerViewController.swift
 //  Tic-Tac-Toe
 //
-//  Created by Jendrusak, Jan on 30.6.18.
+//  Created by Jendrusak, Jan on 4.7.18.
 //  Copyright © 2018 Jan Jendrusak. All rights reserved.
 //
 
 import UIKit
 
-/// Base game view controller.
-class GameViewController: UIViewController {
+/// Signle player game view controller.
+class SinglePlayerViewController: UIViewController {
     // MARK: - Private attributes
-    private let playersSymbole: Player
+    private let aiPlayer: Player
     private var currentTurn: Player
     private let gameBoard: GameBoard
     private let boardSize: Int
-    private let isSinglePlayerGame: Bool
+    private let AI: GameAI
     
     // MARK: - Public methods
-    init(boardSize: Int, firstTurn: Player, playersSymbole: Player, isSinglePlayer: Bool) {
-        self.isSinglePlayerGame = isSinglePlayer
-        self.playersSymbole = playersSymbole
+    init(boardSize: Int, firstTurn: Player, aiPlayer: Player) {
+        self.aiPlayer = aiPlayer
         self.currentTurn = firstTurn
         self.gameBoard = GameBoard(boardSize: boardSize)
         self.boardSize = boardSize
-        //self.AI = GameAI(symboleAI: playersSymbole.opposite())
+        self.AI = GameAI(symboleAI: aiPlayer)
         
         super.init(nibName: nil, bundle: nil)
         self.gameBoard.gameVCDelagate = self
@@ -36,7 +35,7 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.configure()
     }
     
@@ -77,15 +76,17 @@ class GameViewController: UIViewController {
 }
 
 // MARK: - GameViewControllerDelegate
-extension GameViewController: GameViewControllerDelegate {
+extension SinglePlayerViewController: GameViewControllerDelegate {
     func getCurrentTurn() -> Player {
         return self.currentTurn
     }
     
     func nextTurn() {
         // Victory check
-        if gameBoard.isWon() != .undef {
-            let popUp = UIAlertController(title: "VICTORY", message: "...", preferredStyle: .alert)
+        let winner = gameBoard.isWon()
+        if  winner != .undef {
+            let title = winner == self.aiPlayer ? "DEFEAT" : "VICTORY"
+            let popUp = UIAlertController(title: title, message: "", preferredStyle: .alert)
             popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
                 self.navigationController?.popToRootViewController(animated: true)
             })
@@ -95,7 +96,7 @@ extension GameViewController: GameViewControllerDelegate {
         
         // Tie check
         if gameBoard.isFullyFilled() {
-            let popUp = UIAlertController(title: "TIE", message: "...", preferredStyle: .alert)
+            let popUp = UIAlertController(title: "TIE", message: "", preferredStyle: .alert)
             popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
                 self.navigationController?.popToRootViewController(animated: true)
             })
@@ -107,14 +108,14 @@ extension GameViewController: GameViewControllerDelegate {
         self.currentTurn = self.currentTurn.opposite()
         
         // Let AI make a move, if it is on turn
-        if isSinglePlayerGame && self.currentTurn == self.playersSymbole.opposite() {
-            //self.AI.makeBestMove(gameBoard: gameBoard)
+        if self.currentTurn == self.aiPlayer {
+            self.AI.makeBestMove(gameBoard: gameBoard)
         }
     }
 }
 
 // MARK: - Button callbacks
-extension GameViewController {
+extension SinglePlayerViewController {
     @objc private func backTapped() {
         self.navigationController?.popViewController(animated: true)
     }
