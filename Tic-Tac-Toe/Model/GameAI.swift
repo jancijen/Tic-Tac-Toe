@@ -21,7 +21,7 @@ class GameAI {
     func makeBestMove(gameBoard: GameBoard) {
         let boardSize = gameBoard.getBoardSize()
         
-        var bestMove = -1000//Int.min
+        var bestMove = Int.min
         var bestMoveRow = -1
         var bestMoveCol = -1
         
@@ -52,31 +52,21 @@ class GameAI {
     }
     
     // MARK: - Private methods
-    private func evaluateBoard(gameBoard: GameBoard) -> Int {
-        let winner = gameBoard.isWon()
-        if winner != .undef {
-            return winner == self.symboleAI ? 10 : -10
-        }
-        
-        return 0
-    }
-    
     private func minimax(gameBoard: GameBoard, depth: Int, isMaximizer: Bool) -> Int {
         // Check whether board is in terminal state
-        let boardScore = evaluateBoard(gameBoard: gameBoard)
-    
-        if boardScore != 0 { // WIN
+        let winner = gameBoard.isWon()
+        if winner == .X || winner == .O { // WIN
             // Optimization
-            let toAdd = gameBoard.getCurrentTurn() == self.symboleAI ? depth : -1 * depth
-            return boardScore + toAdd
-            //return boardScore
-        } else if gameBoard.noEmptyTiles() { // TIE
+            let toRet = winner == self.symboleAI ? 10 + depth : -10 + (-1 * depth)
+            return toRet
+        }
+        else if gameBoard.noEmptyTiles() { // TIE
             return 0
         }
         
         // -------------- MAXIMIZER --------------
         if isMaximizer {
-            var bestMove = -1000//Int.min
+            var bestMove = Int.min
             
             // Check move for every empty tile
             let boardSize = gameBoard.getBoardSize()
@@ -100,7 +90,7 @@ class GameAI {
         }
         // -------------- MINIMIZER --------------
         else {
-            var bestMove = 1000//Int.max
+            var bestMove = Int.max
             
             // Check move for every empty tile
             let boardSize = gameBoard.getBoardSize()

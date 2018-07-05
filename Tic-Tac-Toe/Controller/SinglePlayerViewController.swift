@@ -27,11 +27,6 @@ class SinglePlayerViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         self.gameBoard.gameVCDelagate = self
-        
-        // Let AI make a move if it should make first turn
-        if self.currentTurn == aiPlayer {
-            self.AI.makeBestMove(gameBoard: gameBoard)
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,6 +37,11 @@ class SinglePlayerViewController: UIViewController {
         super.viewDidLoad()
         
         self.configure()
+        
+        // Let AI make a move if it should make first turn
+        if self.currentTurn == aiPlayer {
+            self.AI.makeBestMove(gameBoard: gameBoard)
+        }
     }
     
     // MARK: - Private methods
