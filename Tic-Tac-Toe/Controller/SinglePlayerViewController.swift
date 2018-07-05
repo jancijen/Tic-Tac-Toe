@@ -93,12 +93,23 @@ extension SinglePlayerViewController: GameViewControllerDelegate {
         // Victory check
         let winner = gameBoard.isWon()
         if  winner != .undef {
+//            let title = winner == self.aiPlayer ? "DEFEAT" : "VICTORY"
+//            let popUp = UIAlertController(title: title, message: "", preferredStyle: .alert)
+//            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
+//                self.navigationController?.popToRootViewController(animated: true)
+//            })
+//            self.present(popUp, animated: true, completion: nil)
             let title = winner == self.aiPlayer ? "DEFEAT" : "VICTORY"
-            let popUp = UIAlertController(title: title, message: "", preferredStyle: .alert)
-            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
+            let image = winner == self.aiPlayer ? #imageLiteral(resourceName: "gameOver") : #imageLiteral(resourceName: "victory")
+            
+            let alertView = AlertView(title: title, image: image)
+            alertView.addActionButton(title: "OK") {
                 self.navigationController?.popToRootViewController(animated: true)
-            })
-            self.present(popUp, animated: true, completion: nil)
+                alertView.dismiss(animated: true)
+            }
+            
+            alertView.show(animated: true)
+            
             return
         }
         
