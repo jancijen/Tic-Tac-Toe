@@ -16,6 +16,7 @@ class SinglePlayerViewController: UIViewController {
     private let gameBoard: GameBoard
     private let boardSize: Int
     private let AI: GameAI
+    private let titleLabel: UILabel
     
     // MARK: - Public methods
     init(boardSize: Int, firstTurn: Player, aiPlayer: Player) {
@@ -24,6 +25,7 @@ class SinglePlayerViewController: UIViewController {
         self.gameBoard = GameBoard(boardSize: boardSize)
         self.boardSize = boardSize
         self.AI = GameAI(symboleAI: aiPlayer)
+        self.titleLabel = UILabel()
         
         super.init(nibName: nil, bundle: nil)
         self.gameBoard.gameVCDelagate = self
@@ -50,7 +52,8 @@ class SinglePlayerViewController: UIViewController {
         self.view.backgroundColor = .white
         
         // Title
-        let titleLabel = UILabel()
+        titleLabel.isHidden = UIDevice.current.orientation == .landscapeLeft
+                              || UIDevice.current.orientation == .landscapeRight
         titleLabel.font = ThemeManager.appFont(size: ThemeManager.titleFontSize)
         titleLabel.text = "Game"
         
@@ -115,6 +118,20 @@ extension SinglePlayerViewController: GameViewControllerDelegate {
         // Let AI make a move, if it is on turn
         if self.currentTurn == self.aiPlayer {
             self.AI.makeBestMove(gameBoard: gameBoard)
+        }
+    }
+}
+
+// MARK: - Device orientation
+extension SinglePlayerViewController {
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        switch UIDevice.current.orientation {
+        case .portrait, .portraitUpsideDown:
+            self.titleLabel.isHidden = false
+        case .landscapeLeft, .landscapeRight:
+            self.titleLabel.isHidden = true
+        default:
+            break
         }
     }
 }

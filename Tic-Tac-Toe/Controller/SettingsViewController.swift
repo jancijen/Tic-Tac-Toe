@@ -21,7 +21,7 @@ class SettingsViewController: UIViewController {
     // MARK: - Public methods
     init(isSinglePlayer: Bool) {
         self.isSinglePlayer = isSinglePlayer
-        self.verticalOffset = isSinglePlayer ? 100 : 0
+        self.verticalOffset = isSinglePlayer ? 50 : 0
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -142,7 +142,7 @@ class SettingsViewController: UIViewController {
         
         self.view.addSubview(playButton)
         playButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-60)
+            make.bottom.equalToSuperview().offset(-20)
             make.centerX.equalToSuperview()
             make.width.equalTo(200)
         }

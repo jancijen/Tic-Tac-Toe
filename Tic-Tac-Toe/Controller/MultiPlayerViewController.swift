@@ -14,12 +14,14 @@ class MultiPlayerViewController: UIViewController {
     private var currentTurn: Player
     private let gameBoard: GameBoard
     private let boardSize: Int
+    private let titleLabel: UILabel
     
     // MARK: - Public methods
     init(boardSize: Int, firstTurn: Player) {
         self.currentTurn = firstTurn
         self.gameBoard = GameBoard(boardSize: boardSize)
         self.boardSize = boardSize
+        self.titleLabel = UILabel()
         
         super.init(nibName: nil, bundle: nil)
         self.gameBoard.gameVCDelagate = self
@@ -41,7 +43,8 @@ class MultiPlayerViewController: UIViewController {
         self.view.backgroundColor = .white
         
         // Title
-        let titleLabel = UILabel()
+        titleLabel.isHidden = UIDevice.current.orientation == .landscapeLeft
+                              || UIDevice.current.orientation == .landscapeRight
         titleLabel.font = ThemeManager.appFont(size: ThemeManager.titleFontSize)
         titleLabel.text = "Game"
         
@@ -102,6 +105,20 @@ extension MultiPlayerViewController: GameViewControllerDelegate {
         
         // Change turn
         self.currentTurn = self.currentTurn.opposite()
+    }
+}
+
+// MARK: - Device orientation
+extension MultiPlayerViewController {
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        switch UIDevice.current.orientation {
+        case .portrait, .portraitUpsideDown:
+            self.titleLabel.isHidden = false
+        case .landscapeLeft, .landscapeRight:
+            self.titleLabel.isHidden = true
+        default:
+            break
+        }
     }
 }
 
