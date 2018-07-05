@@ -12,6 +12,7 @@ import UIKit
 class MultiPlayerViewController: UIViewController {
     // MARK: - Private attributes
     private var currentTurn: Player
+    private let firstTurn: Player
     private let gameBoard: GameBoard
     private let boardSize: Int
     private let titleLabel: UILabel
@@ -19,6 +20,7 @@ class MultiPlayerViewController: UIViewController {
     // MARK: - Public methods
     init(boardSize: Int, firstTurn: Player) {
         self.currentTurn = firstTurn
+        self.firstTurn = firstTurn
         self.gameBoard = GameBoard(boardSize: boardSize)
         self.boardSize = boardSize
         self.titleLabel = UILabel()
@@ -77,7 +79,7 @@ class MultiPlayerViewController: UIViewController {
         let alertView = AlertView(title: title, image: image)
         
         alertView.addActionButton(title: "Replay") {
-            self.navigationController?.popToRootViewController(animated: true)
+            self.resetGame()
             alertView.dismiss(animated: true)
         }
         alertView.addActionButton(title: "Main Menu") {
@@ -86,6 +88,11 @@ class MultiPlayerViewController: UIViewController {
         }
         
         alertView.show(animated: true)
+    }
+    
+    private func resetGame() {
+        gameBoard.reset()
+        self.currentTurn = firstTurn
     }
 }
 

@@ -35,6 +35,11 @@ class Tile: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func reset() {
+        self.tileSymbole = .undef
+        self.tileButton.setImage(nil, for: .normal)
+    }
+    
     /**
      Getter for symbole on tile.
      

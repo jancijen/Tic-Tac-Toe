@@ -137,6 +137,15 @@ class GameBoard: UIView {
         return self.filledTiles == self.boardSize * self.boardSize // TODO - pow?
     }
     
+    func reset() {
+        self.filledTiles = 0
+        for (_,row) in self.board.enumerated() {
+            for (_,tile) in row.enumerated() {
+                tile.reset()
+            }
+        }
+    }
+    
     // MARK: - Private methods
     private func sameSymbolsRow(row: Int) -> Player {
         let symbol = self.board[row][0].getTileSymbole()

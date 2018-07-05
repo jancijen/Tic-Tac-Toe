@@ -13,6 +13,7 @@ class SinglePlayerViewController: UIViewController {
     // MARK: - Private attributes
     private let aiPlayer: Player
     private var currentTurn: Player
+    private let firstTurn: Player
     private let gameBoard: GameBoard
     private let boardSize: Int
     private let AI: GameAI
@@ -22,6 +23,7 @@ class SinglePlayerViewController: UIViewController {
     init(boardSize: Int, firstTurn: Player, aiPlayer: Player) {
         self.aiPlayer = aiPlayer
         self.currentTurn = firstTurn
+        self.firstTurn = firstTurn
         self.gameBoard = GameBoard(boardSize: boardSize)
         self.boardSize = boardSize
         self.AI = GameAI(symboleAI: aiPlayer)
@@ -39,7 +41,6 @@ class SinglePlayerViewController: UIViewController {
         super.viewDidLoad()
         
         self.configure()
-        
         // Let AI make a move if it should make first turn
         if self.currentTurn == aiPlayer {
             self.AI.makeBestMove(gameBoard: gameBoard)
@@ -84,8 +85,9 @@ class SinglePlayerViewController: UIViewController {
     
     private func showEndGameAlert(title: String) {
         let alertView = AlertView(title: title, image: nil)
+
         alertView.addActionButton(title: "Replay") {
-            self.navigationController?.popToRootViewController(animated: true)
+            self.resetGame()
             alertView.dismiss(animated: true)
         }
         alertView.addActionButton(title: "Main Menu") {
@@ -94,6 +96,16 @@ class SinglePlayerViewController: UIViewController {
         }
         
         alertView.show(animated: true)
+    }
+    
+    private func resetGame() {
+        gameBoard.reset()
+        self.currentTurn = firstTurn
+        
+        // Let AI make a move if it should make first turn
+        if self.currentTurn == aiPlayer {
+            self.AI.makeBestMove(gameBoard: gameBoard)
+        }
     }
 }
 
