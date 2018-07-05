@@ -66,6 +66,14 @@ class MenuViewController: UIViewController {
             make.width.equalTo(MenuViewController.buttonWidth)
         }
         
+        // ---------------- Menu view ----------------
+        let menuView = UIView()
+        self.view.addSubview(menuView)
+        menuView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.right.left.bottom.equalToSuperview()
+        }
+        
         // Stack view (all menu options)
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -77,10 +85,9 @@ class MenuViewController: UIViewController {
         stackView.addArrangedSubview(multiPButton)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.view.addSubview(stackView)
+        menuView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(50)
+            make.center.equalToSuperview()
         }
     }
 }
