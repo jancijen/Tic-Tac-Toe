@@ -19,6 +19,7 @@ class ThemeManager {
     static let bigTitleFontSize: CGFloat = 80
     static let titleFontSize: CGFloat = 60
     static let buttonFontSize: CGFloat = 30
+    static let alertButtonWidth: CGFloat = 80
     
     // MARK: - Public methods
     /**

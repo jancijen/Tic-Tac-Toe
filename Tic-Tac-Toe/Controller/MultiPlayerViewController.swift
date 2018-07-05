@@ -72,6 +72,21 @@ class MultiPlayerViewController: UIViewController {
             make.center.equalToSuperview()
         }
     }
+    
+    private func showEndGameAlert(title: String, image: UIImage?) {
+        let alertView = AlertView(title: title, image: image)
+        
+        alertView.addActionButton(title: "Replay") {
+            self.navigationController?.popToRootViewController(animated: true)
+            alertView.dismiss(animated: true)
+        }
+        alertView.addActionButton(title: "Main Menu") {
+            self.navigationController?.popToRootViewController(animated: true)
+            alertView.dismiss(animated: true)
+        }
+        
+        alertView.show(animated: true)
+    }
 }
 
 // MARK: - GameViewControllerDelegate
@@ -84,22 +99,14 @@ extension MultiPlayerViewController: GameViewControllerDelegate {
         // Victory check
         let winner = gameBoard.isWon()
         if  winner != .undef {
-            let winnerStr = winner == .X ? "X" : "O"
-            let popUp = UIAlertController(title: "WINNER: \(winnerStr)", message: "", preferredStyle: .alert)
-            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
-                self.navigationController?.popToRootViewController(animated: true)
-            })
-            self.present(popUp, animated: true, completion: nil)
+            let winnerImage = winner == .X ? #imageLiteral(resourceName: "cross") : #imageLiteral(resourceName: "circle")
+            showEndGameAlert(title: "Winner is", image: winnerImage)
             return
         }
         
         // Tie check
         if gameBoard.isFullyFilled() {
-            let popUp = UIAlertController(title: "TIE", message: "", preferredStyle: .alert)
-            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
-                self.navigationController?.popToRootViewController(animated: true)
-            })
-            self.present(popUp, animated: true, completion: nil)
+            showEndGameAlert(title: "Tie", image: nil)
             return
         }
         

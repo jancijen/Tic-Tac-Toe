@@ -20,6 +20,7 @@ class AlertView: UIView, Poppable {
     convenience init(title: String, image: UIImage?) {
         self.init(frame: UIScreen.main.bounds)
         
+        self.setupObservers()
         self.configure(title: title, image: image)
     }
     
@@ -41,6 +42,9 @@ class AlertView: UIView, Poppable {
         button.addTargetClosure(actionClosure: action, for: .touchUpInside)
         
         self.buttonsStack.addArrangedSubview(button)
+        button.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+        }
     }
     
     // MARK: - Private methods
@@ -53,6 +57,9 @@ class AlertView: UIView, Poppable {
         self.backgroundView.alpha = 0.6
         
         self.addSubview(self.backgroundView)
+        self.backgroundView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         // -------------- Alert view --------------
         // Title
@@ -67,15 +74,16 @@ class AlertView: UIView, Poppable {
         }
         
         // Buttons
-        buttonsStack.axis = .horizontal
+        buttonsStack.axis = .vertical
         buttonsStack.distribution = .equalSpacing
         buttonsStack.alignment = .center
-        buttonsStack.spacing = 30
+        buttonsStack.spacing = 10
         
         self.alertView.addSubview(buttonsStack)
         buttonsStack.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-20)
-            make.centerX.equalToSuperview()
+            make.right.equalToSuperview().offset(-20)
+            make.left.equalToSuperview().offset(20)
         }
         
         // Image
@@ -84,8 +92,8 @@ class AlertView: UIView, Poppable {
             
             self.alertView.addSubview(imageView)
             imageView.snp.makeConstraints { make in
-                make.height.width.equalTo(64)
-                make.top.equalTo(titleLabel.snp.bottom).offset(20)
+                make.height.width.equalTo(32)
+                make.top.equalTo(titleLabel.snp.bottom).offset(15)
                 make.centerX.equalToSuperview()
             }
             
@@ -103,7 +111,19 @@ class AlertView: UIView, Poppable {
         self.addSubview(self.alertView)
         alertView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.equalTo(200)
+            make.width.equalTo(240)
         }
+    }
+    
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    }
+}
+
+// MARK: - Observers callbacks
+extension AlertView {
+    @objc private func rotated() {
+        // Reset frame of view
+        self.frame = UIScreen.main.bounds
     }
 }

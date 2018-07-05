@@ -81,6 +81,20 @@ class SinglePlayerViewController: UIViewController {
             make.center.equalToSuperview()
         }
     }
+    
+    private func showEndGameAlert(title: String) {
+        let alertView = AlertView(title: title, image: nil)
+        alertView.addActionButton(title: "Replay") {
+            self.navigationController?.popToRootViewController(animated: true)
+            alertView.dismiss(animated: true)
+        }
+        alertView.addActionButton(title: "Main Menu") {
+            self.navigationController?.popToRootViewController(animated: true)
+            alertView.dismiss(animated: true)
+        }
+        
+        alertView.show(animated: true)
+    }
 }
 
 // MARK: - GameViewControllerDelegate
@@ -93,33 +107,14 @@ extension SinglePlayerViewController: GameViewControllerDelegate {
         // Victory check
         let winner = gameBoard.isWon()
         if  winner != .undef {
-//            let title = winner == self.aiPlayer ? "DEFEAT" : "VICTORY"
-//            let popUp = UIAlertController(title: title, message: "", preferredStyle: .alert)
-//            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
-//                self.navigationController?.popToRootViewController(animated: true)
-//            })
-//            self.present(popUp, animated: true, completion: nil)
             let title = winner == self.aiPlayer ? "DEFEAT" : "VICTORY"
-            let image = winner == self.aiPlayer ? #imageLiteral(resourceName: "gameOver") : #imageLiteral(resourceName: "victory")
-            
-            let alertView = AlertView(title: title, image: image)
-            alertView.addActionButton(title: "OK") {
-                self.navigationController?.popToRootViewController(animated: true)
-                alertView.dismiss(animated: true)
-            }
-            
-            alertView.show(animated: true)
-            
+            showEndGameAlert(title: title)
             return
         }
         
         // Tie check
         if gameBoard.isFullyFilled() {
-            let popUp = UIAlertController(title: "TIE", message: "", preferredStyle: .alert)
-            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
-                self.navigationController?.popToRootViewController(animated: true)
-            })
-            self.present(popUp, animated: true, completion: nil)
+            showEndGameAlert(title: "Tie")
             return
         }
         
