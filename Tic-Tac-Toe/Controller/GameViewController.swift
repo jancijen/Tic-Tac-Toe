@@ -141,8 +141,8 @@ extension GameViewController: GameViewControllerDelegate {
     /**
      Select tile at given position.
      
-     - parameter row: Row of tile.
-     - parameter col: Column of tile.
+     - parameter row: Row of tile to be selected.
+     - parameter col: Column of tile to be selected.
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
@@ -154,7 +154,7 @@ extension GameViewController: GameViewControllerDelegate {
 // MARK: - GameDelegate
 extension GameViewController: GameDelegate {
     func setTileView(row: Int, col: Int, value: Player) {
-        gameBoard.setTileView(row: row, col: col, value: value)
+        gameBoard.setTileView(row: row, col: col, player: value)
     }
 }
 

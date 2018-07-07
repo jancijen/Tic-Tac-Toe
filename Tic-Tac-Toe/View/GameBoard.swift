@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Protocol defining required methods from game view controller.
 protocol GameViewControllerDelegate: class {
     func selectTile(row: Int, col: Int) -> Player?
 }
@@ -38,6 +39,9 @@ class GameBoard: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /**
+     Reset gameboard to default.
+     */
     func reset() {
         // Reset tile views
         for (_,row) in self.tiles.enumerated() {
@@ -48,20 +52,32 @@ class GameBoard: UIView {
         }
     }
     
-    func setTileView(row: Int, col: Int, value: Player) {
+    /**
+     Set tile's view accordingly.
+     
+     - parameter row: Row of tile to set.
+     - parameter col: Column of tile to set.
+     - parameter player: Mark to be set.
+     */
+    func setTileView(row: Int, col: Int, player: Player) {
+        // Get correct image
         let image: UIImage?
-        if value == .X {
+        if player == .X {
             image = #imageLiteral(resourceName: "cross")
-        } else if value == .O {
+        } else if player == .O {
             image = #imageLiteral(resourceName: "circle")
         } else {
             image = nil
         }
         
+        // Set tile's image
         self.tiles[row][col].setImage(image, for: .normal)
     }
     
     // MARK: - Private methods
+    /**
+     Configure view and its subviews.
+     */
     private func configure() {
         // View configuration
         self.backgroundColor = .black
@@ -108,6 +124,14 @@ class GameBoard: UIView {
 
 // MARK: - GameBoardViewDelegate
 extension GameBoard: GameBoardViewDelegate {
+    /**
+     Select concrete tile.
+     
+     - parameter row: Row of tile to be selected.
+     - parameter col: Column of tile to be selected.
+     
+     - returns: Player which is now marked on tile or "nil" if selection was not possible.
+     */
     func selectTile(row: Int, col: Int) -> Player? {
         return self.gameVCDelegate?.selectTile(row: row, col: col)
     }

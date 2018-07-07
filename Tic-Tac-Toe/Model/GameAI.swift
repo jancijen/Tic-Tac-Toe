@@ -18,6 +18,11 @@ class GameAI {
         self.symboleAI = symboleAI
     }
     
+    /**
+     Make best (optimal) move on given gameboard.
+     
+     - parameter gameBoard: Game board to make move on.
+     */
     func makeBestMove(gameBoard: GameBoardModel) {
         let boardSize = gameBoard.getBoardSize()
         
@@ -52,6 +57,17 @@ class GameAI {
     }
     
     // MARK: - Private methods
+    /**
+     Compute best worstcase scenario score on given board using minimax algorithm with alpha-beta prunning.
+     
+     - parameter gameBoard: Game board to make move on.
+     - parameter depth: Depth of minimax recursion.
+     - parameter isMaximizer: Whether minimax is called by maximizer (otherwise minimizer).
+     - parameter alpha: Alpha value for optimization.
+     - parameter beta: Beta value for optimization.
+     
+     - returns: Best worstcase scenario score on given board.
+     */
     private func minimax(gameBoard: GameBoardModel, depth: Int, isMaximizer: Bool, alpha: Int, beta: Int) -> Int {
         // Check whether board is in terminal state
         let winner = gameBoard.isWon()

@@ -14,7 +14,7 @@ protocol GameBoardViewDelegate: class {
     func selectTile(row: Int, col: Int) -> Player?
 }
 
-/// Representing one tile on game board.
+/// Button representing tile on gameboard.
 class Tile: UIButton {
     // MARK: - Public attributes
     weak var gameBoardDelegate: GameBoardViewDelegate? = nil

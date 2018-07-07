@@ -12,6 +12,7 @@ protocol ModelDelegate: class {
     func simulateTileTap(row: Int, col: Int) -> Void
 }
 
+/// Model representing gameboard logic and data.
 class GameBoardModel {
     // MARK: - Public attributes
     weak var gameDelegate: ModelDelegate? = nil
@@ -65,7 +66,7 @@ class GameBoardModel {
     }
     
     func setTile(row: Int, col: Int, value: Player, force: Bool) -> Bool {
-        let toReturn = self.board[row][col].setTileSymbole(value: value, force: force)
+        let toReturn = self.board[row][col].setTileSymbole(player: value, force: force)
         
         if toReturn {
             // Erasing marker

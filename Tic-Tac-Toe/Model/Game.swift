@@ -12,13 +12,15 @@ protocol GameDelegate: class {
     func setTileView(row: Int, col: Int, value: Player) -> Void
 }
 
+/// Model representing game logic and data.
 class Game {
+    // MARK: - Public attributes
+    weak var gameVCDelegate: GameDelegate? = nil
     // MARK: - Private attributes
     private let boardSize: Int
     private let firstPlayer: Player
     private let aiPlayer: Player
     private let AI: GameAI?
-    
     private var state: GameState {
         didSet {
             // Post that state has been changed
@@ -26,8 +28,6 @@ class Game {
         }
     }
     private let gameBoardModel: GameBoardModel
-    
-    weak var gameVCDelegate: GameDelegate? = nil
     
     // MARK: - Public methods
     init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
@@ -57,7 +57,16 @@ class Game {
         self.gameBoardModel.gameDelegate = self
     }
     
+    /**
+     Select concrete tile.
+     
+     - parameter row: Row of tile to be selected.
+     - parameter col: Column of tile to be selected.
+     
+     - returns: Player which is now marked on tile or "nil" if selection was not possible.
+     */
     func selectTile(row: Int, col: Int) -> Player? {
+        // Get player on turn
         let currentPlayer = self.state.playerOnTurn()
         // In case that game ended
         if currentPlayer == .undef {
@@ -73,6 +82,7 @@ class Game {
                 // Switch turns
                 self.state = self.state.oppositeTurn()
                 
+                // AI turn (if it is on turn)
                 makeAITurnIfShould()
             }
             
@@ -82,8 +92,11 @@ class Game {
         return nil
     }
     
+    /**
+     Let AI make a move if it is on turn.
+     */
     func makeAITurnIfShould() {
-        // Let AI make a move if it is on turn
+        // Turn check
         if self.state == .turnX && self.aiPlayer == .X
            || self.state == .turnO && self.aiPlayer == .O
         {
@@ -92,7 +105,35 @@ class Game {
         }
     }
     
-    func getCurrentTurn() -> Player {
+    /**
+     Get AI player.
+     
+     - returns: AI player.
+     */
+    func getAIPlayer() -> Player {
+        return self.aiPlayer
+    }
+    
+    /**
+     Reset game model.
+     */
+    func resetGame() {
+        // Reset gameboard model
+        self.gameBoardModel.reset()
+        // Reset gamestate
+        self.state = self.firstPlayer.turn()
+        
+        // Let AI start if it shouls
+        makeAITurnIfShould()
+    }
+    
+    // MARK: - Private methods
+    /**
+     Get player which is currently on turn.
+     
+     - returns: Player on turn.
+     */
+    private func getCurrentTurn() -> Player {
         switch self.state {
         case .turnX:
             return .X
@@ -102,19 +143,6 @@ class Game {
             return .undef
         }
     }
-    
-    func getAIPlayer() -> Player {
-        return self.aiPlayer
-    }
-    
-    func resetGame() {
-        self.gameBoardModel.reset()
-        self.state = self.firstPlayer.turn()
-        
-        makeAITurnIfShould()
-    }
-    
-    // MARK: - Private methods
 }
 
 // MARK: - ModelDelegate

@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Model representing data of tile on gameboard.
 struct TileModel {
     // MARK: - Private attributes
     private var tileSymbole: Player = .undef
@@ -32,13 +33,14 @@ struct TileModel {
     /**
      Setter for symbole on tile.
      
-     - parameter value: Value to be set.
+     - parameter player: Symbole of which player to set on tile.
+     - parameter force: Whether to force to set symbole, even if tile is not empty.
      
      - returns: Whether symbole was successfully set (tile was empty or set was forced).
      */
-    mutating func setTileSymbole(value: Player, force: Bool) -> Bool {
+    mutating func setTileSymbole(player: Player, force: Bool) -> Bool {
         if self.tileSymbole == .undef || force {
-            self.tileSymbole = value
+            self.tileSymbole = player
             return true
         }
         
