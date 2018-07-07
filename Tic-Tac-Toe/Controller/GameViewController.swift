@@ -95,14 +95,14 @@ class GameViewController: UIViewController {
     private func showEndGameAlert(title: String) {
         let alertView = AlertView(title: title, image: nil)
         
-        alertView.addActionButton(title: "Replay") { [weak self] in
+        alertView.addActionButton(title: "Replay") { [weak self, weak alertView] in
             self?.model.resetGame()
             self?.gameBoard.reset()
-            alertView.dismiss(animated: true)
+            alertView?.dismiss(animated: true)
         }
-        alertView.addActionButton(title: "Main Menu") { [weak self] in
+        alertView.addActionButton(title: "Main Menu") { [weak self, weak alertView] in
             self?.navigationController?.popToRootViewController(animated: true)
-            alertView.dismiss(animated: true)
+            alertView?.dismiss(animated: true)
         }
         
         alertView.show(animated: true)

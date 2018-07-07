@@ -33,7 +33,6 @@ class AlertView: UIView, Poppable {
     }
     
     deinit {
-        print("ALERT VIEW DEINIT called")
         removeObservers()
     }
     
