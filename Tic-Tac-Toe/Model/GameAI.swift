@@ -33,7 +33,9 @@ class GameAI {
                     gameBoard.setTile(row: i, col: j, value: self.symboleAI, force: true)
                     
                     // Recursively call minimax
-                    let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false)
+                    var alpha = Int.min
+                    var beta = Int.max
+                    let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false, alpha: &alpha, beta: &beta)
                     
                     // Undo move
                     gameBoard.setTile(row: i, col: j, value: .undef, force: true)
@@ -52,12 +54,13 @@ class GameAI {
     }
     
     // MARK: - Private methods
-    private func minimax(gameBoard: GameBoardModel, depth: Int, isMaximizer: Bool) -> Int {
+    private func minimax(gameBoard: GameBoardModel, depth: Int, isMaximizer: Bool, alpha: inout Int, beta: inout Int) -> Int {
         // Check whether board is in terminal state
         let winner = gameBoard.isWon()
         if winner == .X || winner == .O { // WIN
             // Optimization
-            let toRet = winner == self.symboleAI ? 10 + depth : -10 + (-1 * depth)
+            //let toRet = winner == self.symboleAI ? 10 + depth : -10 + (-1 * depth)
+            let toRet = winner == self.symboleAI ? 10 : -10
             return toRet
         }
         else if gameBoard.noEmptyTiles() { // TIE
@@ -78,10 +81,16 @@ class GameAI {
                         gameBoard.setTile(row: i, col: j, value: self.symboleAI, force: true)
                         
                         // Recursively call minimax
-                        bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer))
+                        bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: &alpha, beta: &beta) - depth)
                         
                         // Undo move
                         gameBoard.setTile(row: i, col: j, value: .undef, force: true)
+                        
+//                        // Alpha-beta pruning optimization
+//                        alpha = max(alpha, bestMove)
+//                        if alpha >= beta {
+//                            return bestMove
+//                        }
                     }
                 }
             }
@@ -102,10 +111,16 @@ class GameAI {
                         gameBoard.setTile(row: i, col: j, value: self.symboleAI.opposite(), force: true)
                         
                         // Recursively call minimax
-                        bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer))
+                        bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: &alpha, beta: &beta) + depth)
                         
                         // Undo move
                         gameBoard.setTile(row: i, col: j, value: .undef, force: true)
+                        
+//                        // Alpha-beta pruning optimization
+//                        beta = min(beta, bestMove)
+//                        if alpha >= beta {
+//                            return bestMove
+//                        }
                     }
                 }
             }
