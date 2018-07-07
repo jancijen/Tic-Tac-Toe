@@ -8,23 +8,31 @@
 
 import UIKit
 
-/// Base game view controller.
+/// Game view controller.
 class GameViewController: UIViewController {
     // MARK: - Private attributes
-    private let playersSymbole: Player
+    private let aiPlayer: Player
     private var currentTurn: Player
+    private let firstTurn: Player
     private let gameBoard: GameBoard
     private let boardSize: Int
-    private let isSinglePlayerGame: Bool
+    private let AI: GameAI?
+    private let titleLabel: UILabel
     
     // MARK: - Public methods
-    init(boardSize: Int, firstTurn: Player, playersSymbole: Player, isSinglePlayer: Bool) {
-        self.isSinglePlayerGame = isSinglePlayer
-        self.playersSymbole = playersSymbole
+    init(boardSize: Int, firstTurn: Player, aiPlayer: Player) {
+        self.aiPlayer = aiPlayer
         self.currentTurn = firstTurn
+        self.firstTurn = firstTurn
         self.gameBoard = GameBoard(boardSize: boardSize)
         self.boardSize = boardSize
-        //self.AI = GameAI(symboleAI: playersSymbole.opposite())
+        self.titleLabel = UILabel()
+        
+        if self.aiPlayer != .undef {
+            self.AI = GameAI(symboleAI: aiPlayer)
+        } else {
+            self.AI = nil
+        }
         
         super.init(nibName: nil, bundle: nil)
         self.gameBoard.gameVCDelagate = self
@@ -36,8 +44,12 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.configure()
+        // Let AI make a move if it should make first turn
+        if self.currentTurn == aiPlayer {
+            self.AI?.makeBestMove(gameBoard: gameBoard)
+        }
     }
     
     // MARK: - Private methods
@@ -46,7 +58,8 @@ class GameViewController: UIViewController {
         self.view.backgroundColor = .white
         
         // Title
-        let titleLabel = UILabel()
+        titleLabel.isHidden = UIDevice.current.orientation == .landscapeLeft
+            || UIDevice.current.orientation == .landscapeRight
         titleLabel.font = ThemeManager.appFont(size: ThemeManager.titleFontSize)
         titleLabel.text = "Game"
         
@@ -74,6 +87,31 @@ class GameViewController: UIViewController {
             make.center.equalToSuperview()
         }
     }
+    
+    private func showEndGameAlert(title: String) {
+        let alertView = AlertView(title: title, image: nil)
+        
+        alertView.addActionButton(title: "Replay") {
+            self.resetGame()
+            alertView.dismiss(animated: true)
+        }
+        alertView.addActionButton(title: "Main Menu") {
+            self.navigationController?.popToRootViewController(animated: true)
+            alertView.dismiss(animated: true)
+        }
+        
+        alertView.show(animated: true)
+    }
+    
+    private func resetGame() {
+        gameBoard.reset()
+        self.currentTurn = firstTurn
+        
+        // Let AI make a move if it should make first turn
+        if self.currentTurn == aiPlayer {
+            self.AI.makeBestMove(gameBoard: gameBoard)
+        }
+    }
 }
 
 // MARK: - GameViewControllerDelegate
@@ -84,22 +122,16 @@ extension GameViewController: GameViewControllerDelegate {
     
     func nextTurn() {
         // Victory check
-        if gameBoard.isWon() != .undef {
-            let popUp = UIAlertController(title: "VICTORY", message: "...", preferredStyle: .alert)
-            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
-                self.navigationController?.popToRootViewController(animated: true)
-            })
-            self.present(popUp, animated: true, completion: nil)
+        let winner = gameBoard.isWon()
+        if  winner != .undef {
+            let title = winner == self.aiPlayer ? "DEFEAT" : "VICTORY"
+            showEndGameAlert(title: title)
             return
         }
         
         // Tie check
         if gameBoard.isFullyFilled() {
-            let popUp = UIAlertController(title: "TIE", message: "...", preferredStyle: .alert)
-            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
-                self.navigationController?.popToRootViewController(animated: true)
-            })
-            self.present(popUp, animated: true, completion: nil)
+            showEndGameAlert(title: "Tie")
             return
         }
         
@@ -107,8 +139,22 @@ extension GameViewController: GameViewControllerDelegate {
         self.currentTurn = self.currentTurn.opposite()
         
         // Let AI make a move, if it is on turn
-        if isSinglePlayerGame && self.currentTurn == self.playersSymbole.opposite() {
-            //self.AI.makeBestMove(gameBoard: gameBoard)
+        if self.currentTurn == self.aiPlayer {
+            self.AI?.makeBestMove(gameBoard: gameBoard)
+        }
+    }
+}
+
+// MARK: - Device orientation
+extension GameViewController {
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        switch UIDevice.current.orientation {
+        case .portrait, .portraitUpsideDown:
+            self.titleLabel.isHidden = false
+        case .landscapeLeft, .landscapeRight:
+            self.titleLabel.isHidden = true
+        default:
+            break
         }
     }
 }
@@ -119,3 +165,4 @@ extension GameViewController {
         self.navigationController?.popViewController(animated: true)
     }
 }
+

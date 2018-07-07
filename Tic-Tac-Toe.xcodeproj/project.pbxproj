@@ -8,10 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0A11E4FE20EC1D4000E98C86 /* GameAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E4FD20EC1D4000E98C86 /* GameAI.swift */; };
-		0A11E50420ED72CF00E98C86 /* SinglePlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50320ED72CF00E98C86 /* SinglePlayerViewController.swift */; };
 		0A11E50620ED77C800E98C86 /* GameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50520ED77C800E98C86 /* GameProtocol.swift */; };
 		0A11E50820ED789A00E98C86 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50720ED789A00E98C86 /* GameViewController.swift */; };
-		0A11E50A20ED7EB900E98C86 /* MultiPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50920ED7EB900E98C86 /* MultiPlayerViewController.swift */; };
 		0A11E50E20EE90F600E98C86 /* Poppable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50D20EE90F600E98C86 /* Poppable.swift */; };
 		0A11E51020EE92BF00E98C86 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50F20EE92BF00E98C86 /* AlertView.swift */; };
 		0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51320EE9E9E00E98C86 /* UIButton.swift */; };
@@ -31,10 +29,8 @@
 
 /* Begin PBXFileReference section */
 		0A11E4FD20EC1D4000E98C86 /* GameAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
-		0A11E50320ED72CF00E98C86 /* SinglePlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePlayerViewController.swift; sourceTree = "<group>"; };
 		0A11E50520ED77C800E98C86 /* GameProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameProtocol.swift; sourceTree = "<group>"; };
 		0A11E50720ED789A00E98C86 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		0A11E50920ED7EB900E98C86 /* MultiPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiPlayerViewController.swift; sourceTree = "<group>"; };
 		0A11E50D20EE90F600E98C86 /* Poppable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poppable.swift; sourceTree = "<group>"; };
 		0A11E50F20EE92BF00E98C86 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		0A11E51320EE9E9E00E98C86 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
@@ -152,9 +148,7 @@
 				0A11E50720ED789A00E98C86 /* GameViewController.swift */,
 				0A15EF1A20E82F74000273EB /* MenuViewController.swift */,
 				0ABD6D1520E8392200B251A8 /* SettingsViewController.swift */,
-				0A11E50320ED72CF00E98C86 /* SinglePlayerViewController.swift */,
 				0A11E50520ED77C800E98C86 /* GameProtocol.swift */,
-				0A11E50920ED7EB900E98C86 /* MultiPlayerViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -313,7 +307,6 @@
 				0A11E4FE20EC1D4000E98C86 /* GameAI.swift in Sources */,
 				0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */,
 				0ABD6D2920EBB95B00B251A8 /* Tile.swift in Sources */,
-				0A11E50420ED72CF00E98C86 /* SinglePlayerViewController.swift in Sources */,
 				0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */,
 				0ABD6D2B20EBBA0200B251A8 /* GameBoard.swift in Sources */,
 				0ABD6D1920E8395A00B251A8 /* ThemeManager.swift in Sources */,
@@ -321,7 +314,6 @@
 				0ABD6D2D20EBD71A00B251A8 /* Player.swift in Sources */,
 				0A11E51020EE92BF00E98C86 /* AlertView.swift in Sources */,
 				0A11E50620ED77C800E98C86 /* GameProtocol.swift in Sources */,
-				0A11E50A20ED7EB900E98C86 /* MultiPlayerViewController.swift in Sources */,
 				0A11E50820ED789A00E98C86 /* GameViewController.swift in Sources */,
 				0ABD6D1620E8392200B251A8 /* SettingsViewController.swift in Sources */,
 			);
