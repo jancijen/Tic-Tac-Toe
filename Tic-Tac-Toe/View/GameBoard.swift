@@ -8,16 +8,17 @@
 
 import UIKit
 
-protocol GameViewControllerDelegate {
+protocol GameViewControllerDelegate: class {
     func selectTile(row: Int, col: Int) -> Player?
 }
 
 /// View representing game board.
 class GameBoard: UIView {
     // MARK: - Public attributes
-    var gameVCDelegate: GameViewControllerDelegate? = nil
+    weak var gameVCDelegate: GameViewControllerDelegate? = nil
     // MARK: - Private attributes
     private let boardSize: Int
+    private var tiles: [[Tile]]
     
     // MARK: - Public attributes
     init(boardSize: Int) {
@@ -26,13 +27,24 @@ class GameBoard: UIView {
             fatalError("GameBoard has to be at least 3 tiles in size.")
         }
         
+        self.tiles = [[Tile]]()
+        
         super.init(frame: CGRect.zero) // TODO
         
-        self.configure()
+        configure()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func reset() {
+        // Reset tile views
+        for (_,row) in self.tiles.enumerated() {
+            for (_,tile) in row.enumerated() {
+                tile.reset()
+            }
+        }
     }
     
     // MARK: - Private methods
@@ -58,13 +70,16 @@ class GameBoard: UIView {
             horizontalSV.spacing = 4.0
             horizontalSV.translatesAutoresizingMaskIntoConstraints = false
             
+            var tmpRow = [Tile]()
             for col in 0..<boardSize {
                 let tile = Tile(row: row, col: col)
                 tile.gameBoardDelegate = self
                 
+                tmpRow.append(tile)
                 horizontalSV.addArrangedSubview(tile)
             }
             
+            self.tiles.append(tmpRow)
             verticalSV.addArrangedSubview(horizontalSV)
         }
         

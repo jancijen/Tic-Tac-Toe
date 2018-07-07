@@ -10,14 +10,14 @@ import UIKit
 import SnapKit
 
 /// Protocol defining required methods from game board.
-protocol GameBoardViewDelegate {
+protocol GameBoardViewDelegate: class {
     func selectTile(row: Int, col: Int) -> Player?
 }
 
 /// Representing one tile on game board.
 class Tile: UIButton {
     // MARK: - Public attributes
-    var gameBoardDelegate: GameBoardViewDelegate? = nil
+    weak var gameBoardDelegate: GameBoardViewDelegate? = nil
     // MARK: - Static public attributes
     static let size: CGFloat = 100
     // MARK: - Private attributes
@@ -29,13 +29,17 @@ class Tile: UIButton {
         self.row = row
         self.col = col
         
-        super.init(frame: CGRect(x: 0, y: 0, width: Tile.size, height: Tile.size))
+        super.init(frame: CGRect.zero)
         
         self.configure()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func reset() {
+        self.setImage(nil, for: .normal)
     }
     
     // MARK: - Private methods
@@ -45,6 +49,9 @@ class Tile: UIButton {
     private func configure() {
         // Configure button
         self.backgroundColor = .white
+        self.snp.makeConstraints { make in
+            make.height.width.equalTo(Tile.size)
+        }
         
         // Set button tap action
         self.addTarget(self, action: #selector(tileTapped), for: .touchUpInside)
@@ -57,8 +64,10 @@ extension Tile {
      Callback to be called after tile has been tapped.
      */
     @objc func tileTapped() {
+        // Select tile if it is possible
         guard let symbole = self.gameBoardDelegate?.selectTile(row: self.row, col: self.col) else { return }
         
+        // If tile has been selected - set its symbole
         switch symbole {
         case .X:
             self.setImage(#imageLiteral(resourceName: "cross"), for: .normal)

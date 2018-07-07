@@ -8,14 +8,6 @@
 
 import Foundation
 
-/// Possible game states
-enum GameState {
-    case winX
-    case winO
-    case tie
-    case notFinished
-}
-
 class GameBoardModel {
     // MARK: - Private attributes
     private var board: [[TileModel]] = [[TileModel]]()
@@ -25,9 +17,18 @@ class GameBoardModel {
     // MARK: - Public methods
     init(boardSize: Int) {
         self.boardSize = boardSize
-        
         if boardSize < 3 { // TODO
             fatalError("GameBoard has to be at least 3 tiles in size.")
+        }
+        
+        // Initialize board
+        for _ in 0..<self.boardSize {
+            var row = [TileModel]()
+            for _ in 0..<self.boardSize {
+                row.append(TileModel())
+            }
+            
+            self.board.append(row)
         }
     }
     
@@ -37,6 +38,46 @@ class GameBoardModel {
     
     func getTile(row: Int, col: Int) -> TileModel {
         return self.board[row][col]
+    }
+    
+    func reset() {
+        self.filledTiles = 0
+        // Reset all tiles in board
+        self.board = self.board.map { row -> [TileModel] in
+            return row.map { tile -> TileModel in
+                var retTile = tile
+                retTile.reset()
+                return retTile
+            }
+        }
+        // TODO
+    }
+    
+    func setTile(row: Int, col: Int, value: Player) -> Bool {
+        let toReturn = self.board[row][col].setTileSymbole(value: value)
+        
+        if toReturn {
+            self.filledTiles += 1
+        }
+        
+        return toReturn
+    }
+    
+    func gameEnd() -> GameState? {
+        // Win check
+        let winner = isWon()
+        if winner == .X {
+            return .winX
+        } else if winner == .O {
+            return .winO
+        }
+        
+        // Tie check
+        if isFullyFilled() {
+            return .tie
+        }
+        
+        return nil
     }
     
     func isWon() -> Player {
@@ -74,24 +115,11 @@ class GameBoardModel {
         return true
     }
     
-    func isFullyFilled() -> Bool {
+    // MARK: - Private methods
+    private func isFullyFilled() -> Bool {
         return self.filledTiles == self.boardSize * self.boardSize // TODO - pow?
     }
     
-    func reset() {
-        self.filledTiles = 0
-        // Reset all tiles in board
-        self.board = self.board.map { row -> [TileModel] in
-            return row.map { tile -> TileModel in
-                var retTile = tile
-                retTile.reset()
-                return retTile
-            }
-        }
-        // TODO
-    }
-    
-    // MARK: - Private methods
     private func sameSymbolsRow(row: Int) -> Player {
         let symbol = self.board[row][0].getTileSymbole()
         

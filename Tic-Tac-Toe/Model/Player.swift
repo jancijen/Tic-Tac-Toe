@@ -29,4 +29,36 @@ enum Player {
             return .undef
         }
     }
+    
+    /**
+     Get turn according to player.
+     
+     - returns: Turn of symbole.
+     */
+    func turn() -> GameState {
+        switch self {
+        case .X:
+            return .turnX
+        case .O:
+            return .turnO
+        default:
+            return .tie // TODO
+        }
+    }
+    
+    /**
+     Get win according to player.
+     
+     - returns: Win of symbole.
+     */
+    func win() -> GameState {
+        switch self {
+        case .X:
+            return .winX
+        case .O:
+            return .winO
+        default:
+            return .tie // TODO
+        }
+    }
 }

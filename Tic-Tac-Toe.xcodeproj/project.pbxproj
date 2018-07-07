@@ -15,6 +15,7 @@
 		0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51320EE9E9E00E98C86 /* UIButton.swift */; };
 		0A11E51820EFDDA400E98C86 /* GameBoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */; };
 		0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51920F0C30B00E98C86 /* TileModel.swift */; };
+		0A11E51E20F0DA3F00E98C86 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51D20F0DA3F00E98C86 /* Game.swift */; };
 		0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF0320E82E59000273EB /* AppDelegate.swift */; };
 		0A15EF0B20E82E5B000273EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A15EF0A20E82E5B000273EB /* Assets.xcassets */; };
 		0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1A20E82F74000273EB /* MenuViewController.swift */; };
@@ -36,6 +37,7 @@
 		0A11E51320EE9E9E00E98C86 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardModel.swift; sourceTree = "<group>"; };
 		0A11E51920F0C30B00E98C86 /* TileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileModel.swift; sourceTree = "<group>"; };
+		0A11E51D20F0DA3F00E98C86 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		0A15EF0020E82E59000273EB /* Tic-Tac-Toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic-Tac-Toe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A15EF0320E82E59000273EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A15EF0A20E82E5B000273EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				0A11E4FD20EC1D4000E98C86 /* GameAI.swift */,
 				0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */,
 				0A11E51920F0C30B00E98C86 /* TileModel.swift */,
+				0A11E51D20F0DA3F00E98C86 /* Game.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				0A11E50620ED77C800E98C86 /* GameProtocol.swift in Sources */,
 				0A11E50820ED789A00E98C86 /* GameViewController.swift in Sources */,
 				0ABD6D1620E8392200B251A8 /* SettingsViewController.swift in Sources */,
+				0A11E51E20F0DA3F00E98C86 /* Game.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

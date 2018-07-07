@@ -32,6 +32,11 @@ class AlertView: UIView, Poppable {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("ALERT VIEW DEINIT called")
+        removeObservers()
+    }
+    
     func addActionButton(title: String, action: @escaping () -> Void) {
         let button = UIButton()
         button.setTitle(title, for: .normal)
@@ -117,6 +122,10 @@ class AlertView: UIView, Poppable {
     
     private func setupObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    }
+    
+    private func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
 }
 

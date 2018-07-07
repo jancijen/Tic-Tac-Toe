@@ -18,7 +18,7 @@ class GameAI {
         self.symboleAI = symboleAI
     }
     
-    func makeBestMove(gameBoard: GameBoard) {
+    func makeBestMove(gameBoard: GameBoardModel) {
         let boardSize = gameBoard.getBoardSize()
         
         var bestMove = Int.min
@@ -48,11 +48,11 @@ class GameAI {
         }
         
         // Make best move (simulate tap)
-        gameBoard.getTile(row: bestMoveRow, col: bestMoveCol).tileTapped()
+        //gameBoard.getTile(row: bestMoveRow, col: bestMoveCol).tileTapped()
     }
     
     // MARK: - Private methods
-    private func minimax(gameBoard: GameBoard, depth: Int, isMaximizer: Bool) -> Int {
+    private func minimax(gameBoard: GameBoardModel, depth: Int, isMaximizer: Bool) -> Int {
         // Check whether board is in terminal state
         let winner = gameBoard.isWon()
         if winner == .X || winner == .O { // WIN

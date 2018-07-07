@@ -11,45 +11,36 @@ import UIKit
 /// Game view controller.
 class GameViewController: UIViewController {
     // MARK: - Private attributes
-    private let aiPlayer: Player
-    private var currentTurn: Player
-    private let firstTurn: Player
     private let gameBoard: GameBoard
-    private let boardSize: Int
-    private let AI: GameAI?
     private let titleLabel: UILabel
+    private let model: Game
     
     // MARK: - Public methods
-    init(boardSize: Int, firstTurn: Player, aiPlayer: Player) {
-        self.aiPlayer = aiPlayer
-        self.currentTurn = firstTurn
-        self.firstTurn = firstTurn
+    init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
         self.gameBoard = GameBoard(boardSize: boardSize)
-        self.boardSize = boardSize
         self.titleLabel = UILabel()
-        
-        if self.aiPlayer != .undef {
-            self.AI = GameAI(symboleAI: aiPlayer)
-        } else {
-            self.AI = nil
-        }
+        self.model = Game(boardSize: boardSize, firstPlayer: firstPlayer, aiPlayer: aiPlayer)
         
         super.init(nibName: nil, bundle: nil)
-        self.gameBoard.gameVCDelagate = self
+    
+        self.gameBoard.gameVCDelegate = self
+        configure()
+        setObservers()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        removeObservers()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.configure()
-        // Let AI make a move if it should make first turn
-        if self.currentTurn == aiPlayer {
-            self.AI?.makeBestMove(gameBoard: gameBoard)
-        }
+        configure()
+        self.model.makeAITurnIfShould()
     }
     
     // MARK: - Private methods
@@ -88,60 +79,40 @@ class GameViewController: UIViewController {
         }
     }
     
+    private func setObservers() {
+        // Game state observer
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(gameStateChanged),
+                                               name: Notification.Name(rawValue: "gameState"),
+                                               object: nil)
+    }
+    
+    private func removeObservers() {
+        // Game state observer
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "gameState"), object: nil)
+    }
+    
     private func showEndGameAlert(title: String) {
         let alertView = AlertView(title: title, image: nil)
         
-        alertView.addActionButton(title: "Replay") {
-            self.resetGame()
+        alertView.addActionButton(title: "Replay") { [weak self] in
+            self?.model.resetGame()
+            self?.gameBoard.reset()
             alertView.dismiss(animated: true)
         }
-        alertView.addActionButton(title: "Main Menu") {
-            self.navigationController?.popToRootViewController(animated: true)
+        alertView.addActionButton(title: "Main Menu") { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
             alertView.dismiss(animated: true)
         }
         
         alertView.show(animated: true)
     }
-    
-    private func resetGame() {
-        gameBoard.reset()
-        self.currentTurn = firstTurn
-        
-        // Let AI make a move if it should make first turn
-        if self.currentTurn == aiPlayer {
-            self.AI.makeBestMove(gameBoard: gameBoard)
-        }
-    }
 }
 
 // MARK: - GameViewControllerDelegate
 extension GameViewController: GameViewControllerDelegate {
-    func getCurrentTurn() -> Player {
-        return self.currentTurn
-    }
-    
-    func nextTurn() {
-        // Victory check
-        let winner = gameBoard.isWon()
-        if  winner != .undef {
-            let title = winner == self.aiPlayer ? "DEFEAT" : "VICTORY"
-            showEndGameAlert(title: title)
-            return
-        }
-        
-        // Tie check
-        if gameBoard.isFullyFilled() {
-            showEndGameAlert(title: "Tie")
-            return
-        }
-        
-        // Change turn
-        self.currentTurn = self.currentTurn.opposite()
-        
-        // Let AI make a move, if it is on turn
-        if self.currentTurn == self.aiPlayer {
-            self.AI?.makeBestMove(gameBoard: gameBoard)
-        }
+    func selectTile(row: Int, col: Int) -> Player? {
+        return self.model.selectTile(row: row, col: col)
     }
 }
 
@@ -166,3 +137,28 @@ extension GameViewController {
     }
 }
 
+// MARK: - Notification callbacks
+extension GameViewController {
+    @objc private func gameStateChanged(notification: Notification) {
+        // Get new state
+        guard let userInfo = notification.userInfo,
+              let newState = userInfo["newState"] as? GameState else {
+                print("GameState notification error: Incorrect user info provided.")
+                return
+        }
+        
+        let title: String
+        switch newState {
+        case .winX, .winO:
+            let aiPlayer = self.model.getAIPlayer()
+            title = newState == aiPlayer.win() ? "DEFEAT" : "VICTORY"
+        case .tie:
+            title = "TIE"
+        default:
+            return
+        }
+        
+        showEndGameAlert(title: title)
+        return
+    }
+}
