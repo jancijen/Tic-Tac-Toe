@@ -9,15 +9,17 @@
 import UIKit
 
 // MARK: - Poppable
+/// Protocol defining required methods and attributes from poppable element.
 protocol Poppable {
     func show(animated: Bool)
     func dismiss(animated: Bool)
+    
     var backgroundView: UIView { get }
     var alertView: UIView { get }
 }
 
-// MARK: - Poppable:UIView
-extension Poppable where Self:UIView {
+// MARK: - Poppable: UIView
+extension Poppable where Self: UIView {
     /**
      Show poppable view.
      */

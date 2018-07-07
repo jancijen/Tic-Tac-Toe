@@ -10,22 +10,25 @@ import UIKit
 import SnapKit
 
 /// Protocol defining required methods from game board.
-protocol GameBoardDelegate {
-    func getCurrentTurn() -> Player
-    func nextTurn() -> Void
+protocol GameBoardViewDelegate: class {
+    func selectTile(row: Int, col: Int) -> Player?
 }
 
-/// Representing one tile on game board.
-class Tile: UIView {
+/// Button representing tile on gameboard.
+class Tile: UIButton {
     // MARK: - Public attributes
-    var gameBoardDelegate: GameBoardDelegate? = nil
-    // MARK: - Private attrbitues
-    private let tileButton: UIButton = UIButton()
-    private var tileSymbole: Player = .undef // TODO
-    private let tileSize: CGFloat = 100
+    weak var gameBoardDelegate: GameBoardViewDelegate? = nil
+    // MARK: - Static public attributes
+    static let size: CGFloat = 100
+    // MARK: - Private attributes
+    private let row: Int
+    private let col: Int
     
     // MARK: - Public methods
-    init() {
+    init(row: Int, col: Int) {
+        self.row = row
+        self.col = col
+        
         super.init(frame: CGRect.zero)
         
         self.configure()
@@ -35,50 +38,19 @@ class Tile: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func reset() {
-        self.tileSymbole = .undef
-        self.tileButton.setImage(nil, for: .normal)
-    }
-    
-    /**
-     Getter for symbole on tile.
-     
-     - returns: Symbole on tile.
-     */
-    func getTileSymbole() -> Player {
-        return self.tileSymbole
-    }
-    
-    /**
-     Setter for symbole on tile.
-     
-     - parameter value: Value to be set.
-     */
-    func setTileSymbole(value: Player) {
-        self.tileSymbole = value
-    }
-    
     // MARK: - Private methods
     /**
      Configure view and its subviews.
      */
     private func configure() {
-        // Configure view
+        // Configure button
         self.backgroundColor = .white
         self.snp.makeConstraints { make in
-            make.width.height.equalTo(self.tileSize)
-        }
-        
-        // Create button over whole tile
-        tileButton.backgroundColor = .white
-        
-        self.addSubview(tileButton)
-        tileButton.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.height.width.equalTo(Tile.size)
         }
         
         // Set button tap action
-        tileButton.addTarget(self, action: #selector(tileTapped), for: .touchUpInside)
+        self.addTarget(self, action: #selector(tileTapped), for: .touchUpInside)
     }
 }
 
@@ -88,28 +60,17 @@ extension Tile {
      Callback to be called after tile has been tapped.
      */
     @objc func tileTapped() {
-        switch self.tileSymbole {
-        case .undef:
-            // Change tile state to symbole which is on turn
-            if let delegate = self.gameBoardDelegate {
-                let currentTurn = delegate.getCurrentTurn()
-                
-                switch currentTurn {
-                case .X:
-                    self.tileButton.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
-                    self.tileSymbole = .X
-                    self.gameBoardDelegate?.nextTurn()
-                case .O:
-                    self.tileButton.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
-                    self.tileSymbole = .O
-                    self.gameBoardDelegate?.nextTurn()
-                default:
-                    break
-                }
-            }
+        // Select tile if it is possible
+        guard let symbole = self.gameBoardDelegate?.selectTile(row: self.row, col: self.col) else { return }
+        
+        // If tile has been selected - set its symbole
+        switch symbole {
+        case .X:
+            self.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
+        case .O:
+            self.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
         default:
-            // Do nothing (tile has been already tapped)
-            break
+            self.setImage(nil, for: .normal)
         }
     }
 }

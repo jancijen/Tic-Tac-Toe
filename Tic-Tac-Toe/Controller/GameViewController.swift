@@ -8,45 +8,55 @@
 
 import UIKit
 
-/// Base game view controller.
+/// Game view controller.
 class GameViewController: UIViewController {
     // MARK: - Private attributes
-    private let playersSymbole: Player
-    private var currentTurn: Player
     private let gameBoard: GameBoard
-    private let boardSize: Int
-    private let isSinglePlayerGame: Bool
+    private let titleLabel: UILabel
+    private let model: Game
     
     // MARK: - Public methods
-    init(boardSize: Int, firstTurn: Player, playersSymbole: Player, isSinglePlayer: Bool) {
-        self.isSinglePlayerGame = isSinglePlayer
-        self.playersSymbole = playersSymbole
-        self.currentTurn = firstTurn
+    init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
         self.gameBoard = GameBoard(boardSize: boardSize)
-        self.boardSize = boardSize
-        //self.AI = GameAI(symboleAI: playersSymbole.opposite())
+        self.titleLabel = UILabel()
+        self.model = Game(boardSize: boardSize, firstPlayer: firstPlayer, aiPlayer: aiPlayer)
         
         super.init(nibName: nil, bundle: nil)
-        self.gameBoard.gameVCDelagate = self
+    
+        // Delegates
+        self.gameBoard.gameVCDelegate = self
+        self.model.gameVCDelegate = self
+        
+        configure()
+        setupObservers()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        removeObservers()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.configure()
+        
+        configure()
+        self.model.makeAITurnIfShould()
     }
     
     // MARK: - Private methods
+    /**
+     Configure view and its subviews.
+     */
     private func configure() {
         // View configuration
         self.view.backgroundColor = .white
         
         // Title
-        let titleLabel = UILabel()
+        titleLabel.isHidden = UIDevice.current.orientation == .landscapeLeft
+            || UIDevice.current.orientation == .landscapeRight
         titleLabel.font = ThemeManager.appFont(size: ThemeManager.titleFontSize)
         titleLabel.text = "Game"
         
@@ -74,48 +84,149 @@ class GameViewController: UIViewController {
             make.center.equalToSuperview()
         }
     }
+    
+    /**
+     Setup observers.
+     */
+    private func setupObservers() {
+        // GameState observer
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(gameStateChanged),
+                                               name: Notification.Name(rawValue: "gameState"),
+                                               object: nil)
+    }
+    
+    /**
+     Remove observers.
+     */
+    private func removeObservers() {
+        // GameState observer
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "gameState"), object: nil)
+    }
+    
+    /**
+     Show end game alert.
+     
+     - parameter title: Title to be shown in alert.
+     - parameter image: Image to be shown in alert.
+     */
+    private func showEndGameAlert(title: String, image: UIImage?) {
+        // Alert
+        let alertView = AlertView(title: title, image: image)
+        
+        // Action: Replay
+        alertView.addActionButton(title: "Replay") { [weak self, weak alertView] in
+            // Reset view
+            self?.gameBoard.reset()
+            // Reset model
+            self?.model.resetGame()
+            // Dismiss alert
+            alertView?.dismiss(animated: true)
+        }
+        // Action: Main Menu
+        alertView.addActionButton(title: "Main Menu") { [weak self, weak alertView] in
+            // Go to menu
+            self?.navigationController?.popToRootViewController(animated: true)
+            // Dismiss alert
+            alertView?.dismiss(animated: true)
+        }
+        
+        // Show alert
+        alertView.show(animated: true)
+    }
 }
 
 // MARK: - GameViewControllerDelegate
 extension GameViewController: GameViewControllerDelegate {
-    func getCurrentTurn() -> Player {
-        return self.currentTurn
+    /**
+     Select tile at given position.
+     
+     - parameter row: Row of tile to be selected.
+     - parameter col: Column of tile to be selected.
+     
+     - returns: Player which is now marked on tile or "nil" if selection was not possible.
+     */
+    func selectTile(row: Int, col: Int) -> Player? {
+        return self.model.selectTile(row: row, col: col)
     }
-    
-    func nextTurn() {
-        // Victory check
-        if gameBoard.isWon() != .undef {
-            let popUp = UIAlertController(title: "VICTORY", message: "...", preferredStyle: .alert)
-            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
-                self.navigationController?.popToRootViewController(animated: true)
-            })
-            self.present(popUp, animated: true, completion: nil)
-            return
-        }
-        
-        // Tie check
-        if gameBoard.isFullyFilled() {
-            let popUp = UIAlertController(title: "TIE", message: "...", preferredStyle: .alert)
-            popUp.addAction(UIAlertAction(title: "OK", style: .default){ action in
-                self.navigationController?.popToRootViewController(animated: true)
-            })
-            self.present(popUp, animated: true, completion: nil)
-            return
-        }
-        
-        // Change turn
-        self.currentTurn = self.currentTurn.opposite()
-        
-        // Let AI make a move, if it is on turn
-        if isSinglePlayerGame && self.currentTurn == self.playersSymbole.opposite() {
-            //self.AI.makeBestMove(gameBoard: gameBoard)
+}
+
+// MARK: - GameDelegate
+extension GameViewController: GameDelegate {
+    func setTileView(row: Int, col: Int, value: Player) {
+        gameBoard.setTileView(row: row, col: col, player: value)
+    }
+}
+
+// MARK: - Device orientation
+extension GameViewController {
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        switch UIDevice.current.orientation {
+        case .portrait, .portraitUpsideDown:
+            // Show game title in portrait mode
+            self.titleLabel.isHidden = false
+        case .landscapeLeft, .landscapeRight:
+            // Hide game title in landscape mode
+            self.titleLabel.isHidden = true
+        default:
+            break
         }
     }
 }
 
 // MARK: - Button callbacks
 extension GameViewController {
+    /**
+     Callback to be called after tapping on back button.
+     */
     @objc private func backTapped() {
         self.navigationController?.popViewController(animated: true)
+    }
+}
+
+// MARK: - Notification callbacks
+extension GameViewController {
+    /**
+     Callback to be called after game state has been changed.
+     */
+    @objc private func gameStateChanged(notification: Notification) {
+        // Get new state
+        guard let userInfo = notification.userInfo,
+              let newState = userInfo["newState"] as? GameState else {
+                print("GameState notification error: Incorrect user info provided.")
+                return
+        }
+        
+        let title: String
+        let image: UIImage?
+        
+        // Check for end state
+        switch newState {
+        // WIN
+        case .winX, .winO:
+            let aiPlayer = self.model.getAIPlayer()
+            
+            // Multiplayer
+            if aiPlayer == .undef {
+                title = "WINNER IS"
+                image = newState == .winX ? #imageLiteral(resourceName: "cross") : #imageLiteral(resourceName: "circle")
+            }
+            // Singleplayer
+            else {
+                title = newState == aiPlayer.win() ? "DEFEAT" : "VICTORY"
+                image = nil
+            }
+        // TIE
+        case .tie:
+            title = "TIE"
+            image = nil
+        default:
+            // Game has not ended
+            return
+        }
+        
+        // Show end game alert
+        showEndGameAlert(title: title, image: image)
+        return
     }
 }

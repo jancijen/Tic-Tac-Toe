@@ -160,11 +160,10 @@ extension SettingsViewController {
         
         // Create and show game
         if self.isSinglePlayer {
-            let gameVC = SinglePlayerViewController(boardSize: 3, firstTurn: firstTurn, aiPlayer: playersSymbole.opposite())
+            let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: playersSymbole.opposite())
             self.navigationController?.pushViewController(gameVC, animated: true)
         } else {
-            let gameVC = MultiPlayerViewController(boardSize: 3,
-                                                   firstTurn: firstTurn)
+            let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: .undef)
             self.navigationController?.pushViewController(gameVC, animated: true)
         }
     }
