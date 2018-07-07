@@ -56,10 +56,7 @@ class GameAI {
         // Check whether board is in terminal state
         let winner = gameBoard.isWon()
         if winner == .X || winner == .O { // WIN
-            // Optimization
-            //let toRet = winner == self.symboleAI ? 10 + depth : -10 + (-1 * depth)
-            let toRet = winner == self.symboleAI ? 10 : -10
-            return toRet
+            return winner == self.symboleAI ? 10 : -10
         }
         else if gameBoard.isFullyFilled() { // TIE
             return 0
@@ -81,8 +78,8 @@ class GameAI {
                         // Make move
                         gameBoard.setTile(row: i, col: j, value: self.symboleAI, force: true)
                         
-                        // Recursively call minimax
-                        bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp))// - depth)
+                        // Recursively call minimax (depth trick to take shorter sequence of moves)
+                        bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp) - depth)
                         
                         // Undo move
                         gameBoard.setTile(row: i, col: j, value: .undef, force: true)
@@ -111,8 +108,8 @@ class GameAI {
                         // Make move
                         gameBoard.setTile(row: i, col: j, value: self.symboleAI.opposite(), force: true)
                         
-                        // Recursively call minimax
-                        bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp))// + depth)
+                        // Recursively call minimax (depth trick to take shorter sequence of moves)
+                        bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp) + depth)
                         
                         // Undo move
                         gameBoard.setTile(row: i, col: j, value: .undef, force: true)
