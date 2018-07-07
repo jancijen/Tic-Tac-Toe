@@ -8,37 +8,6 @@
 
 import Foundation
 
-/// Possible game states.
-enum GameState {
-    case winX
-    case winO
-    case tie
-    case turnX
-    case turnO
-    
-    func playerOnTurn() -> Player {
-        switch self {
-        case .turnX:
-            return .X
-        case .turnO:
-            return .O
-        default:
-            return .undef
-        }
-    }
-    
-    func oppositeTurn() -> GameState {
-        switch self {
-        case .turnX:
-            return .turnO
-        case .turnO:
-            return .turnX
-        default:
-            return self
-        }
-    }
-}
-
 protocol GameDelegate: class {
     func setTileView(row: Int, col: Int, value: Player) -> Void
 }

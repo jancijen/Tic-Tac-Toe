@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// GameAI "player" based on MiniMax algorithm.
+/// AI "player" based on MiniMax algorithm.
 class GameAI {
     // MARK: - Private attributes
     private let symboleAI: Player
@@ -33,9 +33,7 @@ class GameAI {
                     gameBoard.setTile(row: i, col: j, value: self.symboleAI, force: true)
                     
                     // Recursively call minimax
-                    var alpha = Int.min
-                    var beta = Int.max
-                    let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false, alpha: &alpha, beta: &beta)
+                    let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false, alpha: Int.min, beta: Int.max)
                     
                     // Undo move
                     gameBoard.setTile(row: i, col: j, value: .undef, force: true)
@@ -54,7 +52,7 @@ class GameAI {
     }
     
     // MARK: - Private methods
-    private func minimax(gameBoard: GameBoardModel, depth: Int, isMaximizer: Bool, alpha: inout Int, beta: inout Int) -> Int {
+    private func minimax(gameBoard: GameBoardModel, depth: Int, isMaximizer: Bool, alpha: Int, beta: Int) -> Int {
         // Check whether board is in terminal state
         let winner = gameBoard.isWon()
         if winner == .X || winner == .O { // WIN
@@ -63,9 +61,12 @@ class GameAI {
             let toRet = winner == self.symboleAI ? 10 : -10
             return toRet
         }
-        else if gameBoard.noEmptyTiles() { // TIE
+        else if gameBoard.isFullyFilled() { // TIE
             return 0
         }
+        
+        var alphaTmp = alpha
+        var betaTmp = beta
         
         // -------------- MAXIMIZER --------------
         if isMaximizer {
@@ -81,16 +82,16 @@ class GameAI {
                         gameBoard.setTile(row: i, col: j, value: self.symboleAI, force: true)
                         
                         // Recursively call minimax
-                        bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: &alpha, beta: &beta) - depth)
+                        bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp))// - depth)
                         
                         // Undo move
                         gameBoard.setTile(row: i, col: j, value: .undef, force: true)
                         
-//                        // Alpha-beta pruning optimization
-//                        alpha = max(alpha, bestMove)
-//                        if alpha >= beta {
-//                            return bestMove
-//                        }
+                        // Alpha-beta pruning optimization
+                        alphaTmp = max(alphaTmp, bestMove)
+                        if alphaTmp >= betaTmp {
+                            return bestMove
+                        }
                     }
                 }
             }
@@ -111,16 +112,16 @@ class GameAI {
                         gameBoard.setTile(row: i, col: j, value: self.symboleAI.opposite(), force: true)
                         
                         // Recursively call minimax
-                        bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: &alpha, beta: &beta) + depth)
+                        bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp))// + depth)
                         
                         // Undo move
                         gameBoard.setTile(row: i, col: j, value: .undef, force: true)
                         
-//                        // Alpha-beta pruning optimization
-//                        beta = min(beta, bestMove)
-//                        if alpha >= beta {
-//                            return bestMove
-//                        }
+                        // Alpha-beta pruning optimization
+                        betaTmp = min(betaTmp, bestMove)
+                        if alphaTmp >= betaTmp {
+                            return bestMove
+                        }
                     }
                 }
             }

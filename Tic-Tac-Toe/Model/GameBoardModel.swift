@@ -67,8 +67,15 @@ class GameBoardModel {
     func setTile(row: Int, col: Int, value: Player, force: Bool) -> Bool {
         let toReturn = self.board[row][col].setTileSymbole(value: value, force: force)
         
-        if toReturn && !force {
-            self.filledTiles += 1
+        if toReturn {
+            // Erasing marker
+            if value == .undef {
+                self.filledTiles -= 1
+            }
+            // Setting marker
+            else {
+                self.filledTiles += 1
+            }
         }
         
         return toReturn
@@ -126,11 +133,11 @@ class GameBoardModel {
         return true
     }
     
-    // MARK: - Private methods
-    private func isFullyFilled() -> Bool {
+    func isFullyFilled() -> Bool {
         return self.filledTiles == self.boardSize * self.boardSize // TODO - pow?
     }
     
+    // MARK: - Private methods
     private func sameSymbolsRow(row: Int) -> Player {
         let symbol = self.board[row][0].getTileSymbole()
         
