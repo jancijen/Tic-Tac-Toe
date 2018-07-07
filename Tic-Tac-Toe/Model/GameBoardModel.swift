@@ -8,7 +8,13 @@
 
 import Foundation
 
+protocol ModelDelegate: class {
+    func simulateTileTap(row: Int, col: Int) -> Void
+}
+
 class GameBoardModel {
+    // MARK: - Public attributes
+    weak var gameDelegate: ModelDelegate? = nil
     // MARK: - Private attributes
     private var board: [[TileModel]] = [[TileModel]]()
     private let boardSize: Int
@@ -53,10 +59,15 @@ class GameBoardModel {
         // TODO
     }
     
-    func setTile(row: Int, col: Int, value: Player) -> Bool {
-        let toReturn = self.board[row][col].setTileSymbole(value: value)
+    func simulateTap(row: Int, col: Int) {
+        // View
+        self.gameDelegate?.simulateTileTap(row: row, col: col)
+    }
+    
+    func setTile(row: Int, col: Int, value: Player, force: Bool) -> Bool {
+        let toReturn = self.board[row][col].setTileSymbole(value: value, force: force)
         
-        if toReturn {
+        if toReturn && !force {
             self.filledTiles += 1
         }
         

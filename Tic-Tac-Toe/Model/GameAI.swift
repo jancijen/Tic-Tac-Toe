@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// GameAI class based on MiniMax algorithm.
+/// GameAI "player" based on MiniMax algorithm.
 class GameAI {
     // MARK: - Private attributes
     private let symboleAI: Player
@@ -30,13 +30,13 @@ class GameAI {
                 // Check whether tile is empty
                 if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
                     // Make move
-                    gameBoard.setTile(row: i, col: j, value: self.symboleAI)
+                    gameBoard.setTile(row: i, col: j, value: self.symboleAI, force: true)
                     
                     // Recursively call minimax
                     let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false)
                     
                     // Undo move
-                    gameBoard.setTile(row: i, col: j, value: .undef)
+                    gameBoard.setTile(row: i, col: j, value: .undef, force: true)
                     
                     if tmpMove > bestMove {
                         bestMove = tmpMove
@@ -48,7 +48,7 @@ class GameAI {
         }
         
         // Make best move (simulate tap)
-        //gameBoard.getTile(row: bestMoveRow, col: bestMoveCol).tileTapped()
+        gameBoard.simulateTap(row: bestMoveRow, col: bestMoveCol)
     }
     
     // MARK: - Private methods
@@ -75,13 +75,13 @@ class GameAI {
                     // Check whether tile is empty
                     if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
                         // Make move
-                        gameBoard.setTile(row: i, col: j, value: self.symboleAI)
+                        gameBoard.setTile(row: i, col: j, value: self.symboleAI, force: true)
                         
                         // Recursively call minimax
                         bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer))
                         
                         // Undo move
-                        gameBoard.setTile(row: i, col: j, value: .undef)
+                        gameBoard.setTile(row: i, col: j, value: .undef, force: true)
                     }
                 }
             }
@@ -99,13 +99,13 @@ class GameAI {
                     // Check whether tile is empty
                     if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
                         // Make move
-                        gameBoard.setTile(row: i, col: j, value: self.symboleAI.opposite())
+                        gameBoard.setTile(row: i, col: j, value: self.symboleAI.opposite(), force: true)
                         
                         // Recursively call minimax
                         bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer))
                         
                         // Undo move
-                        gameBoard.setTile(row: i, col: j, value: .undef)
+                        gameBoard.setTile(row: i, col: j, value: .undef, force: true)
                     }
                 }
             }

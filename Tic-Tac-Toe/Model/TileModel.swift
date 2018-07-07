@@ -34,10 +34,10 @@ struct TileModel {
      
      - parameter value: Value to be set.
      
-     - returns: Whether symbole was successfully set.
+     - returns: Whether symbole was successfully set (tile was empty or set was forced).
      */
-    mutating func setTileSymbole(value: Player) -> Bool {
-        if self.tileSymbole == .undef {
+    mutating func setTileSymbole(value: Player, force: Bool) -> Bool {
+        if self.tileSymbole == .undef || force {
             self.tileSymbole = value
             return true
         }

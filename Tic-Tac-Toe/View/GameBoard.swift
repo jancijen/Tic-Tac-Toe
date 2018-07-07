@@ -42,9 +42,23 @@ class GameBoard: UIView {
         // Reset tile views
         for (_,row) in self.tiles.enumerated() {
             for (_,tile) in row.enumerated() {
-                tile.reset()
+                // Set tile to be blank
+                tile.setImage(nil, for: .normal)
             }
         }
+    }
+    
+    func setTileView(row: Int, col: Int, value: Player) {
+        let image: UIImage?
+        if value == .X {
+            image = #imageLiteral(resourceName: "cross")
+        } else if value == .O {
+            image = #imageLiteral(resourceName: "circle")
+        } else {
+            image = nil
+        }
+        
+        self.tiles[row][col].setImage(image, for: .normal)
     }
     
     // MARK: - Private methods

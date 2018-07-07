@@ -23,9 +23,12 @@ class GameViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
     
+        // Delegates
         self.gameBoard.gameVCDelegate = self
+        self.model.gameVCDelegate = self
+        
         configure()
-        setObservers()
+        setupObservers()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -44,6 +47,9 @@ class GameViewController: UIViewController {
     }
     
     // MARK: - Private methods
+    /**
+     Configure view and its subviews.
+     */
     private func configure() {
         // View configuration
         self.view.backgroundColor = .white
@@ -79,40 +85,76 @@ class GameViewController: UIViewController {
         }
     }
     
-    private func setObservers() {
-        // Game state observer
+    /**
+     Setup observers.
+     */
+    private func setupObservers() {
+        // GameState observer
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(gameStateChanged),
                                                name: Notification.Name(rawValue: "gameState"),
                                                object: nil)
     }
     
+    /**
+     Remove observers.
+     */
     private func removeObservers() {
-        // Game state observer
+        // GameState observer
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "gameState"), object: nil)
     }
     
-    private func showEndGameAlert(title: String) {
-        let alertView = AlertView(title: title, image: nil)
+    /**
+     Show end game alert.
+     
+     - parameter title: Title to be shown in alert.
+     - parameter image: Image to be shown in alert.
+     */
+    private func showEndGameAlert(title: String, image: UIImage?) {
+        // Alert
+        let alertView = AlertView(title: title, image: image)
         
+        // Action: Replay
         alertView.addActionButton(title: "Replay") { [weak self, weak alertView] in
-            self?.model.resetGame()
+            // Reset view
             self?.gameBoard.reset()
+            // Reset model
+            self?.model.resetGame()
+            // Dismiss alert
             alertView?.dismiss(animated: true)
         }
+        // Action: Main Menu
         alertView.addActionButton(title: "Main Menu") { [weak self, weak alertView] in
+            // Go to menu
             self?.navigationController?.popToRootViewController(animated: true)
+            // Dismiss alert
             alertView?.dismiss(animated: true)
         }
         
+        // Show alert
         alertView.show(animated: true)
     }
 }
 
 // MARK: - GameViewControllerDelegate
 extension GameViewController: GameViewControllerDelegate {
+    /**
+     Select tile at given position.
+     
+     - parameter row: Row of tile.
+     - parameter col: Column of tile.
+     
+     - returns: Player which is now marked on tile or "nil" if selection was not possible.
+     */
     func selectTile(row: Int, col: Int) -> Player? {
         return self.model.selectTile(row: row, col: col)
+    }
+}
+
+// MARK: - GameDelegate
+extension GameViewController: GameDelegate {
+    func setTileView(row: Int, col: Int, value: Player) {
+        gameBoard.setTileView(row: row, col: col, value: value)
     }
 }
 
@@ -121,8 +163,10 @@ extension GameViewController {
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         switch UIDevice.current.orientation {
         case .portrait, .portraitUpsideDown:
+            // Show game title in portrait mode
             self.titleLabel.isHidden = false
         case .landscapeLeft, .landscapeRight:
+            // Hide game title in landscape mode
             self.titleLabel.isHidden = true
         default:
             break
@@ -132,6 +176,9 @@ extension GameViewController {
 
 // MARK: - Button callbacks
 extension GameViewController {
+    /**
+     Callback to be called after tapping on back button.
+     */
     @objc private func backTapped() {
         self.navigationController?.popViewController(animated: true)
     }
@@ -139,6 +186,9 @@ extension GameViewController {
 
 // MARK: - Notification callbacks
 extension GameViewController {
+    /**
+     Callback to be called after game state has been changed.
+     */
     @objc private func gameStateChanged(notification: Notification) {
         // Get new state
         guard let userInfo = notification.userInfo,
@@ -148,17 +198,35 @@ extension GameViewController {
         }
         
         let title: String
+        let image: UIImage?
+        
+        // Check for end state
         switch newState {
+        // WIN
         case .winX, .winO:
             let aiPlayer = self.model.getAIPlayer()
-            title = newState == aiPlayer.win() ? "DEFEAT" : "VICTORY"
+            
+            // Multiplayer
+            if aiPlayer == .undef {
+                title = "WINNER IS"
+                image = newState == .winX ? #imageLiteral(resourceName: "cross") : #imageLiteral(resourceName: "circle")
+            }
+            // Singleplayer
+            else {
+                title = newState == aiPlayer.win() ? "DEFEAT" : "VICTORY"
+                image = nil
+            }
+        // TIE
         case .tie:
             title = "TIE"
+            image = nil
         default:
+            // Game has not ended
             return
         }
         
-        showEndGameAlert(title: title)
+        // Show end game alert
+        showEndGameAlert(title: title, image: image)
         return
     }
 }

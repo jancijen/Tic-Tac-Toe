@@ -38,10 +38,6 @@ class Tile: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func reset() {
-        self.setImage(nil, for: .normal)
-    }
-    
     // MARK: - Private methods
     /**
      Configure view and its subviews.

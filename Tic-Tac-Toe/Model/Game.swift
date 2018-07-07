@@ -39,6 +39,10 @@ enum GameState {
     }
 }
 
+protocol GameDelegate: class {
+    func setTileView(row: Int, col: Int, value: Player) -> Void
+}
+
 class Game {
     // MARK: - Private attributes
     private let boardSize: Int
@@ -53,6 +57,8 @@ class Game {
         }
     }
     private let gameBoardModel: GameBoardModel
+    
+    weak var gameVCDelegate: GameDelegate? = nil
     
     // MARK: - Public methods
     init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
@@ -77,6 +83,9 @@ class Game {
         } else {
             self.AI = nil
         }
+        
+        // Delegates
+        self.gameBoardModel.gameDelegate = self
     }
     
     func selectTile(row: Int, col: Int) -> Player? {
@@ -87,13 +96,15 @@ class Game {
         }
         
         // Try to select tile
-        if self.gameBoardModel.setTile(row: row, col: col, value: currentPlayer) {
+        if self.gameBoardModel.setTile(row: row, col: col, value: currentPlayer, force: false) {
             // End game check
             if let endState = self.gameBoardModel.gameEnd() {
                 self.state = endState
             } else {
                 // Switch turns
                 self.state = self.state.oppositeTurn()
+                
+                makeAITurnIfShould()
             }
             
             return currentPlayer
@@ -107,7 +118,8 @@ class Game {
         if self.state == .turnX && self.aiPlayer == .X
            || self.state == .turnO && self.aiPlayer == .O
         {
-            //self.AI?.makeBestMove(gameBoard: self.gameBoardModel)
+            // Make a move
+            self.AI?.makeBestMove(gameBoard: self.gameBoardModel)
         }
     }
     
@@ -134,4 +146,16 @@ class Game {
     }
     
     // MARK: - Private methods
+}
+
+// MARK: - ModelDelegate
+extension Game: ModelDelegate {
+    func simulateTileTap(row: Int, col: Int) {
+        let currentTurn = getCurrentTurn()
+        
+        // Model
+        selectTile(row: row, col: col)
+        // View
+        gameVCDelegate?.setTileView(row: row, col: col, value: currentTurn)
+    }
 }
