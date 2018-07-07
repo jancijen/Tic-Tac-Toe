@@ -39,15 +39,32 @@ class GameBoardModel {
         }
     }
     
+    /**
+     Get size of gameboard.
+     
+     - returns: Size of gameboard.
+     */
     func getBoardSize() -> Int {
         return self.boardSize
     }
     
+    /**
+     Get concrete tile.
+     
+     - parameter row: Row of tile to get.
+     - parameter col: Column of tile to get.
+     
+     - returns: Concrete tile.
+     */
     func getTile(row: Int, col: Int) -> TileModel {
         return self.board[row][col]
     }
     
+    /**
+     Reset gameboard model.
+     */
     func reset() {
+        // Reset filled tiles count
         self.filledTiles = 0
         // Reset all tiles in board
         self.board = self.board.map { row -> [TileModel] in
@@ -57,20 +74,35 @@ class GameBoardModel {
                 return retTile
             }
         }
-        // TODO
     }
     
+    /**
+     Simulate tap on tile view.
+     
+     - parameter row: Row of tile to be tapped.
+     - parameter col: Column of tile to be tapped.
+     */
     func simulateTap(row: Int, col: Int) {
-        // View
+        // Simulate view tap
         self.gameDelegate?.simulateTileTap(row: row, col: col)
     }
     
-    func setTile(row: Int, col: Int, value: Player, force: Bool) -> Bool {
-        let toReturn = self.board[row][col].setTileSymbole(player: value, force: force)
+    /**
+     Set tile's symbol.
+     
+     - parameter row: Row of tile to be set.
+     - parameter col: Column of tile to be set.
+     - parameter player: Mark of player to be set.
+     
+     - returns: Whether mark was successfully set.
+     */
+    func setTile(row: Int, col: Int, player: Player, force: Bool) -> Bool {
+        // Try to set tile's symbol
+        let toReturn = self.board[row][col].setTileSymbole(player: player, force: force)
         
         if toReturn {
             // Erasing marker
-            if value == .undef {
+            if player == .undef {
                 self.filledTiles -= 1
             }
             // Setting marker
@@ -82,9 +114,14 @@ class GameBoardModel {
         return toReturn
     }
     
-    func gameEnd() -> GameState? {
+    /**
+     Get end gamestate if game has ended.
+     
+     - returns: End gamestate if game has ended, otherwise returns "nil".
+     */
+    func gameEnd() -> GameState? { // TODO - rename
         // Win check
-        let winner = isWon()
+        let winner = getWinner()
         if winner == .X {
             return .winX
         } else if winner == .O {
@@ -99,7 +136,12 @@ class GameBoardModel {
         return nil
     }
     
-    func isWon() -> Player {
+    /**
+     Get winner of current gameboard.
+     
+     - returns: Mark of winner if there is one, otherwise returns "undef".
+     */
+    func getWinner() -> Player {
         // Rows check
         for i in 0..<self.boardSize {
             let rowWinner = sameSymbolsRow(row: i)
@@ -120,32 +162,32 @@ class GameBoardModel {
         return sameSymbolsDiag()
     }
     
-    // TODO
-    func noEmptyTiles() -> Bool {
-        // Check whether whole board is filled
-        for (_,row) in self.board.enumerated() {
-            for (_,tile) in row.enumerated() {
-                if tile.getTileSymbole() == .undef {
-                    return false
-                }
-            }
-        }
-        
-        return true
-    }
-    
+    /**
+     Check whether board is fully filled.
+     
+     - returns: Whether board is fully filled.
+     */
     func isFullyFilled() -> Bool {
-        return self.filledTiles == self.boardSize * self.boardSize // TODO - pow?
+        return self.filledTiles == self.boardSize * self.boardSize
     }
     
     // MARK: - Private methods
+    /**
+     Check row for same symbols.
+     
+     - parameter row: Row to be checked.
+     
+     - returns: Mark of player which is in whole row, otherwise returns "undef".
+     */
     private func sameSymbolsRow(row: Int) -> Player {
+        // First symbol
         let symbol = self.board[row][0].getTileSymbole()
         
         if symbol == .undef {
             return .undef
         }
         
+        // Check next symbols
         for i in self.board[row] {
             if i.getTileSymbole() != symbol {
                 return .undef
@@ -155,13 +197,22 @@ class GameBoardModel {
         return symbol
     }
     
+    /**
+     Check column for same symbols.
+     
+     - parameter column: Column to be checked.
+     
+     - returns: Mark of player which is in whole column, otherwise returns "undef".
+     */
     private func sameSymbolsColumn(column: Int) -> Player {
+        // First symbol
         let symbol = self.board[0][column].getTileSymbole()
         
         if symbol == .undef {
             return .undef
         }
         
+        // Check next symbols
         for i in 1..<self.boardSize {
             if self.board[i][column].getTileSymbole() != symbol {
                 return .undef
@@ -171,13 +222,23 @@ class GameBoardModel {
         return symbol
     }
     
+    /**
+     Check diagonals for same symbols.
+     
+     - returns: Mark of player which is in at least one whole diagonale, otherwise returns "undef".
+     */
     private func sameSymbolsDiag() -> Player {
         var toReturn = true
         
+        // -------- First diagonal --------
+        // First symbol
         var symbol = self.board[0][0].getTileSymbole()
+        
         if symbol == .undef {
             toReturn = false
         }
+        
+        // Check next symbols
         for i in 1..<self.boardSize {
             if self.board[i][i].getTileSymbole() != symbol {
                 toReturn = false
@@ -189,10 +250,15 @@ class GameBoardModel {
             return symbol
         }
         
+        // -------- Second diagonal --------
+        // Second symbol
         symbol = self.board[0][self.boardSize - 1].getTileSymbole()
+        
         if symbol == .undef {
             return .undef
         }
+        
+        // Check next symbols
         var col = self.boardSize - 2
         for i in 1..<self.boardSize {
             if self.board[i][col].getTileSymbole() != symbol {

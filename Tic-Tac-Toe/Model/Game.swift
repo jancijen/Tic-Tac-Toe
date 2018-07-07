@@ -74,7 +74,7 @@ class Game {
         }
         
         // Try to select tile
-        if self.gameBoardModel.setTile(row: row, col: col, value: currentPlayer, force: false) {
+        if self.gameBoardModel.setTile(row: row, col: col, player: currentPlayer, force: false) {
             // End game check
             if let endState = self.gameBoardModel.gameEnd() {
                 self.state = endState
