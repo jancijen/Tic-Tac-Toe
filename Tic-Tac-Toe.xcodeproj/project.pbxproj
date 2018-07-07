@@ -15,6 +15,8 @@
 		0A11E50E20EE90F600E98C86 /* Poppable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50D20EE90F600E98C86 /* Poppable.swift */; };
 		0A11E51020EE92BF00E98C86 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50F20EE92BF00E98C86 /* AlertView.swift */; };
 		0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51320EE9E9E00E98C86 /* UIButton.swift */; };
+		0A11E51820EFDDA400E98C86 /* GameBoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */; };
+		0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51920F0C30B00E98C86 /* TileModel.swift */; };
 		0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF0320E82E59000273EB /* AppDelegate.swift */; };
 		0A15EF0B20E82E5B000273EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A15EF0A20E82E5B000273EB /* Assets.xcassets */; };
 		0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1A20E82F74000273EB /* MenuViewController.swift */; };
@@ -36,6 +38,8 @@
 		0A11E50D20EE90F600E98C86 /* Poppable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poppable.swift; sourceTree = "<group>"; };
 		0A11E50F20EE92BF00E98C86 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		0A11E51320EE9E9E00E98C86 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardModel.swift; sourceTree = "<group>"; };
+		0A11E51920F0C30B00E98C86 /* TileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileModel.swift; sourceTree = "<group>"; };
 		0A15EF0020E82E59000273EB /* Tic-Tac-Toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic-Tac-Toe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A15EF0320E82E59000273EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A15EF0A20E82E5B000273EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -136,6 +140,8 @@
 			children = (
 				0ABD6D2C20EBD71A00B251A8 /* Player.swift */,
 				0A11E4FD20EC1D4000E98C86 /* GameAI.swift */,
+				0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */,
+				0A11E51920F0C30B00E98C86 /* TileModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -303,7 +309,9 @@
 			files = (
 				0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */,
 				0A11E50E20EE90F600E98C86 /* Poppable.swift in Sources */,
+				0A11E51820EFDDA400E98C86 /* GameBoardModel.swift in Sources */,
 				0A11E4FE20EC1D4000E98C86 /* GameAI.swift in Sources */,
+				0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */,
 				0ABD6D2920EBB95B00B251A8 /* Tile.swift in Sources */,
 				0A11E50420ED72CF00E98C86 /* SinglePlayerViewController.swift in Sources */,
 				0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */,

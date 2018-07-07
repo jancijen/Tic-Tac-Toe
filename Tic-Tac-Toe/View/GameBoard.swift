@@ -9,37 +9,34 @@
 import UIKit
 
 protocol GameViewControllerDelegate {
-    func getCurrentTurn() -> Player
-    func nextTurn() -> Void
-}
-
-/// Possible game states
-enum GameState {
-    case winX
-    case winO
-    case tie
-    case notFinished
+    func selectTile(row: Int, col: Int) -> Player?
 }
 
 /// View representing game board.
 class GameBoard: UIView {
     // MARK: - Public attributes
-    var gameVCDelagate: GameViewControllerDelegate? = nil
+    var gameVCDelegate: GameViewControllerDelegate? = nil
     // MARK: - Private attributes
-    private var board: [[Tile]] = [[Tile]]()
     private let boardSize: Int
-    private var filledTiles: Int = 0
     
-    // MARK: - Public methods
+    // MARK: - Public attributes
     init(boardSize: Int) {
         self.boardSize = boardSize
-        
-        if boardSize < 3 { // TODO
+        if self.boardSize < 3 { // TODO
             fatalError("GameBoard has to be at least 3 tiles in size.")
         }
         
         super.init(frame: CGRect.zero) // TODO
         
+        self.configure()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Private methods
+    private func configure() {
         // View configuration
         self.backgroundColor = .black
         
@@ -52,9 +49,7 @@ class GameBoard: UIView {
         verticalSV.translatesAutoresizingMaskIntoConstraints = false
         
         // Create empty board and add tiles to stack views
-        for _ in 0..<boardSize {
-            var tmpArray = [Tile]()
-            
+        for row in 0..<boardSize {
             // Horizontal stack view - row of tiles
             let horizontalSV = UIStackView()
             horizontalSV.axis = .horizontal
@@ -63,15 +58,13 @@ class GameBoard: UIView {
             horizontalSV.spacing = 4.0
             horizontalSV.translatesAutoresizingMaskIntoConstraints = false
             
-            for _ in 0..<boardSize {
-                let tile = Tile()
+            for col in 0..<boardSize {
+                let tile = Tile(row: row, col: col)
                 tile.gameBoardDelegate = self
                 
-                tmpArray.append(tile)
                 horizontalSV.addArrangedSubview(tile)
             }
             
-            self.board.append(tmpArray)
             verticalSV.addArrangedSubview(horizontalSV)
         }
         
@@ -81,150 +74,12 @@ class GameBoard: UIView {
             make.edges.equalToSuperview()
         }
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func getBoardSize() -> Int {
-        return self.boardSize
-    }
-    
-    func getTile(row: Int, col: Int) -> Tile {
-        return self.board[row][col]
-    }
- 
-    func setTile(row: Int, col: Int, value: Player){
-        self.board[row][col].setTileSymbole(value: value)
-    }
-    
-    func isWon() -> Player {
-        // Rows check
-        for i in 0..<self.boardSize {
-            let rowWinner = sameSymbolsRow(row: i)
-            if rowWinner != .undef {
-                return rowWinner
-            }
-        }
-        
-        // Columns check
-        for i in 0..<self.boardSize {
-            let colWinner = sameSymbolsColumn(column: i)
-            if colWinner != .undef {
-                return colWinner
-            }
-        }
-        
-        // Diagonals check
-        return sameSymbolsDiag()
-    }
-    
-    // TODO
-    func noEmptyTiles() -> Bool {
-        // Check whether whole board is filled
-        for (_,row) in self.board.enumerated() {
-            for (_,tile) in row.enumerated() {
-                if tile.getTileSymbole() == .undef {
-                    return false
-                }
-            }
-        }
-        
-        return true
-    }
-    
-    func isFullyFilled() -> Bool {
-        return self.filledTiles == self.boardSize * self.boardSize // TODO - pow?
-    }
-    
-    func reset() {
-        self.filledTiles = 0
-        for (_,row) in self.board.enumerated() {
-            for (_,tile) in row.enumerated() {
-                tile.reset()
-            }
-        }
-    }
-    
-    // MARK: - Private methods
-    private func sameSymbolsRow(row: Int) -> Player {
-        let symbol = self.board[row][0].getTileSymbole()
-        
-        if symbol == .undef {
-            return .undef
-        }
-        
-        for i in self.board[row] {
-            if i.getTileSymbole() != symbol {
-                return .undef
-            }
-        }
-        
-        return symbol
-    }
-    
-    private func sameSymbolsColumn(column: Int) -> Player {
-        let symbol = self.board[0][column].getTileSymbole()
-        
-        if symbol == .undef {
-            return .undef
-        }
-        
-        for i in 1..<self.boardSize {
-            if self.board[i][column].getTileSymbole() != symbol {
-                return .undef
-            }
-        }
-        
-        return symbol
-    }
-    
-    private func sameSymbolsDiag() -> Player {
-        var toReturn = true
-        
-        var symbol = self.board[0][0].getTileSymbole()
-        if symbol == .undef {
-            toReturn = false
-        }
-        for i in 1..<self.boardSize {
-            if self.board[i][i].getTileSymbole() != symbol {
-                toReturn = false
-                break
-            }
-        }
-        
-        if toReturn {
-            return symbol
-        }
-        
-        symbol = self.board[0][self.boardSize - 1].getTileSymbole()
-        if symbol == .undef {
-            return .undef
-        }
-        var col = self.boardSize - 2
-        for i in 1..<self.boardSize {
-            if self.board[i][col].getTileSymbole() != symbol {
-                return .undef
-            }
-            col -= 1
-        }
-        
-        return symbol
-    }
 }
 
-// MARK: - GameBoardDelegate
-extension GameBoard: GameBoardDelegate {
-    func getCurrentTurn() -> Player {
-        if let delegate = gameVCDelagate {
-            return delegate.getCurrentTurn()
-        }
-        
-        return .undef
-    }
-    
-    func nextTurn() {
-        self.filledTiles += 1
-        self.gameVCDelagate?.nextTurn()
+
+// MARK: - GameBoardViewDelegate
+extension GameBoard: GameBoardViewDelegate {
+    func selectTile(row: Int, col: Int) -> Player? {
+        return self.gameVCDelegate?.selectTile(row: row, col: col)
     }
 }
