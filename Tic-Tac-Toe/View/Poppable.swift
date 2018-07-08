@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Poppable
 
-/// Protocol defining methods and attributes of poppable element.
+/// Protocol defining required methods and attributes of poppable element.
 protocol Poppable {
     // MARK: Methods
     func show(animated: Bool) -> Void
@@ -30,8 +30,11 @@ extension Poppable where Self: UIView {
      - parameter animated: Whether show should be animated.
      */
     func show(animated: Bool) {
-        self.backgroundView.alpha = 0
-        self.alertView.center = CGPoint(x: self.center.x, y: self.frame.height * 2)
+        // Initial view setup before showing
+        backgroundView.alpha = 0
+        alertView.center = CGPoint(x: self.center.x, y: self.frame.height * 2)
+        
+        // Add view as a subview
         UIApplication.shared.delegate?.window??.rootViewController?.view.addSubview(self)
         
         // Animated

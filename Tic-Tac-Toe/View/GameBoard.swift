@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - GameBoardDelegate
 
-/// Protocol defining required methods from game view controller.
+/// Protocol defining required methods of game view controller.
 protocol GameBoardDelegate: class {
     func gameBoard(_ gameBoard: GameBoard,
                    didSelectTileAt position: Position) -> Player?
@@ -18,7 +18,7 @@ protocol GameBoardDelegate: class {
 
 // MARK: - GameBoard
 
-/// View representing game board.
+/// View representing gameboard.
 class GameBoard: UIView {
     // MARK: Public properties
     
@@ -33,7 +33,7 @@ class GameBoard: UIView {
     
     init(boardSize: Int) {
         self.boardSize = boardSize
-        if self.boardSize < 3 { // TODO
+        if self.boardSize < 3 {
             fatalError("GameBoard has to be at least 3 tiles in size.")
         }
         
@@ -41,6 +41,7 @@ class GameBoard: UIView {
         
         super.init(frame: CGRect.zero) // TODO
         
+        // Initial setup
         configure()
     }
     
@@ -55,9 +56,9 @@ class GameBoard: UIView {
      Reset gameboard to default.
      */
     func reset() {
-        // Reset tile views
-        for (_,row) in self.tiles.enumerated() {
-            for (_,tile) in row.enumerated() {
+        // Reset tiles views
+        for (_, row) in tiles.enumerated() {
+            for (_, tile) in row.enumerated() {
                 // Set tile to be blank
                 tile.setImage(nil, for: .normal)
             }
@@ -65,25 +66,24 @@ class GameBoard: UIView {
     }
     
     /**
-     Set tile's view accordingly.
+     Set mark on tile at given position.
      
-     - parameter row: Row of tile to set.
-     - parameter col: Column of tile to set.
-     - parameter player: Mark to be set.
+     - parameter position: Position of tile to set mark on.
+     - parameter mark: Mark to be set.
      */
-    func setTileView(row: Int, col: Int, player: Player) {
+    func setMark(at position: Position, to mark: Player) {
         // Get correct image
         let image: UIImage?
-        if player == .X {
+        if mark == .X {
             image = #imageLiteral(resourceName: "cross")
-        } else if player == .O {
+        } else if mark == .O {
             image = #imageLiteral(resourceName: "circle")
         } else {
             image = nil
         }
         
         // Set tile's image
-        self.tiles[row][col].setImage(image, for: .normal)
+        self.tiles[position.row][position.column].setImage(image, for: .normal)
     }
     
     // MARK: Private methods
@@ -113,6 +113,7 @@ class GameBoard: UIView {
             horizontalSV.spacing = 4.0
             horizontalSV.translatesAutoresizingMaskIntoConstraints = false
             
+            // Fill row with tiles
             var tmpRow = [Tile]()
             for col in 0..<boardSize {
                 let tile = Tile(position: Position(row: row, column: col))
@@ -122,6 +123,7 @@ class GameBoard: UIView {
                 horizontalSV.addArrangedSubview(tile)
             }
             
+            // Add row to vertical stack view
             self.tiles.append(tmpRow)
             verticalSV.addArrangedSubview(horizontalSV)
         }

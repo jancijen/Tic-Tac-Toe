@@ -165,7 +165,7 @@ extension GameViewController: GameBoardDelegate {
 
 extension GameViewController: GameDelegate {
     func game(_ game: Game, setTileViewAt position: Position, to value: Player) {
-        self.gameBoard.setTileView(row: position.row, col: position.column, player: value)
+        self.gameBoard.setMark(at: position, to: value)
     }
 }
 

@@ -171,7 +171,7 @@ class AlertView: UIView, Poppable {
 
 extension AlertView {
     /**
-     Reset view's frame to whole screen. Method to be called after device orientation has changed.
+     Reset view's frame to whole screen. Method to be called after device orientation has been changed.
      */
     @objc private func rotated() {
         // Reset frame of view

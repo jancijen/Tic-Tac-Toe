@@ -11,14 +11,15 @@ import UIKit
 
 /// Class for UI appearance management.
 class ThemeManager {
-    // MARK: - Public static attributes
+    // MARK: - Public properties
+    // Colors
     static let menuButtonColor: UIColor = UIColor.black
+    // Fonts
     static let bigTitleFontSize: CGFloat = 80
     static let titleFontSize: CGFloat = 60
     static let buttonFontSize: CGFloat = 30
-    static let alertButtonWidth: CGFloat = 80
     
-    // MARK - Private static attributes
+    // MARK - Private properties
     private static let fontName: String = "BebasNeue-Regular"
     
     // MARK: - Public static methods

@@ -11,26 +11,22 @@ import SnapKit
 
 // MARK: - TileDelegate
 
-/// Protocol defining required methods from game board.
+/// Protocol defining required methods of gameboard.
 protocol TileDelegate: class {
-    func tile(_ tile: Tile,
-              didSelectTileAt position: Position) -> Player?
+    func tile(_ tile: Tile, didSelectTileAt position: Position) -> Player?
 }
 
 // MARK: - Tile
 
 /// Button representing tile on gameboard.
 class Tile: UIButton {
-    // MARK: Static public properties
-    
-    static let size: CGFloat = 100 // TODO
-    
     // MARK: Public properties
     
     weak var delegate: TileDelegate? = nil
     
     // MARK: Private properties
     
+    static private let size: CGFloat = 100
     private let position: Position
     
     // MARK: Initialization
@@ -40,6 +36,7 @@ class Tile: UIButton {
         
         super.init(frame: CGRect.zero)
         
+        // Initial setup
         configure()
     }
     
@@ -59,23 +56,23 @@ class Tile: UIButton {
             make.height.width.equalTo(Tile.size)
         }
         
-        // Set button tap action
+        // Set button's tap action
         self.addTarget(self, action: #selector(tileTapped), for: .touchUpInside)
     }
 }
 
-// MARK: - Button callbacks
+// MARK: - Buttons callbacks
 
 extension Tile {
     /**
-     Callback to be called after tile has been tapped.
+     Set mark on tile accordingly. Method to be called after tile has been tapped.
      */
     @objc func tileTapped() {
-        // Select tile if it is possible
-        guard let symbole = self.delegate?.tile(self, didSelectTileAt: self.position) else { return }
+        // Select tile if it is possible and get mark which should be set
+        guard let mark = delegate?.tile(self, didSelectTileAt: position) else { return }
         
-        // If tile has been selected - set its symbole
-        switch symbole {
+        // If tile has been selected - set its mark
+        switch mark {
         case .X:
             self.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
         case .O:
