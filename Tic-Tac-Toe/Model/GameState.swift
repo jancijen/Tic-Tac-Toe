@@ -14,23 +14,23 @@ import Foundation
 enum GameState {
     // MARK: Cases
     
-    /// Player X is on turn
+    /// Player X is on turn.
     case turnX
-    /// Player O is on turn
+    /// Player O is on turn.
     case turnO
-    /// Player X has won
+    /// Player X has won.
     case winX
-    /// Player O has won
+    /// Player O has won.
     case winO
-    /// Game is tied
+    /// Game is tied.
     case tie
     
     // MARK: Public methods
     
     /**
-     Get player on turn according from game state.
+     Getter for player on turn.
      
-     - returns: Player on turn.
+     - returns: Player on turn or "undef" if game has ended.
      */
     func playerOnTurn() -> Player {
         switch self {
@@ -44,9 +44,9 @@ enum GameState {
     }
     
     /**
-     Get opposite turn.
+     Getter for opposite turn.
      
-     - returns: Opposite turn if GameState is turn, else return itself.
+     - returns: Opposite turn or itself if game has ended.
      */
     func oppositeTurn() -> GameState {
         switch self {

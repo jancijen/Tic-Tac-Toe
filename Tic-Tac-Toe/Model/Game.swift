@@ -10,6 +10,7 @@ import Foundation
 
 // MARK: - GameDelegate
 
+/// Protocol defining required methods of game view controller.
 protocol GameDelegate: class {
     func game(_ game: Game,
               setTileViewAt position: Position,
@@ -23,6 +24,7 @@ class Game {
     // MARK: Public properties
     
     weak var delegate: GameDelegate? = nil
+    let aiPlayer: Player
     
     // MARK: Private properties
     
@@ -36,7 +38,6 @@ class Game {
     }
     private let boardSize: Int
     private let firstPlayer: Player
-    private let aiPlayer: Player
     private let AI: GameAI?
     private let gameBoardModel: GameBoardModel
     
@@ -72,7 +73,7 @@ class Game {
     // MARK: Public methods
     
     /**
-     Select concrete tile.
+     Selects concrete tile.
      
      - parameter position: Position of tile to be selected.
      
@@ -103,16 +104,7 @@ class Game {
     }
     
     /**
-     Get AI player.
-     
-     - returns: AI player.
-     */
-    func getAIPlayer() -> Player {
-        return self.aiPlayer
-    }
-    
-    /**
-     Reset game model.
+     Resets game model.
      */
     func resetGame() {
         // Reset gameboard model
@@ -124,7 +116,7 @@ class Game {
     // MARK: Private methods
     
     /**
-     Get player which is currently on turn.
+     Getter for player which is currently on turn.
      
      - returns: Player on turn.
      */
@@ -161,13 +153,19 @@ extension Game {
 // MARK: - ModelDelegate
 
 extension Game: GameBoardModelDelegate {
-    func gameBoardModel(_ gameBoardModel: GameBoardModel, simulateTileTapAt position: Position) {
+    /**
+     Tap on tile.
+     
+     - parameter gameBoardModel: Gameboard model.
+     - parameter position: Position of tile to be tapped.
+     */
+    func gameBoardModel(_ gameBoardModel: GameBoardModel, tapOnTileAt position: Position) {
         let currentTurn = getCurrentTurn()
         
-        // Model
+        // Model tap - data/logic layer
         selectTile(at: position)
         
-        // View
-        self.delegate?.game(self, setTileViewAt: position, to: currentTurn)
+        // View tap - view layer
+        delegate?.game(self, setTileViewAt: position, to: currentTurn)
     }
 }

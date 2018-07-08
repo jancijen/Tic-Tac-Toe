@@ -10,20 +10,23 @@ import Foundation
 
 // MARK: - Player
 
-/// Possible symboles for player.
+/// Possible marks for player.
 enum Player {
     // MARK: Cases
     
+    /// Player X.
     case X
+    /// Player O.
     case O
+    /// Undefined/Blank.
     case undef
     
     // MARK: - Public methods
     
     /**
-     Get opposite symbole.
+     Getter for opposite mark.
      
-     - returns: Opposite symbole.
+     - returns: Opposite mark.
      */
     func opposite() -> Player {
         switch self {
@@ -37,9 +40,9 @@ enum Player {
     }
     
     /**
-     Get turn according to player.
+     Getter for turn according to player.
      
-     - returns: Turn of symbole.
+     - returns: Turn of mark.
      */
     func turn() -> GameState {
         switch self {
@@ -53,9 +56,9 @@ enum Player {
     }
     
     /**
-     Get win according to player.
+     Getter for win according to player.
      
-     - returns: Win of symbole.
+     - returns: Win of mark.
      */
     func win() -> GameState {
         switch self {

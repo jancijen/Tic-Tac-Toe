@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - GameAI
 
-/// AI "player" based on MiniMax algorithm.
+/// AI player.
 class GameAI {
     // MARK: Private properties
     
@@ -25,12 +25,12 @@ class GameAI {
     // MARK: Public methods
     
     /**
-     Make best (optimal) move on given gameboard.
+     Makes best (optimal) move on given gameboard.
      
-     - parameter gameBoard: Game board to make move on.
+     - parameter gameBoard: Gameboard to make move on.
      */
     func makeBestMove(gameBoard: GameBoardModel) {
-        let boardSize = gameBoard.getBoardSize()
+        let boardSize = gameBoard.boardSize
         
         var bestMove = Int.min
         var bestMoveRow = -1
@@ -41,7 +41,7 @@ class GameAI {
                 let position = Position(row: row, column: col)
                 
                 // Check whether tile is empty
-                if gameBoard.getTile(at: position).getTileSymbole() == .undef {
+                if gameBoard.getTile(at: position).mark == .undef {
                     // Make move
                     gameBoard.setTile(at: position, to: self.symboleAI, force: true)
                     
@@ -61,29 +61,31 @@ class GameAI {
         }
         
         // Make best move (simulate tap)
-        gameBoard.simulateTap(at: Position(row: bestMoveRow, column: bestMoveCol))
+        gameBoard.tileTap(at: Position(row: bestMoveRow, column: bestMoveCol))
     }
     
     // MARK: Private methods
     
     /**
-     Compute best worstcase scenario score on given board using minimax algorithm with alpha-beta prunning.
+     Computes best move's score on given gameboard while trying to minimize the possible loss for a worst case scenario. Using minimax algorithm with alpha-beta pruning.
      
-     - parameter gameBoard: Game board to make move on.
-     - parameter depth: Depth of minimax recursion.
+     - parameter gameBoard: Gameboard to make move on.
+     - parameter depth: Current depth of minimax recursion.
      - parameter isMaximizer: Whether minimax is called by maximizer (otherwise minimizer).
      - parameter alpha: Alpha value for optimization.
      - parameter beta: Beta value for optimization.
      
-     - returns: Best worstcase scenario score on given board.
+     - returns: Best move's score on given gameboard.
      */
     private func minimax(gameBoard: GameBoardModel, depth: Int, isMaximizer: Bool, alpha: Int, beta: Int) -> Int {
         // Check whether board is in terminal state
         let winner = gameBoard.getWinner()
-        if winner == .X || winner == .O { // WIN
+        // WIN
+        if winner == .X || winner == .O {
             return winner == self.symboleAI ? 10 : -10
         }
-        else if gameBoard.isFullyFilled() { // TIE
+        // TIE
+        else if gameBoard.isTied() {
             return 0
         }
         
@@ -95,13 +97,13 @@ class GameAI {
             var bestMove = Int.min
             
             // Check move for every empty tile
-            let boardSize = gameBoard.getBoardSize()
+            let boardSize = gameBoard.boardSize
             for row in 0..<boardSize {
                 for col in 0..<boardSize {
                     let position = Position(row: row, column: col)
                     
                     // Check whether tile is empty
-                    if gameBoard.getTile(at: position).getTileSymbole() == .undef {
+                    if gameBoard.getTile(at: position).mark == .undef {
                         // Make move
                         gameBoard.setTile(at: position, to: self.symboleAI, force: true)
                         
@@ -127,13 +129,13 @@ class GameAI {
             var bestMove = Int.max
             
             // Check move for every empty tile
-            let boardSize = gameBoard.getBoardSize()
+            let boardSize = gameBoard.boardSize
             for row in 0..<boardSize {
                 for col in 0..<boardSize {
                     let position = Position(row: row, column: col)
                     
                     // Check whether tile is empty
-                    if gameBoard.getTile(at: position).getTileSymbole() == .undef {
+                    if gameBoard.getTile(at: position).mark == .undef {
                         // Make move
                         gameBoard.setTile(at: position, to: self.symboleAI.opposite(), force: true)
                         

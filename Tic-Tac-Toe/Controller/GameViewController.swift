@@ -231,16 +231,14 @@ extension GameViewController {
         switch newState {
         // WIN
         case .winX, .winO:
-            let aiPlayer = self.model.getAIPlayer()
-            
             // Multiplayer
-            if aiPlayer == .undef {
+            if model.aiPlayer == .undef {
                 title = "WINNER IS"
                 image = newState == .winX ? #imageLiteral(resourceName: "cross") : #imageLiteral(resourceName: "circle")
             }
             // Singleplayer
             else {
-                title = newState == aiPlayer.win() ? "DEFEAT" : "VICTORY"
+                title = newState == model.aiPlayer.win() ? "DEFEAT" : "VICTORY"
                 image = nil
             }
         // TIE
