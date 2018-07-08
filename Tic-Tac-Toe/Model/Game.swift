@@ -8,28 +8,38 @@
 
 import Foundation
 
+// MARK: - GameDelegate
+
 protocol GameDelegate: class {
-    func setTileView(row: Int, col: Int, value: Player) -> Void
+    func game(_ game: Game,
+              setTileViewAt position: Position,
+              to value: Player) -> Void
 }
+
+// MARK: - Game
 
 /// Model representing game logic and data.
 class Game {
-    // MARK: - Public attributes
-    weak var gameVCDelegate: GameDelegate? = nil
-    // MARK: - Private attributes
-    private let boardSize: Int
-    private let firstPlayer: Player
-    private let aiPlayer: Player
-    private let AI: GameAI?
+    // MARK: Public properties
+    
+    weak var delegate: GameDelegate? = nil
+    
+    // MARK: Private properties
+    
     private var state: GameState {
         didSet {
             // Post that state has been changed
             NotificationCenter.default.post(name: Notification.Name(rawValue: "gameState"), object: nil, userInfo: ["newState": state])
         }
     }
+    private let boardSize: Int
+    private let firstPlayer: Player
+    private let aiPlayer: Player
+    private let AI: GameAI?
     private let gameBoardModel: GameBoardModel
     
-    // MARK: - Public methods
+    // MARK: Initialization
+    
     init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
         // General
         self.boardSize = boardSize
@@ -54,18 +64,19 @@ class Game {
         }
         
         // Delegates
-        self.gameBoardModel.gameDelegate = self
+        self.gameBoardModel.delegate = self
     }
+    
+    // MARK: Public methods
     
     /**
      Select concrete tile.
      
-     - parameter row: Row of tile to be selected.
-     - parameter col: Column of tile to be selected.
+     - parameter position: Position of tile to be selected.
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
-    func selectTile(row: Int, col: Int) -> Player? {
+    func selectTile(at position: Position) -> Player? {
         // Get player on turn
         let currentPlayer = self.state.playerOnTurn()
         // In case that game ended
@@ -74,7 +85,7 @@ class Game {
         }
         
         // Try to select tile
-        if self.gameBoardModel.setTile(row: row, col: col, player: currentPlayer, force: false) {
+        if self.gameBoardModel.setTile(at: position, to: currentPlayer, force: false) {
             // End game check
             if let endState = self.gameBoardModel.gameEnd() {
                 self.state = endState
@@ -127,7 +138,8 @@ class Game {
         makeAITurnIfShould()
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Get player which is currently on turn.
      
@@ -146,13 +158,14 @@ class Game {
 }
 
 // MARK: - ModelDelegate
-extension Game: ModelDelegate {
-    func simulateTileTap(row: Int, col: Int) {
+
+extension Game: GameBoardModelDelegate {
+    func gameBoardModel(_ gameBoardModel: GameBoardModel, simulateTileTapAt position: Position) {
         let currentTurn = getCurrentTurn()
         
         // Model
-        selectTile(row: row, col: col)
+        selectTile(at: position)
         // View
-        gameVCDelegate?.setTileView(row: row, col: col, value: currentTurn)
+        self.delegate?.game(self, setTileViewAt: position, to: currentTurn)
     }
 }

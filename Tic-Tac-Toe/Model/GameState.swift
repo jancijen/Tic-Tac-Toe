@@ -8,13 +8,24 @@
 
 import Foundation
 
-/// Possible game states.
+// MARK: - GameState
+
+/// Possible states of game.
 enum GameState {
-    case winX
-    case winO
-    case tie
+    // MARK: Cases
+    
+    /// Player X is on turn
     case turnX
+    /// Player O is on turn
     case turnO
+    /// Player X has won
+    case winX
+    /// Player O has won
+    case winO
+    /// Game is tied
+    case tie
+    
+    // MARK: Public methods
     
     /**
      Get player on turn according from game state.

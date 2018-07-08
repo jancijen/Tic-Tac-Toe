@@ -8,18 +8,15 @@
 
 import Foundation
 
+// MARK: - TileModel
+
 /// Model representing data of tile on gameboard.
 struct TileModel {
-    // MARK: - Private attributes
+    // MARK: Private properties
+    
     private var tileSymbole: Player = .undef
     
-    // MARK: - Public methods
-    /**
-     Reset tile to default.
-     */
-    mutating func reset() {
-        self.tileSymbole = .undef
-    }
+    // MARK: Public methods
     
     /**
      Getter for symbole on tile.
@@ -28,6 +25,13 @@ struct TileModel {
      */
     func getTileSymbole() -> Player {
         return self.tileSymbole
+    }
+    
+    /**
+     Reset tile to default.
+     */
+    mutating func reset() {
+        self.tileSymbole = .undef
     }
     
     /**

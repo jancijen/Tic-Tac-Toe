@@ -8,14 +8,18 @@
 
 import UIKit
 
+// MARK: - GameViewController
+
 /// Game view controller.
 class GameViewController: UIViewController {
-    // MARK: - Private attributes
+    // MARK: Private properties
+    
     private let gameBoard: GameBoard
     private let titleLabel: UILabel
     private let model: Game
     
-    // MARK: - Public methods
+    // MARK: Initialization
+    
     init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
         self.gameBoard = GameBoard(boardSize: boardSize)
         self.titleLabel = UILabel()
@@ -25,7 +29,7 @@ class GameViewController: UIViewController {
     
         // Delegates
         self.gameBoard.delegate = self
-        self.model.gameVCDelegate = self
+        self.model.delegate = self
         
         configure()
         setupObservers()
@@ -35,9 +39,13 @@ class GameViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Deinitialization
+    
     deinit {
         removeObservers()
     }
+    
+    // MARK: UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +54,8 @@ class GameViewController: UIViewController {
         self.model.makeAITurnIfShould()
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Configure view and its subviews.
      */
@@ -136,29 +145,32 @@ class GameViewController: UIViewController {
     }
 }
 
-// MARK: - GameViewControllerDelegate
+// MARK: - GameBoardDelegate
+
 extension GameViewController: GameBoardDelegate {
     /**
      Select tile at given position.
      
-     - parameter row: Row of tile to be selected.
-     - parameter col: Column of tile to be selected.
+     - parameter gameBoard:
+     - parameter position: Position of tile to be selected.
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
-    func gameBoard(row: Int, col: Int) -> Player? {
-        return self.model.selectTile(row: row, col: col)
+    func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Player? {
+        return self.model.selectTile(at: position)
     }
 }
 
 // MARK: - GameDelegate
+
 extension GameViewController: GameDelegate {
-    func setTileView(row: Int, col: Int, value: Player) {
-        gameBoard.setTileView(row: row, col: col, player: value)
+    func game(_ game: Game, setTileViewAt position: Position, to value: Player) {
+        self.gameBoard.setTileView(row: position.row, col: position.column, player: value)
     }
 }
 
 // MARK: - Device orientation
+
 extension GameViewController {
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         switch UIDevice.current.orientation {
@@ -175,6 +187,7 @@ extension GameViewController {
 }
 
 // MARK: - Button callbacks
+
 extension GameViewController {
     /**
      Callback to be called after tapping on back button.
@@ -185,6 +198,7 @@ extension GameViewController {
 }
 
 // MARK: - Notification callbacks
+
 extension GameViewController {
     /**
      Callback to be called after game state has been changed.

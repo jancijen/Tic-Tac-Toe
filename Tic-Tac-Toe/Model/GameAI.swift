@@ -8,15 +8,21 @@
 
 import Foundation
 
+// MARK: - GameAI
+
 /// AI "player" based on MiniMax algorithm.
 class GameAI {
-    // MARK: - Private attributes
+    // MARK: Private properties
+    
     private let symboleAI: Player
     
-    // MARK: - Public methods
+    // MARK: Initialization
+    
     init(symboleAI: Player) {
         self.symboleAI = symboleAI
     }
+    
+    // MARK: Public methods
     
     /**
      Make best (optimal) move on given gameboard.
@@ -30,33 +36,36 @@ class GameAI {
         var bestMoveRow = -1
         var bestMoveCol = -1
         
-        for i in 0..<boardSize {
-            for j in 0..<boardSize {
+        for row in 0..<boardSize {
+            for col in 0..<boardSize {
+                let position = Position(row: row, column: col)
+                
                 // Check whether tile is empty
-                if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
+                if gameBoard.getTile(at: position).getTileSymbole() == .undef {
                     // Make move
-                    gameBoard.setTile(row: i, col: j, player: self.symboleAI, force: true)
+                    gameBoard.setTile(at: position, to: self.symboleAI, force: true)
                     
                     // Recursively call minimax
                     let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false, alpha: Int.min, beta: Int.max)
                     
                     // Undo move
-                    gameBoard.setTile(row: i, col: j, player: .undef, force: true)
+                    gameBoard.setTile(at: position, to: .undef, force: true)
                     
                     if tmpMove > bestMove {
                         bestMove = tmpMove
-                        bestMoveRow = i
-                        bestMoveCol = j
+                        bestMoveRow = row
+                        bestMoveCol = col
                     }
                 }
             }
         }
         
         // Make best move (simulate tap)
-        gameBoard.simulateTap(row: bestMoveRow, col: bestMoveCol)
+        gameBoard.simulateTap(at: Position(row: bestMoveRow, column: bestMoveCol))
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Compute best worstcase scenario score on given board using minimax algorithm with alpha-beta prunning.
      
@@ -87,18 +96,20 @@ class GameAI {
             
             // Check move for every empty tile
             let boardSize = gameBoard.getBoardSize()
-            for i in 0..<boardSize {
-                for j in 0..<boardSize {
+            for row in 0..<boardSize {
+                for col in 0..<boardSize {
+                    let position = Position(row: row, column: col)
+                    
                     // Check whether tile is empty
-                    if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
+                    if gameBoard.getTile(at: position).getTileSymbole() == .undef {
                         // Make move
-                        gameBoard.setTile(row: i, col: j, player: self.symboleAI, force: true)
+                        gameBoard.setTile(at: position, to: self.symboleAI, force: true)
                         
                         // Recursively call minimax (depth trick to take shorter sequence of moves)
                         bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp) - depth)
                         
                         // Undo move
-                        gameBoard.setTile(row: i, col: j, player: .undef, force: true)
+                        gameBoard.setTile(at: position, to: .undef, force: true)
                         
                         // Alpha-beta pruning optimization
                         alphaTmp = max(alphaTmp, bestMove)
@@ -117,18 +128,20 @@ class GameAI {
             
             // Check move for every empty tile
             let boardSize = gameBoard.getBoardSize()
-            for i in 0..<boardSize {
-                for j in 0..<boardSize {
+            for row in 0..<boardSize {
+                for col in 0..<boardSize {
+                    let position = Position(row: row, column: col)
+                    
                     // Check whether tile is empty
-                    if gameBoard.getTile(row: i, col: j).getTileSymbole() == .undef {
+                    if gameBoard.getTile(at: position).getTileSymbole() == .undef {
                         // Make move
-                        gameBoard.setTile(row: i, col: j, player: self.symboleAI.opposite(), force: true)
+                        gameBoard.setTile(at: position, to: self.symboleAI.opposite(), force: true)
                         
                         // Recursively call minimax (depth trick to take shorter sequence of moves)
                         bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp) + depth)
                         
                         // Undo move
-                        gameBoard.setTile(row: i, col: j, player: .undef, force: true)
+                        gameBoard.setTile(at: position, to: .undef, force: true)
                         
                         // Alpha-beta pruning optimization
                         betaTmp = min(betaTmp, bestMove)

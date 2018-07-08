@@ -8,20 +8,27 @@
 
 import Foundation
 
-protocol ModelDelegate: class {
-    func simulateTileTap(row: Int, col: Int) -> Void
+// MARK: - GameBoardModelDelegate
+
+protocol GameBoardModelDelegate: class {
+    func gameBoardModel(_ gameBoardModel: GameBoardModel,
+                        simulateTileTapAt position: Position) -> Void
 }
 
-/// Model representing gameboard logic and data.
+// MARK: - GameBoardModel
+
+/// Model representing gameboard's logic and data.
 class GameBoardModel {
-    // MARK: - Public attributes
-    weak var gameDelegate: ModelDelegate? = nil
-    // MARK: - Private attributes
+    // MARK: Public properties
+    
+    weak var delegate: GameBoardModelDelegate? = nil
+    
+    // MARK: Private properties
+    private var filledTiles: Int = 0
     private var board: [[TileModel]] = [[TileModel]]()
     private let boardSize: Int
-    private var filledTiles: Int = 0
     
-    // MARK: - Public methods
+    // MARK: Initialization
     init(boardSize: Int) {
         self.boardSize = boardSize
         if boardSize < 3 { // TODO
@@ -39,6 +46,8 @@ class GameBoardModel {
         }
     }
     
+    // MARK: Public methods
+    
     /**
      Get size of gameboard.
      
@@ -51,13 +60,12 @@ class GameBoardModel {
     /**
      Get concrete tile.
      
-     - parameter row: Row of tile to get.
-     - parameter col: Column of tile to get.
+     - parameter position: Position of tile to get.
      
      - returns: Concrete tile.
      */
-    func getTile(row: Int, col: Int) -> TileModel {
-        return self.board[row][col]
+    func getTile(at position: Position) -> TileModel {
+        return self.board[position.row][position.column]
     }
     
     /**
@@ -79,26 +87,25 @@ class GameBoardModel {
     /**
      Simulate tap on tile view.
      
-     - parameter row: Row of tile to be tapped.
-     - parameter col: Column of tile to be tapped.
+     - parameter position: Position of tile to be tapped.
      */
-    func simulateTap(row: Int, col: Int) {
+    func simulateTap(at position: Position) {
         // Simulate view tap
-        self.gameDelegate?.simulateTileTap(row: row, col: col)
+        self.delegate?.gameBoardModel(self, simulateTileTapAt: position)
     }
     
     /**
      Set tile's symbol.
      
-     - parameter row: Row of tile to be set.
-     - parameter col: Column of tile to be set.
+     - parameter position: Position of tile to be set.
      - parameter player: Mark of player to be set.
+     - parameter force: Whether set should be forced even if tile is not empty.
      
      - returns: Whether mark was successfully set.
      */
-    func setTile(row: Int, col: Int, player: Player, force: Bool) -> Bool {
+    func setTile(at position: Position, to player: Player, force: Bool) -> Bool {
         // Try to set tile's symbol
-        let toReturn = self.board[row][col].setTileSymbole(player: player, force: force)
+        let toReturn = self.board[position.row][position.column].setTileSymbole(player: player, force: force)
         
         if toReturn {
             // Erasing marker
@@ -171,7 +178,8 @@ class GameBoardModel {
         return self.filledTiles == self.boardSize * self.boardSize
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Check row for same symbols.
      

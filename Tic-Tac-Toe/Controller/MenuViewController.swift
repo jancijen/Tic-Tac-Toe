@@ -9,20 +9,24 @@
 import UIKit
 import SnapKit
 
+// MARK: - MenuViewController
+
 /// Menu screen view controller.
 class MenuViewController: UIViewController {
-    // MARK: Private attributes
+    // MARK: Public static properties
+    
     static let spacing: CGFloat = 32
     static let buttonWidth: CGFloat = 200
     
-    // MARK: - Public methods
+    // MARK: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.configure()
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Configure view and its subviews.
      */
@@ -93,6 +97,7 @@ class MenuViewController: UIViewController {
 }
 
 // MARK: - Button callbacks
+
 extension MenuViewController {
     /**
      Singleplayer button callback.

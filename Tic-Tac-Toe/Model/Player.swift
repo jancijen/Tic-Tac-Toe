@@ -8,11 +8,17 @@
 
 import Foundation
 
+// MARK: - Player
+
 /// Possible symboles for player.
 enum Player {
+    // MARK: Cases
+    
     case X
     case O
     case undef
+    
+    // MARK: - Public methods
     
     /**
      Get opposite symbole.

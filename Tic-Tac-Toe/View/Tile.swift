@@ -14,8 +14,7 @@ import SnapKit
 /// Protocol defining required methods from game board.
 protocol TileDelegate: class {
     func tile(_ tile: Tile,
-              didSelectTileAtRow row: Int,
-              didSelectTileAtColumn col: Int) -> Player? // TODO - naming !
+              didSelectTileAt position: Position) -> Player?
 }
 
 // MARK: - Tile
@@ -32,18 +31,16 @@ class Tile: UIButton {
     
     // MARK: Private properties
     
-    private let row: Int
-    private let col: Int
+    private let position: Position
     
     // MARK: Initialization
     
-    init(row: Int, col: Int) {
-        self.row = row
-        self.col = col
+    init(position: Position) {
+        self.position = position
         
         super.init(frame: CGRect.zero)
         
-        self.configure()
+        configure()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -75,7 +72,7 @@ extension Tile {
      */
     @objc func tileTapped() {
         // Select tile if it is possible
-        guard let symbole = self.delegate?.tile(self, didSelectTileAtRow: self.row, didSelectTileAtColumn: self.col) else { return }
+        guard let symbole = self.delegate?.tile(self, didSelectTileAt: self.position) else { return }
         
         // If tile has been selected - set its symbole
         switch symbole {

@@ -16,6 +16,7 @@
 		0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51920F0C30B00E98C86 /* TileModel.swift */; };
 		0A11E51E20F0DA3F00E98C86 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51D20F0DA3F00E98C86 /* Game.swift */; };
 		0A11E52020F1514800E98C86 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51F20F1514800E98C86 /* GameState.swift */; };
+		0A11E52220F2736F00E98C86 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E52120F2736F00E98C86 /* Position.swift */; };
 		0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF0320E82E59000273EB /* AppDelegate.swift */; };
 		0A15EF0B20E82E5B000273EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A15EF0A20E82E5B000273EB /* Assets.xcassets */; };
 		0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1A20E82F74000273EB /* MenuViewController.swift */; };
@@ -38,6 +39,7 @@
 		0A11E51920F0C30B00E98C86 /* TileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileModel.swift; sourceTree = "<group>"; };
 		0A11E51D20F0DA3F00E98C86 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		0A11E51F20F1514800E98C86 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		0A11E52120F2736F00E98C86 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		0A15EF0020E82E59000273EB /* Tic-Tac-Toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic-Tac-Toe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A15EF0320E82E59000273EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A15EF0A20E82E5B000273EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				0A11E51920F0C30B00E98C86 /* TileModel.swift */,
 				0A11E51D20F0DA3F00E98C86 /* Game.swift */,
 				0A11E51F20F1514800E98C86 /* GameState.swift */,
+				0A11E52120F2736F00E98C86 /* Position.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -266,12 +269,10 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tic-Tac-Toe/Pods-Tic-Tac-Toe-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCLAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -311,6 +312,7 @@
 				0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */,
 				0A11E52020F1514800E98C86 /* GameState.swift in Sources */,
 				0ABD6D2920EBB95B00B251A8 /* Tile.swift in Sources */,
+				0A11E52220F2736F00E98C86 /* Position.swift in Sources */,
 				0A11E51420EE9E9E00E98C86 /* UIButton+Closure.swift in Sources */,
 				0ABD6D2B20EBBA0200B251A8 /* GameBoard.swift in Sources */,
 				0ABD6D1920E8395A00B251A8 /* ThemeManager.swift in Sources */,

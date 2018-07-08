@@ -13,8 +13,7 @@ import UIKit
 /// Protocol defining required methods from game view controller.
 protocol GameBoardDelegate: class {
     func gameBoard(_ gameBoard: GameBoard,
-                   didSelectTileAtRow row: Int,
-                   didSelectTileAtColumn col: Int) -> Player? // TODO - params naming !
+                   didSelectTileAt position: Position) -> Player?
 }
 
 // MARK: - GameBoard
@@ -116,7 +115,7 @@ class GameBoard: UIView {
             
             var tmpRow = [Tile]()
             for col in 0..<boardSize {
-                let tile = Tile(row: row, col: col)
+                let tile = Tile(position: Position(row: row, column: col))
                 tile.delegate = self
                 
                 tmpRow.append(tile)
@@ -142,12 +141,12 @@ extension GameBoard: TileDelegate {
     /**
      Select concrete tile.
      
-     - parameter row: Row of tile to be selected.
-     - parameter col: Column of tile to be selected.
+     - parameter tile:
+     - parameter position: Position of tile to be selected.
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
-    func selectTile(row: Int, col: Int) -> Player? {
-        return self.delegate?.gameBoard(self, didSelectTileAtRow: row, didSelectTileAtColumn: col)
+    func tile(_ tile: Tile, didSelectTileAt position: Position) -> Player? {
+        return self.delegate?.gameBoard(self, didSelectTileAt: position)
     }
 }

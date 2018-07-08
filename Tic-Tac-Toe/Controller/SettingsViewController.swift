@@ -8,17 +8,23 @@
 
 import UIKit
 
+// MARK: - SettingsViewController
+
 /// View controller for pre-game settings.
 class SettingsViewController: UIViewController {
-    // MARK: - Private static attributes
+    // MARK: Private static properties
+    
     private static let horizontalOffset: CGFloat = 40  // TODO
-    // MARK: - Private attributes
+    
+    // MARK: Private properties
+    
     private let isSinglePlayer: Bool
     private let verticalOffset: CGFloat // TODO
     private let symbolSwitch: UISwitch = UISwitch()
     private let turnSwitch: UISwitch = UISwitch()
     
-    // MARK: - Public methods
+    // MARK: Initialization
+    
     init(isSinglePlayer: Bool) {
         self.isSinglePlayer = isSinglePlayer
         self.verticalOffset = isSinglePlayer ? 50 : 0
@@ -30,13 +36,16 @@ class SettingsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: UIViewController
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.configure()
      }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Configure view and its subviews.
      */
@@ -149,12 +158,14 @@ class SettingsViewController: UIViewController {
     }
 }
 
-// MENU: - Button callbacks
+// MARK: - Button callbacks
+
 extension SettingsViewController {
     /**
      Callback to be called after play button has been tapped.
      */
     @objc private func playTapped() {
+        // Get player's choices from switch(es)
         let playersSymbole = self.symbolSwitch.isOn ? Player.O : Player.X
         let firstTurn = self.turnSwitch.isOn ? playersSymbole.opposite() : playersSymbole
         
