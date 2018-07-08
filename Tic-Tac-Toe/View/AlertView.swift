@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-// MARK: - Alert View
+// MARK: - AlertView
 
 /// Custom alert view.
 class AlertView: UIView, Poppable {
     // MARK: Public properties
     
-    let backgroundView: UIView = UIView()
     let alertView: UIView = UIView()
+    let backgroundView: UIView = UIView()
     
     // MARK: Private properties
     
@@ -27,8 +27,9 @@ class AlertView: UIView, Poppable {
     convenience init(title: String, image: UIImage?) {
         self.init(frame: UIScreen.main.bounds)
         
-        self.setupObservers()
-        self.configure(title: title, image: image)
+        // Initial setup
+        setupObservers()
+        configure(title: title, image: image)
     }
     
     override init(frame: CGRect) {
@@ -38,6 +39,8 @@ class AlertView: UIView, Poppable {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: Deinitialization
     
     deinit {
         removeObservers()
@@ -52,7 +55,7 @@ class AlertView: UIView, Poppable {
      - parameter action: Action to be triggered after button tap.
      */
     func addActionButton(title: String, action: @escaping () -> Void) {
-        // Button config
+        // Button configuration
         let button = UIButton()
         button.setTitle(title, for: .normal)
         button.backgroundColor = .black
@@ -62,8 +65,9 @@ class AlertView: UIView, Poppable {
         button.addTargetClosure(actionClosure: action, for: .touchUpInside)
     
         // Add button to stack
-        self.buttonsStack.addArrangedSubview(button)
-        // Layout button
+        buttonsStack.addArrangedSubview(button)
+        
+        // Button layout
         button.snp.makeConstraints { make in
             make.width.equalToSuperview()
         }
@@ -79,12 +83,12 @@ class AlertView: UIView, Poppable {
      */
     private func configure(title: String, image: UIImage?) {
         // -------------- Background view --------------
-        self.backgroundView.frame = self.frame
-        self.backgroundView.backgroundColor = .black
-        self.backgroundView.alpha = 0.6
+        backgroundView.frame = self.frame
+        backgroundView.backgroundColor = .black
+        backgroundView.alpha = 0.6
         
-        self.addSubview(self.backgroundView)
-        self.backgroundView.snp.makeConstraints { make in
+        self.addSubview(backgroundView)
+        backgroundView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
@@ -94,9 +98,9 @@ class AlertView: UIView, Poppable {
         titleLabel.font = ThemeManager.appFont(size: ThemeManager.titleFontSize)
         titleLabel.text = title
         
-        self.alertView.addSubview(titleLabel)
+        alertView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.alertView.snp.top).offset(20)
+            make.top.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
         }
         
@@ -106,38 +110,41 @@ class AlertView: UIView, Poppable {
         buttonsStack.alignment = .center
         buttonsStack.spacing = 10
         
-        self.alertView.addSubview(buttonsStack)
+        alertView.addSubview(buttonsStack)
         buttonsStack.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-20)
             make.right.equalToSuperview().offset(-20)
             make.left.equalToSuperview().offset(20)
         }
         
-        // Image
+        // With image
         if let img = image {
             let imageView = UIImageView(image: img)
             
-            self.alertView.addSubview(imageView)
+            alertView.addSubview(imageView)
             imageView.snp.makeConstraints { make in
                 make.height.width.equalTo(32)
                 make.top.equalTo(titleLabel.snp.bottom).offset(15)
                 make.centerX.equalToSuperview()
             }
             
-            self.buttonsStack.snp.makeConstraints { make in
+            buttonsStack.snp.makeConstraints { make in
                 make.top.equalTo(imageView.snp.bottom).offset(20)
             }
-        } else {
-            self.buttonsStack.snp.makeConstraints { make in
+        }
+        // Without image
+        else {
+            buttonsStack.snp.makeConstraints { make in
                 make.top.equalTo(titleLabel.snp.bottom).offset(20)
             }
         }
         
         // Alert view
-        self.alertView.clipsToBounds = true
-        self.alertView.backgroundColor = .white
-        self.addSubview(self.alertView)
-        self.alertView.snp.makeConstraints { make in
+        alertView.clipsToBounds = true
+        alertView.backgroundColor = .white
+        
+        self.addSubview(alertView)
+        alertView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalTo(240)
         }
@@ -160,11 +167,11 @@ class AlertView: UIView, Poppable {
     }
 }
 
-// MARK: - Observers callbacks
+// MARK: - Observers methods
 
 extension AlertView {
     /**
-     Callback to be called after device orientation has changed.
+     Reset view's frame to whole screen. Method to be called after device orientation has changed.
      */
     @objc private func rotated() {
         // Reset frame of view
