@@ -10,6 +10,7 @@ import UIKit
 
 typealias UIButtonTargetClosure = () -> ()
 
+/// Closure wrapper class.
 class ClosureWrapper {
     let closure: UIButtonTargetClosure
     init(_ closure: @escaping UIButtonTargetClosure) {
@@ -17,7 +18,7 @@ class ClosureWrapper {
     }
 }
 
-/// UIButton extensions.
+/// UIButton extension to be able to use closure as button's target.
 extension UIButton {
     private struct AssociatedKeys {
         static var targetClosure = "targetClosure"
