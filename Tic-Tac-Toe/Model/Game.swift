@@ -30,6 +30,8 @@ class Game {
         didSet {
             // Post that state has been changed
             NotificationCenter.default.post(name: Notification.Name(rawValue: "gameState"), object: nil, userInfo: ["newState": state])
+            // Let AI make a move if it is on turn
+            makeAIMoveIfShould()
         }
     }
     private let boardSize: Int
@@ -92,28 +94,12 @@ class Game {
             } else {
                 // Switch turns
                 self.state = self.state.oppositeTurn()
-                
-                // AI turn (if it is on turn)
-                makeAITurnIfShould()
             }
             
             return currentPlayer
         }
         
         return nil
-    }
-    
-    /**
-     Let AI make a move if it is on turn.
-     */
-    func makeAITurnIfShould() {
-        // Turn check
-        if self.state == .turnX && self.aiPlayer == .X
-           || self.state == .turnO && self.aiPlayer == .O
-        {
-            // Make a move
-            self.AI?.makeBestMove(gameBoard: self.gameBoardModel)
-        }
     }
     
     /**
@@ -133,9 +119,6 @@ class Game {
         self.gameBoardModel.reset()
         // Reset gamestate
         self.state = self.firstPlayer.turn()
-        
-        // Let AI start if it shouls
-        makeAITurnIfShould()
     }
     
     // MARK: Private methods
@@ -157,6 +140,24 @@ class Game {
     }
 }
 
+// MARK: - Observers callbacks
+
+extension Game {
+    /**
+     Let AI make a move if it is on turn.
+     */
+    func makeAIMoveIfShould() {
+        // Turn check
+        if self.state == .turnX && self.aiPlayer == .X
+            || self.state == .turnO && self.aiPlayer == .O
+        {
+            // Make a move
+            self.AI?.makeBestMove(gameBoard: self.gameBoardModel)
+        }
+    }
+}
+
+
 // MARK: - ModelDelegate
 
 extension Game: GameBoardModelDelegate {
@@ -165,6 +166,7 @@ extension Game: GameBoardModelDelegate {
         
         // Model
         selectTile(at: position)
+        
         // View
         self.delegate?.game(self, setTileViewAt: position, to: currentTurn)
     }

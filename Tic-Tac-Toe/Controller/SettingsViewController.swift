@@ -10,24 +10,22 @@ import UIKit
 
 // MARK: - SettingsViewController
 
-/// View controller for pre-game settings.
+/// Pre-game settings view controller.
 class SettingsViewController: UIViewController {
-    // MARK: Private static properties
-    
-    private static let horizontalOffset: CGFloat = 40  // TODO
-    
     // MARK: Private properties
     
-    private let isSinglePlayer: Bool
-    private let verticalOffset: CGFloat // TODO
+    private static let horizontalOffset: CGFloat = 40
+    
     private let symbolSwitch: UISwitch = UISwitch()
     private let turnSwitch: UISwitch = UISwitch()
+    private let isSinglePlayer: Bool
+    private let verticalOffset: CGFloat
     
     // MARK: Initialization
     
     init(isSinglePlayer: Bool) {
         self.isSinglePlayer = isSinglePlayer
-        self.verticalOffset = isSinglePlayer ? 50 : 0
+        verticalOffset = isSinglePlayer ? 50 : 0
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,26 +39,27 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.configure()
-     }
+        // Configure view
+        configure()
+    }
     
     // MARK: Private methods
     
     /**
-     Configure view and its subviews.
+     Configures view and its subviews.
      */
     private func configure() {
         // View configuration
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
         
         // ---------------- Title ----------------
         let titleLabel = UILabel()
         titleLabel.font = ThemeManager.appFont(size: ThemeManager.titleFontSize)
         titleLabel.text = "Settings"
         
-        self.view.addSubview(titleLabel)
+        view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.centerX.equalToSuperview()
         }
         
@@ -69,29 +68,29 @@ class SettingsViewController: UIViewController {
         backButton.setImage(#imageLiteral(resourceName: "leftArrow"), for: .normal)
         backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         
-        self.view.addSubview(backButton)
+        view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
             make.height.width.equalTo(48)
             make.left.equalToSuperview().offset(10)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
         }
         
         // ---------------- Symbol choice ----------------
         // Switch
         symbolSwitch.onTintColor = .black
         
-        self.view.addSubview(symbolSwitch)
+        view.addSubview(symbolSwitch)
         symbolSwitch.snp.makeConstraints { make in
             make.width.equalTo(60)
             make.height.equalTo(20)
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(-self.verticalOffset)
+            make.centerY.equalToSuperview().offset(-verticalOffset)
         }
         
         // Cross image
         let crossImageView = UIImageView(image: #imageLiteral(resourceName: "cross"))
         
-        self.view.addSubview(crossImageView)
+        view.addSubview(crossImageView)
         crossImageView.snp.makeConstraints { make in
             make.height.width.equalTo(64)
             make.right.equalTo(symbolSwitch.snp.left).offset(-SettingsViewController.horizontalOffset)
@@ -101,7 +100,7 @@ class SettingsViewController: UIViewController {
         // Circle image
         let circleImageView = UIImageView(image: #imageLiteral(resourceName: "circle"))
         
-        self.view.addSubview(circleImageView)
+        view.addSubview(circleImageView)
         circleImageView.snp.makeConstraints { make in
             make.height.width.equalTo(64)
             make.left.equalTo(symbolSwitch.snp.right).offset(SettingsViewController.horizontalOffset)
@@ -112,18 +111,18 @@ class SettingsViewController: UIViewController {
             // ---------------- First turn choice ----------------
             // Switch
             turnSwitch.onTintColor = .black
-            self.view.addSubview(turnSwitch)
+            view.addSubview(turnSwitch)
             turnSwitch.snp.makeConstraints { make in
                 make.width.equalTo(60)
                 make.height.equalTo(20)
                 make.centerX.equalToSuperview()
-                make.centerY.equalToSuperview().offset(self.verticalOffset)
+                make.centerY.equalToSuperview().offset(verticalOffset)
             }
             
             // Player image
             let playerImageView = UIImageView(image: #imageLiteral(resourceName: "human"))
             
-            self.view.addSubview(playerImageView)
+            view.addSubview(playerImageView)
             playerImageView.snp.makeConstraints { make in
                 make.height.width.equalTo(64)
                 make.right.equalTo(turnSwitch.snp.left).offset(-SettingsViewController.horizontalOffset)
@@ -133,7 +132,7 @@ class SettingsViewController: UIViewController {
             // PC image
             let robotImageView = UIImageView(image: #imageLiteral(resourceName: "robot"))
             
-            self.view.addSubview(robotImageView)
+            view.addSubview(robotImageView)
             robotImageView.snp.makeConstraints { make in
                 make.height.width.equalTo(64)
                 make.left.equalTo(turnSwitch.snp.right).offset(SettingsViewController.horizontalOffset)
@@ -149,7 +148,7 @@ class SettingsViewController: UIViewController {
         playButton.setTitle("Play", for: .normal)
         playButton.addTarget(self, action: #selector(playTapped), for: .touchUpInside)
         
-        self.view.addSubview(playButton)
+        view.addSubview(playButton)
         playButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-20)
             make.centerX.equalToSuperview()
@@ -162,27 +161,27 @@ class SettingsViewController: UIViewController {
 
 extension SettingsViewController {
     /**
-     Callback to be called after play button has been tapped.
+     Displays game according to user's choices. Method to be called after play button has been tapped.
      */
     @objc private func playTapped() {
-        // Get player's choices from switch(es)
-        let playersSymbole = self.symbolSwitch.isOn ? Player.O : Player.X
-        let firstTurn = self.turnSwitch.isOn ? playersSymbole.opposite() : playersSymbole
+        // Get user's choices from switch(es)
+        let playersSymbole = symbolSwitch.isOn ? Player.O : Player.X
+        let firstTurn = turnSwitch.isOn ? playersSymbole.opposite() : playersSymbole
         
         // Create and show game
         if self.isSinglePlayer {
             let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: playersSymbole.opposite())
-            self.navigationController?.pushViewController(gameVC, animated: true)
+            navigationController?.pushViewController(gameVC, animated: true)
         } else {
             let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: .undef)
-            self.navigationController?.pushViewController(gameVC, animated: true)
+            navigationController?.pushViewController(gameVC, animated: true)
         }
     }
     
     /**
-     Callback to be called after back button has been tapped.
+     Goes one step back in stack of view controllers. Method to be called after back button has been tapped.
      */
     @objc private func backTapped() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }

@@ -13,35 +13,36 @@ import SnapKit
 
 /// Menu screen view controller.
 class MenuViewController: UIViewController {
-    // MARK: Public static properties
+    // MARK: Private properties
     
-    static let spacing: CGFloat = 32
-    static let buttonWidth: CGFloat = 200
+    private static let spacing: CGFloat = 32
+    private static let buttonWidth: CGFloat = 200
     
     // MARK: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.configure()
+        // Configure view
+        configure()
     }
     
     // MARK: Private methods
     
     /**
-     Configure view and its subviews.
+     Configures view and its subviews.
      */
     private func configure() {
         // Configure view
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
         
         // ---------------- Title ----------------
         let titleLabel = UILabel()
-        titleLabel.font = ThemeManager.appFont(size: ThemeManager.bigTitleFontSize) // TODO
+        titleLabel.font = ThemeManager.appFont(size: ThemeManager.bigTitleFontSize)
         titleLabel.text = "Tic-Tac-Toe"
         
-        self.view.addSubview(titleLabel)
+        view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             make.centerX.equalToSuperview()
         }
         
@@ -72,7 +73,7 @@ class MenuViewController: UIViewController {
         
         // ---------------- Menu view ----------------
         let menuView = UIView()
-        self.view.addSubview(menuView)
+        view.addSubview(menuView)
         menuView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom)
             make.right.left.bottom.equalToSuperview()
@@ -100,16 +101,16 @@ class MenuViewController: UIViewController {
 
 extension MenuViewController {
     /**
-     Singleplayer button callback.
+     Displays pre-game settings for singleplayer game. Singleplayer button's callback.
      */
     @objc private func singlePTapped() {
-        self.navigationController?.pushViewController(SettingsViewController(isSinglePlayer: true), animated: true)
+        navigationController?.pushViewController(SettingsViewController(isSinglePlayer: true), animated: true)
     }
     
     /**
-     Multiplayer button callback.
+     Displays pre-game settings for multiplayer game. Multiplayer button's callback.
      */
     @objc private func multiPTapped() {
-        self.navigationController?.pushViewController(SettingsViewController(isSinglePlayer: false), animated: true)
+        navigationController?.pushViewController(SettingsViewController(isSinglePlayer: false), animated: true)
     }
 }
