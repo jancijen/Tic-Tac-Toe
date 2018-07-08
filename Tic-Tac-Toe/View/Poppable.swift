@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Poppable
 
-/// Protocol defining required methods and attributes from poppable element.
+/// Protocol defining methods and attributes of poppable element.
 protocol Poppable {
     // MARK: Methods
     func show(animated: Bool) -> Void
@@ -22,6 +22,7 @@ protocol Poppable {
 }
 
 // MARK: - Poppable: UIView
+
 extension Poppable where Self: UIView {
     /**
      Show poppable view.

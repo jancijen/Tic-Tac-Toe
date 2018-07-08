@@ -167,7 +167,7 @@ class AlertView: UIView, Poppable {
     }
 }
 
-// MARK: - Observers methods
+// MARK: - Observers callbacks
 
 extension AlertView {
     /**
