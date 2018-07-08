@@ -11,7 +11,7 @@
 		0A11E50820ED789A00E98C86 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50720ED789A00E98C86 /* GameViewController.swift */; };
 		0A11E50E20EE90F600E98C86 /* Poppable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50D20EE90F600E98C86 /* Poppable.swift */; };
 		0A11E51020EE92BF00E98C86 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50F20EE92BF00E98C86 /* AlertView.swift */; };
-		0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51320EE9E9E00E98C86 /* UIButton.swift */; };
+		0A11E51420EE9E9E00E98C86 /* UIButton+Closure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51320EE9E9E00E98C86 /* UIButton+Closure.swift */; };
 		0A11E51820EFDDA400E98C86 /* GameBoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */; };
 		0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51920F0C30B00E98C86 /* TileModel.swift */; };
 		0A11E51E20F0DA3F00E98C86 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51D20F0DA3F00E98C86 /* Game.swift */; };
@@ -33,7 +33,7 @@
 		0A11E50720ED789A00E98C86 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		0A11E50D20EE90F600E98C86 /* Poppable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poppable.swift; sourceTree = "<group>"; };
 		0A11E50F20EE92BF00E98C86 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
-		0A11E51320EE9E9E00E98C86 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		0A11E51320EE9E9E00E98C86 /* UIButton+Closure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Closure.swift"; sourceTree = "<group>"; };
 		0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardModel.swift; sourceTree = "<group>"; };
 		0A11E51920F0C30B00E98C86 /* TileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileModel.swift; sourceTree = "<group>"; };
 		0A11E51D20F0DA3F00E98C86 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 		0A11E51220EE9E9100E98C86 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				0A11E51320EE9E9E00E98C86 /* UIButton.swift */,
+				0A11E51320EE9E9E00E98C86 /* UIButton+Closure.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -311,7 +311,7 @@
 				0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */,
 				0A11E52020F1514800E98C86 /* GameState.swift in Sources */,
 				0ABD6D2920EBB95B00B251A8 /* Tile.swift in Sources */,
-				0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */,
+				0A11E51420EE9E9E00E98C86 /* UIButton+Closure.swift in Sources */,
 				0ABD6D2B20EBBA0200B251A8 /* GameBoard.swift in Sources */,
 				0ABD6D1920E8395A00B251A8 /* ThemeManager.swift in Sources */,
 				0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */,

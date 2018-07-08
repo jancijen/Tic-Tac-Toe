@@ -9,22 +9,34 @@
 import UIKit
 import SnapKit
 
+// MARK: - TileDelegate
+
 /// Protocol defining required methods from game board.
-protocol GameBoardViewDelegate: class {
-    func selectTile(row: Int, col: Int) -> Player?
+protocol TileDelegate: class {
+    func tile(_ tile: Tile,
+              didSelectTileAtRow row: Int,
+              didSelectTileAtColumn col: Int) -> Player? // TODO - naming !
 }
+
+// MARK: - Tile
 
 /// Button representing tile on gameboard.
 class Tile: UIButton {
-    // MARK: - Public attributes
-    weak var gameBoardDelegate: GameBoardViewDelegate? = nil
-    // MARK: - Static public attributes
-    static let size: CGFloat = 100
-    // MARK: - Private attributes
+    // MARK: Static public properties
+    
+    static let size: CGFloat = 100 // TODO
+    
+    // MARK: Public properties
+    
+    weak var delegate: TileDelegate? = nil
+    
+    // MARK: Private properties
+    
     private let row: Int
     private let col: Int
     
-    // MARK: - Public methods
+    // MARK: Initialization
+    
     init(row: Int, col: Int) {
         self.row = row
         self.col = col
@@ -38,7 +50,8 @@ class Tile: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Configure view and its subviews.
      */
@@ -55,13 +68,14 @@ class Tile: UIButton {
 }
 
 // MARK: - Button callbacks
+
 extension Tile {
     /**
      Callback to be called after tile has been tapped.
      */
     @objc func tileTapped() {
         // Select tile if it is possible
-        guard let symbole = self.gameBoardDelegate?.selectTile(row: self.row, col: self.col) else { return }
+        guard let symbole = self.delegate?.tile(self, didSelectTileAtRow: self.row, didSelectTileAtColumn: self.col) else { return }
         
         // If tile has been selected - set its symbole
         switch symbole {

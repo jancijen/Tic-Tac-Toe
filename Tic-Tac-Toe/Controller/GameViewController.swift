@@ -24,7 +24,7 @@ class GameViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     
         // Delegates
-        self.gameBoard.gameVCDelegate = self
+        self.gameBoard.delegate = self
         self.model.gameVCDelegate = self
         
         configure()
@@ -137,7 +137,7 @@ class GameViewController: UIViewController {
 }
 
 // MARK: - GameViewControllerDelegate
-extension GameViewController: GameViewControllerDelegate {
+extension GameViewController: GameBoardDelegate {
     /**
      Select tile at given position.
      
@@ -146,7 +146,7 @@ extension GameViewController: GameViewControllerDelegate {
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
-    func selectTile(row: Int, col: Int) -> Player? {
+    func gameBoard(row: Int, col: Int) -> Player? {
         return self.model.selectTile(row: row, col: col)
     }
 }

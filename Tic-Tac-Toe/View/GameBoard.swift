@@ -8,20 +8,30 @@
 
 import UIKit
 
+// MARK: - GameBoardDelegate
+
 /// Protocol defining required methods from game view controller.
-protocol GameViewControllerDelegate: class {
-    func selectTile(row: Int, col: Int) -> Player?
+protocol GameBoardDelegate: class {
+    func gameBoard(_ gameBoard: GameBoard,
+                   didSelectTileAtRow row: Int,
+                   didSelectTileAtColumn col: Int) -> Player? // TODO - params naming !
 }
+
+// MARK: - GameBoard
 
 /// View representing game board.
 class GameBoard: UIView {
-    // MARK: - Public attributes
-    weak var gameVCDelegate: GameViewControllerDelegate? = nil
-    // MARK: - Private attributes
-    private let boardSize: Int
-    private var tiles: [[Tile]]
+    // MARK: Public properties
     
-    // MARK: - Public attributes
+    weak var delegate: GameBoardDelegate? = nil
+    
+    // MARK: Private properties
+    
+    private var tiles: [[Tile]]
+    private let boardSize: Int
+    
+    // MARK: Initialization
+    
     init(boardSize: Int) {
         self.boardSize = boardSize
         if self.boardSize < 3 { // TODO
@@ -38,6 +48,9 @@ class GameBoard: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    // MARK: Public methods
     
     /**
      Reset gameboard to default.
@@ -74,7 +87,8 @@ class GameBoard: UIView {
         self.tiles[row][col].setImage(image, for: .normal)
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Configure view and its subviews.
      */
@@ -103,7 +117,7 @@ class GameBoard: UIView {
             var tmpRow = [Tile]()
             for col in 0..<boardSize {
                 let tile = Tile(row: row, col: col)
-                tile.gameBoardDelegate = self
+                tile.delegate = self
                 
                 tmpRow.append(tile)
                 horizontalSV.addArrangedSubview(tile)
@@ -123,7 +137,8 @@ class GameBoard: UIView {
 
 
 // MARK: - GameBoardViewDelegate
-extension GameBoard: GameBoardViewDelegate {
+
+extension GameBoard: TileDelegate {
     /**
      Select concrete tile.
      
@@ -133,6 +148,6 @@ extension GameBoard: GameBoardViewDelegate {
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
     func selectTile(row: Int, col: Int) -> Player? {
-        return self.gameVCDelegate?.selectTile(row: row, col: col)
+        return self.delegate?.gameBoard(self, didSelectTileAtRow: row, didSelectTileAtColumn: col)
     }
 }

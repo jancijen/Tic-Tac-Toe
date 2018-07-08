@@ -9,15 +9,21 @@
 import Foundation
 import UIKit
 
+// MARK: - Alert View
+
 /// Custom alert view.
 class AlertView: UIView, Poppable {
-    // MARK: - Public attributes
+    // MARK: Public properties
+    
     let backgroundView: UIView = UIView()
     let alertView: UIView = UIView()
-    // MARK: - Private attributes
+    
+    // MARK: Private properties
+    
     private let buttonsStack: UIStackView = UIStackView()
     
-    // MARK: - Public methods
+    // MARK: Initialization
+    
     convenience init(title: String, image: UIImage?) {
         self.init(frame: UIScreen.main.bounds)
         
@@ -36,6 +42,8 @@ class AlertView: UIView, Poppable {
     deinit {
         removeObservers()
     }
+    
+    // MARK: Public methods
     
     /**
      Add action button to alert view.
@@ -61,7 +69,8 @@ class AlertView: UIView, Poppable {
         }
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
      Configure view and its subviews.
      
@@ -152,6 +161,7 @@ class AlertView: UIView, Poppable {
 }
 
 // MARK: - Observers callbacks
+
 extension AlertView {
     /**
      Callback to be called after device orientation has changed.

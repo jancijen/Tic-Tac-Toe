@@ -1,5 +1,5 @@
 //
-//  UIButton.swift
+//  UIButton+Closure.swift
 //  Tic-Tac-Toe
 //
 //  Created by Jendrusak, Jan on 5.7.18.
@@ -18,7 +18,7 @@ class ClosureWrapper {
     }
 }
 
-/// UIButton extension to be able to use closure as button's target.
+/// Extending UIButton to be able to use closure as button's target.
 extension UIButton {
     private struct AssociatedKeys {
         static var targetClosure = "targetClosure"
