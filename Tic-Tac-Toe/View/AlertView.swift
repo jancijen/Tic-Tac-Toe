@@ -24,6 +24,12 @@ class AlertView: UIView, Poppable {
     
     // MARK: Initialization
     
+    /**
+     Initializes new alert view.
+     
+     - parameter title: Title to be shown in alert.
+     - parameter image: Optional image to be shown in alert.
+     */
     convenience init(title: String, image: UIImage?) {
         self.init(frame: UIScreen.main.bounds)
         
@@ -49,7 +55,7 @@ class AlertView: UIView, Poppable {
     // MARK: Public methods
     
     /**
-     Add action button to alert view.
+     Adds action button to alert view.
      
      - parameter title: Title of button.
      - parameter action: Action to be triggered after button tap.
@@ -76,7 +82,7 @@ class AlertView: UIView, Poppable {
     // MARK: Private methods
     
     /**
-     Configure view and its subviews.
+     Configures view and its subviews.
      
      - parameter title: Title of alert.
      - parameter image: Optional image of alert.
@@ -151,7 +157,7 @@ class AlertView: UIView, Poppable {
     }
     
     /**
-     Setup observers.
+     Sets observers.
      */
     private func setupObservers() {
         // Device orientation
@@ -159,7 +165,7 @@ class AlertView: UIView, Poppable {
     }
     
     /**
-     Remove observers.
+     Removes observers.
      */
     private func removeObservers() {
         // Device orientation
@@ -171,7 +177,7 @@ class AlertView: UIView, Poppable {
 
 extension AlertView {
     /**
-     Reset view's frame to whole screen. Method to be called after device orientation has been changed.
+     Resets view's frame to whole screen. Method to be called after device orientation has been changed.
      */
     @objc private func rotated() {
         // Reset frame of view

@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// Closure typealias.
 typealias UIButtonTargetClosure = () -> Void
 
 // MARK: - ClosureWrapper
@@ -20,6 +21,11 @@ class ClosureWrapper {
     
     // MARK: Initialization
     
+    /**
+     Initializes new closure wrapper.
+     
+     - parameter closure: Closure to be wrapped.
+     */
     init(_ closure: @escaping UIButtonTargetClosure) {
         self.closure = closure
     }

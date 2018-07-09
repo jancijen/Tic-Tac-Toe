@@ -20,6 +20,13 @@ class GameViewController: UIViewController {
     
     // MARK: Initialization
     
+    /**
+     Initializes new game view controller.
+     
+     - parameter boardSize: Size of gameboard.
+     - parameter firstPlayer: Mark of player which should make first move.
+     - parameter aiPlayer: Mark of player which is AI. "undef" for none.
+     */
     init(boardSize: Int, firstPlayer: Mark, aiPlayer: Mark) {
         gameBoard = GameBoard(boardSize: boardSize)
         titleLabel = UILabel()
@@ -155,12 +162,12 @@ class GameViewController: UIViewController {
 
 extension GameViewController: GameBoardDelegate {
     /**
-     Selects tile at given position.
+     Tells the delegate that tile at given position has been selected.
      
-     - parameter gameBoard: Gameboard owning tile.
-     - parameter position: Position of tile to be selected.
+     - parameter gameBoard: The gameboard object informing the delegate of this event.
+     - parameter position: Position of the selected tile.
      
-     - returns: Player which is now marked on tile or "nil" if selection was not possible.
+     - returns: Player which is now marked on tile or "nil" if model selection was not possible.
      */
     func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Mark? {
         return model.selectTile(at: position)
@@ -171,9 +178,9 @@ extension GameViewController: GameBoardDelegate {
 
 extension GameViewController: GameDelegate {
     /**
-     Sets view of tile at given position.
+     Orders delegate to set view of tile at given position.
      
-     - parameter game: Game model.
+     - parameter game: The game model object ordering the delegate to do this action.
      - parameter position: Position of tile to set mark on.
      - parameter mark: Mark to be set.
      */
@@ -214,7 +221,7 @@ extension GameViewController {
 
 extension GameViewController {
     /**
-     Callback to be called after game state has been changed.
+     Method to be called after game state has been changed.
      */
     @objc private func gameStateChanged(notification: Notification) {
         // Get new state

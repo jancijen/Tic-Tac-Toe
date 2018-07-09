@@ -25,7 +25,7 @@ protocol Poppable {
 
 extension Poppable where Self: UIView {
     /**
-     Show poppable view.
+     Shows poppable view.
      
      - parameter animated: Whether show should be animated.
      */
@@ -58,7 +58,7 @@ extension Poppable where Self: UIView {
     }
     
     /**
-     Dismiss poppable view.
+     Dismisses poppable view.
      
      - parameter animated: Whether dismiss should be animated.
      */

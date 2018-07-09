@@ -40,11 +40,18 @@ class Game {
     }
     private let boardSize: Int
     private let firstPlayer: Mark
-    private let AI: GameAI?
+    private let AI: AIPlayer?
     private let gameBoardModel: GameBoardModel
     
     // MARK: Initialization
     
+    /**
+     Initializes new game model.
+     
+     - parameter boardSize: Size of gameboard.
+     - parameter firstPlayer: Mark of player which should make first move.
+     - parameter aiPlayer: Mark of player which is AI. "undef" for none.
+     */
     init(boardSize: Int, firstPlayer: Mark, aiPlayer: Mark) {
         // General
         self.boardSize = boardSize
@@ -62,8 +69,9 @@ class Game {
         
         // AI
         self.aiPlayer = aiPlayer
+        // Initialize AI player if needed
         if aiPlayer != .undef {
-            AI = GameAI(aiMark: aiPlayer)
+            AI = AIPlayer(aiMark: aiPlayer)
         } else {
             AI = nil
         }
@@ -138,7 +146,7 @@ class Game {
 
 extension Game {
     /**
-     Let AI make a move if it is on turn.
+     Lets AI make a move if it is on turn.
      */
     func makeAIMoveIfShould() {
         // Turn check
@@ -156,9 +164,9 @@ extension Game {
 
 extension Game: GameBoardModelDelegate {
     /**
-     Tap on tile.
+     Orders the delegate to tap on tile.
      
-     - parameter gameBoardModel: Gameboard model.
+     - parameter gameBoardModel: The gameboard model object ordering the delegate to do this action.
      - parameter position: Position of tile to be tapped.
      */
     func gameBoardModel(_ gameBoardModel: GameBoardModel, tapOnTileAt position: Position) {

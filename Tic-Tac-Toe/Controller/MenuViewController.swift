@@ -53,7 +53,7 @@ class MenuViewController: UIViewController {
         singlePButton.titleLabel?.font = buttonFont
         singlePButton.setTitleColor(.white, for: .normal)
         singlePButton.setTitle("Singleplayer", for: .normal)
-        singlePButton.addTarget(self, action: #selector(singlePTapped), for: .touchUpInside)
+        singlePButton.addTarget(self, action: #selector(singlePlayerTapped), for: .touchUpInside)
         
         singlePButton.snp.makeConstraints { make in
             make.width.equalTo(MenuViewController.buttonWidth)
@@ -65,7 +65,7 @@ class MenuViewController: UIViewController {
         multiPButton.titleLabel?.font = buttonFont
         multiPButton.setTitleColor(.white, for: .normal)
         multiPButton.setTitle("Multiplayer", for: .normal)
-        multiPButton.addTarget(self, action: #selector(multiPTapped), for: .touchUpInside)
+        multiPButton.addTarget(self, action: #selector(multiPlayerTapped), for: .touchUpInside)
         
         multiPButton.snp.makeConstraints { make in
             make.width.equalTo(MenuViewController.buttonWidth)
@@ -97,20 +97,20 @@ class MenuViewController: UIViewController {
     }
 }
 
-// MARK: - Button callbacks
+// MARK: - Buttons callbacks
 
 extension MenuViewController {
     /**
      Displays pre-game settings for singleplayer game. Singleplayer button's callback.
      */
-    @objc private func singlePTapped() {
+    @objc private func singlePlayerTapped() {
         navigationController?.pushViewController(SettingsViewController(isSinglePlayer: true), animated: true)
     }
     
     /**
      Displays pre-game settings for multiplayer game. Multiplayer button's callback.
      */
-    @objc private func multiPTapped() {
+    @objc private func multiPlayerTapped() {
         navigationController?.pushViewController(SettingsViewController(isSinglePlayer: false), animated: true)
     }
 }

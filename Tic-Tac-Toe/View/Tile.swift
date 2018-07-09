@@ -31,6 +31,11 @@ class Tile: UIButton {
     
     // MARK: Initialization
     
+    /**
+     Initializes new tile.
+     
+     - parameter position: Position of tile on gameboard.
+     */
     init(position: Position) {
         self.position = position
         
@@ -47,7 +52,7 @@ class Tile: UIButton {
     // MARK: Private methods
     
     /**
-     Configure view and its subviews.
+     Configures view and its subviews.
      */
     private func configure() {
         // Configure button
@@ -65,7 +70,7 @@ class Tile: UIButton {
 
 extension Tile {
     /**
-     Set mark on tile accordingly. Method to be called after tile has been tapped.
+     Sets mark on tile accordingly. Method to be called after tile has been tapped.
      */
     @objc func tileTapped() {
         // Select tile if it is possible and get mark which should be set

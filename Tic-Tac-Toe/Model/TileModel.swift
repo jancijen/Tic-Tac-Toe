@@ -20,7 +20,7 @@ struct TileModel {
     // MARK: Public methods
     
     /**
-     Reset tile to default (blank).
+     Resets tile to default (blank).
      */
     mutating func reset() {
         mark = .undef

@@ -30,6 +30,11 @@ class GameBoard: UIView {
     
     // MARK: Initialization
     
+    /**
+     Initializes new game board.
+     
+     - parameter boardSize: Size of gameboard.
+     */
     init(boardSize: Int) {
         self.boardSize = boardSize
         if boardSize < 3 {
@@ -52,7 +57,7 @@ class GameBoard: UIView {
     // MARK: Public methods
     
     /**
-     Reset gameboard to default.
+     Resets gameboard to default.
      */
     func reset() {
         // Reset tiles views
@@ -65,7 +70,7 @@ class GameBoard: UIView {
     }
     
     /**
-     Set mark on tile at given position.
+     Sets mark on tile at given position.
      
      - parameter position: Position of tile to set mark on.
      - parameter mark: Mark to be set.
@@ -88,7 +93,7 @@ class GameBoard: UIView {
     // MARK: Private methods
     
     /**
-     Configure view and its subviews.
+     Configures view and its subviews.
      */
     private func configure() {
         // View configuration
@@ -140,12 +145,12 @@ class GameBoard: UIView {
 
 extension GameBoard: TileDelegate {
     /**
-     Select concrete tile.
+     Tells the delegate that tile at given position has been selected.
      
-     - parameter tile:
-     - parameter position: Position of tile to be selected.
+     - parameter tile: The tile object informing the delegate of this event.
+     - parameter position: Position of the selected tile.
      
-     - returns: Player which is now marked on tile or "nil" if selection was not possible.
+     - returns: Player which is now marked on tile or "nil" if gameboard selection was not possible.
      */
     func tile(_ tile: Tile, didSelectTileAt position: Position) -> Mark? {
         return delegate?.gameBoard(self, didSelectTileAt: position)

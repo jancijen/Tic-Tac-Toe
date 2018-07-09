@@ -25,10 +25,17 @@ class GameBoardModel {
     let boardSize: Int
     
     // MARK: Private properties
+    
     private var filledTilesCnt: Int = 0
     private var board: [[TileModel]] = [[TileModel]]()
     
     // MARK: Initialization
+    
+    /**
+     Initializes new game board model.
+     
+     - parameter boardSize: Size of gameboard.
+     */
     init(boardSize: Int) {
         self.boardSize = boardSize
         if boardSize < 3 {
@@ -184,10 +191,6 @@ class GameBoardModel {
         // First mark
         let mark = board[row][0].mark
         
-        if mark == .undef {
-            return .undef
-        }
-        
         // Check next marks
         for i in board[row] {
             if i.mark != mark {
@@ -208,10 +211,6 @@ class GameBoardModel {
     private func sameMarksColumn(column: Int) -> Mark {
         // First mark
         let mark = board[0][column].mark
-        
-        if mark == .undef {
-            return .undef
-        }
         
         // Check next marks
         for i in 1..<boardSize {

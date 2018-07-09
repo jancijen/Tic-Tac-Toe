@@ -27,6 +27,11 @@ class SettingsViewController: UIViewController {
     
     // MARK: Initialization
     
+    /**
+     Initializes new settings view controller.
+     
+     - parameter isSinglePlayer: Whether it is singleplayer pre-game settings view controller (otherwise multiplayer).
+     */
     init(isSinglePlayer: Bool) {
         self.isSinglePlayer = isSinglePlayer
         verticalOffset = isSinglePlayer ? 50 : 0

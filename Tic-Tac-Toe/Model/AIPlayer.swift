@@ -1,5 +1,5 @@
 //
-//  GameAI.swift
+//  AIPlayer.swift
 //  Tic-Tac-Toe
 //
 //  Created by Jendrusak, Jan on 3.7.18.
@@ -11,13 +11,18 @@ import Foundation
 // MARK: - GameAI
 
 /// AI player.
-class GameAI {
+class AIPlayer {
     // MARK: Private properties
     
     private let aiMark: Mark
     
     // MARK: Initialization
     
+    /**
+     Initializes new AI player.
+     
+     - parameter aiMark: Mark of AI player.
+     */
     init(aiMark: Mark) {
         self.aiMark = aiMark
     }
