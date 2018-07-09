@@ -5,6 +5,7 @@
 //  Created by Jendrusak, Jan on 5.7.18.
 //  Copyright © 2018 Jan Jendrusak. All rights reserved.
 //
+// Inspired by: https://medium.com/@jackywangdeveloper/swift-the-right-way-to-add-target-in-uibutton-in-using-closures-877557ed9455
 
 import UIKit
 
