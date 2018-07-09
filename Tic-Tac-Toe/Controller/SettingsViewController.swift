@@ -14,6 +14,7 @@ import UIKit
 class SettingsViewController: UIViewController {
     // MARK: Private properties
     
+    private static let boardSize: Int = 3
     /// Horizontal offset of choice part from edge.
     private static let horizontalOffset: CGFloat = 40
     private static let imageSize: CGFloat = 64
@@ -179,10 +180,10 @@ extension SettingsViewController {
         
         // Create and show game
         if isSinglePlayer {
-            let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: playersMark.opposite())
+            let gameVC = GameViewController(boardSize: SettingsViewController.boardSize, firstPlayer: firstTurn, aiPlayer: playersMark.opposite())
             navigationController?.pushViewController(gameVC, animated: true)
         } else {
-            let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: .undef)
+            let gameVC = GameViewController(boardSize: SettingsViewController.boardSize, firstPlayer: firstTurn, aiPlayer: .undef)
             navigationController?.pushViewController(gameVC, animated: true)
         }
     }
