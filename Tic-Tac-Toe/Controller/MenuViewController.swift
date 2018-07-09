@@ -15,7 +15,7 @@ import SnapKit
 class MenuViewController: UIViewController {
     // MARK: Private properties
     
-    private static let spacing: CGFloat = 32
+    private static let buttonsSpacing: CGFloat = 32
     private static let buttonWidth: CGFloat = 200
     
     // MARK: UIViewController
@@ -84,7 +84,7 @@ class MenuViewController: UIViewController {
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
         stackView.alignment = .center
-        stackView.spacing = MenuViewController.spacing
+        stackView.spacing = MenuViewController.buttonsSpacing
         
         stackView.addArrangedSubview(singlePButton)
         stackView.addArrangedSubview(multiPButton)

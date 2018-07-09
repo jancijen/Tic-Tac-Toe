@@ -21,6 +21,8 @@ class ThemeManager {
     static let bigTitleFontSize: CGFloat = 80
     static let titleFontSize: CGFloat = 60
     static let buttonFontSize: CGFloat = 30
+    // Diameters
+    static let backButtonSize: CGFloat = 48
     
     // MARK - Private properties
     

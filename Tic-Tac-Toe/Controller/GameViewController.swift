@@ -86,7 +86,7 @@ class GameViewController: UIViewController {
         
         view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
-            make.height.width.equalTo(48)
+            make.height.width.equalTo(ThemeManager.backButtonSize)
             make.left.equalToSuperview().offset(10)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
         }

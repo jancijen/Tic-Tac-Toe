@@ -14,11 +14,15 @@ import UIKit
 class SettingsViewController: UIViewController {
     // MARK: Private properties
     
+    /// Horizontal offset of choice part from edge.
     private static let horizontalOffset: CGFloat = 40
+    private static let imageSize: CGFloat = 64
+    private static let buttonWidth: CGFloat = 200
     
-    private let symbolSwitch: UISwitch = UISwitch()
+    private let markSwitch: UISwitch = UISwitch()
     private let turnSwitch: UISwitch = UISwitch()
     private let isSinglePlayer: Bool
+    /// Vertical offset between choice parts.
     private let verticalOffset: CGFloat
     
     // MARK: Initialization
@@ -70,17 +74,17 @@ class SettingsViewController: UIViewController {
         
         view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
-            make.height.width.equalTo(48)
+            make.height.width.equalTo(ThemeManager.backButtonSize)
             make.left.equalToSuperview().offset(10)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
         }
         
-        // ---------------- Symbol choice ----------------
+        // ---------------- Mark choice ----------------
         // Switch
-        symbolSwitch.onTintColor = .black
+        markSwitch.onTintColor = .black
         
-        view.addSubview(symbolSwitch)
-        symbolSwitch.snp.makeConstraints { make in
+        view.addSubview(markSwitch)
+        markSwitch.snp.makeConstraints { make in
             make.width.equalTo(60)
             make.height.equalTo(20)
             make.centerX.equalToSuperview()
@@ -92,9 +96,9 @@ class SettingsViewController: UIViewController {
         
         view.addSubview(crossImageView)
         crossImageView.snp.makeConstraints { make in
-            make.height.width.equalTo(64)
-            make.right.equalTo(symbolSwitch.snp.left).offset(-SettingsViewController.horizontalOffset)
-            make.centerY.equalTo(symbolSwitch)
+            make.height.width.equalTo(SettingsViewController.imageSize)
+            make.right.equalTo(markSwitch.snp.left).offset(-SettingsViewController.horizontalOffset)
+            make.centerY.equalTo(markSwitch)
         }
         
         // Circle image
@@ -102,9 +106,9 @@ class SettingsViewController: UIViewController {
         
         view.addSubview(circleImageView)
         circleImageView.snp.makeConstraints { make in
-            make.height.width.equalTo(64)
-            make.left.equalTo(symbolSwitch.snp.right).offset(SettingsViewController.horizontalOffset)
-            make.centerY.equalTo(symbolSwitch)
+            make.height.width.equalTo(SettingsViewController.imageSize)
+            make.left.equalTo(markSwitch.snp.right).offset(SettingsViewController.horizontalOffset)
+            make.centerY.equalTo(markSwitch)
         }
         
         if isSinglePlayer {
@@ -124,7 +128,7 @@ class SettingsViewController: UIViewController {
             
             view.addSubview(playerImageView)
             playerImageView.snp.makeConstraints { make in
-                make.height.width.equalTo(64)
+                make.height.width.equalTo(SettingsViewController.imageSize)
                 make.right.equalTo(turnSwitch.snp.left).offset(-SettingsViewController.horizontalOffset)
                 make.centerY.equalTo(turnSwitch)
             }
@@ -134,7 +138,7 @@ class SettingsViewController: UIViewController {
             
             view.addSubview(robotImageView)
             robotImageView.snp.makeConstraints { make in
-                make.height.width.equalTo(64)
+                make.height.width.equalTo(SettingsViewController.imageSize)
                 make.left.equalTo(turnSwitch.snp.right).offset(SettingsViewController.horizontalOffset)
                 make.centerY.equalTo(turnSwitch)
             }
@@ -152,7 +156,7 @@ class SettingsViewController: UIViewController {
         playButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-20)
             make.centerX.equalToSuperview()
-            make.width.equalTo(200)
+            make.width.equalTo(SettingsViewController.buttonWidth)
         }
     }
 }
@@ -165,12 +169,12 @@ extension SettingsViewController {
      */
     @objc private func playTapped() {
         // Get user's choices from switch(es)
-        let playersSymbole = symbolSwitch.isOn ? Player.O : Player.X
-        let firstTurn = turnSwitch.isOn ? playersSymbole.opposite() : playersSymbole
+        let playersMark = markSwitch.isOn ? Player.O : Player.X
+        let firstTurn = turnSwitch.isOn ? playersMark.opposite() : playersMark
         
         // Create and show game
         if isSinglePlayer {
-            let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: playersSymbole.opposite())
+            let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: playersMark.opposite())
             navigationController?.pushViewController(gameVC, animated: true)
         } else {
             let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: .undef)
