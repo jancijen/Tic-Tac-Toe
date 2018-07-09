@@ -9,35 +9,40 @@
 import UIKit
 import SnapKit
 
+// MARK: - MenuViewController
+
 /// Menu screen view controller.
 class MenuViewController: UIViewController {
-    // MARK: Private attributes
-    static let spacing: CGFloat = 32
-    static let buttonWidth: CGFloat = 200
+    // MARK: Private properties
     
-    // MARK: - Public methods
+    private static let buttonsSpacing: CGFloat = 32
+    private static let buttonWidth: CGFloat = 200
+    
+    // MARK: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.configure()
+        // Configure view
+        configure()
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
-     Configure view and its subviews.
+     Configures view and its subviews.
      */
     private func configure() {
         // Configure view
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
         
         // ---------------- Title ----------------
         let titleLabel = UILabel()
-        titleLabel.font = ThemeManager.appFont(size: ThemeManager.bigTitleFontSize) // TODO
+        titleLabel.font = ThemeManager.appFont(size: ThemeManager.bigTitleFontSize)
         titleLabel.text = "Tic-Tac-Toe"
         
-        self.view.addSubview(titleLabel)
+        view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             make.centerX.equalToSuperview()
         }
         
@@ -48,7 +53,7 @@ class MenuViewController: UIViewController {
         singlePButton.titleLabel?.font = buttonFont
         singlePButton.setTitleColor(.white, for: .normal)
         singlePButton.setTitle("Singleplayer", for: .normal)
-        singlePButton.addTarget(self, action: #selector(singlePTapped), for: .touchUpInside)
+        singlePButton.addTarget(self, action: #selector(singlePlayerTapped), for: .touchUpInside)
         
         singlePButton.snp.makeConstraints { make in
             make.width.equalTo(MenuViewController.buttonWidth)
@@ -60,7 +65,7 @@ class MenuViewController: UIViewController {
         multiPButton.titleLabel?.font = buttonFont
         multiPButton.setTitleColor(.white, for: .normal)
         multiPButton.setTitle("Multiplayer", for: .normal)
-        multiPButton.addTarget(self, action: #selector(multiPTapped), for: .touchUpInside)
+        multiPButton.addTarget(self, action: #selector(multiPlayerTapped), for: .touchUpInside)
         
         multiPButton.snp.makeConstraints { make in
             make.width.equalTo(MenuViewController.buttonWidth)
@@ -68,7 +73,7 @@ class MenuViewController: UIViewController {
         
         // ---------------- Menu view ----------------
         let menuView = UIView()
-        self.view.addSubview(menuView)
+        view.addSubview(menuView)
         menuView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom)
             make.right.left.bottom.equalToSuperview()
@@ -79,7 +84,7 @@ class MenuViewController: UIViewController {
         stackView.axis = .vertical
         stackView.distribution = .equalSpacing
         stackView.alignment = .center
-        stackView.spacing = MenuViewController.spacing
+        stackView.spacing = MenuViewController.buttonsSpacing
         
         stackView.addArrangedSubview(singlePButton)
         stackView.addArrangedSubview(multiPButton)
@@ -92,19 +97,20 @@ class MenuViewController: UIViewController {
     }
 }
 
-// MARK: - Button callbacks
+// MARK: - Buttons callbacks
+
 extension MenuViewController {
     /**
-     Singleplayer button callback.
+     Displays pre-game settings for singleplayer game. Singleplayer button's callback.
      */
-    @objc private func singlePTapped() {
-        self.navigationController?.pushViewController(SettingsViewController(isSinglePlayer: true), animated: true)
+    @objc private func singlePlayerTapped() {
+        navigationController?.pushViewController(SettingsViewController(isSinglePlayer: true), animated: true)
     }
     
     /**
-     Multiplayer button callback.
+     Displays pre-game settings for multiplayer game. Multiplayer button's callback.
      */
-    @objc private func multiPTapped() {
-        self.navigationController?.pushViewController(SettingsViewController(isSinglePlayer: false), animated: true)
+    @objc private func multiPlayerTapped() {
+        navigationController?.pushViewController(SettingsViewController(isSinglePlayer: false), animated: true)
     }
 }

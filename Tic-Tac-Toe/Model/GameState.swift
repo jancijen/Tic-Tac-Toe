@@ -8,20 +8,33 @@
 
 import Foundation
 
-/// Possible game states.
+// MARK: - GameState
+
+/// Possible states of game.
 enum GameState {
-    case winX
-    case winO
-    case tie
+    // MARK: Cases
+    
+    /// Player X is on turn.
     case turnX
+    /// Player O is on turn.
     case turnO
+    /// Player X has won.
+    case winX
+    /// Player O has won.
+    case winO
+    /// Game is tied.
+    case tie
+    /// Undefined.
+    case undef
+    
+    // MARK: Public methods
     
     /**
-     Get player on turn according from game state.
+     Getter for player on turn.
      
-     - returns: Player on turn.
+     - returns: Player on turn or "undef" if game has ended.
      */
-    func playerOnTurn() -> Player {
+    func playerOnTurn() -> Mark {
         switch self {
         case .turnX:
             return .X
@@ -33,9 +46,9 @@ enum GameState {
     }
     
     /**
-     Get opposite turn.
+     Getter for opposite turn.
      
-     - returns: Opposite turn if GameState is turn, else return itself.
+     - returns: Opposite turn or itself if game has ended.
      */
     func oppositeTurn() -> GameState {
         switch self {

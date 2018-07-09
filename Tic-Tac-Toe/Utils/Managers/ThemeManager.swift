@@ -9,21 +9,29 @@
 import Foundation
 import UIKit
 
+// MARK: - ThemeManager
+
 /// Class for UI appearance management.
 class ThemeManager {
-    // MARK - Private attributes
-    private static let fontName: String = "BebasNeue-Regular"
+    // MARK: Public properties
     
-    // MARK: - Public attributes
+    // Colors
     static let menuButtonColor: UIColor = UIColor.black
+    // Fonts
     static let bigTitleFontSize: CGFloat = 80
     static let titleFontSize: CGFloat = 60
     static let buttonFontSize: CGFloat = 30
-    static let alertButtonWidth: CGFloat = 80
+    // Diameters
+    static let backButtonSize: CGFloat = 48
     
-    // MARK: - Public methods
+    // MARK - Private properties
+    
+    private static let fontName: String = "BebasNeue-Regular"
+    
+    // MARK: Public methods
+    
     /**
-     Getter for application font.
+     Provides application font with given size.
      
      - parameter size: Wanted size of font.
      

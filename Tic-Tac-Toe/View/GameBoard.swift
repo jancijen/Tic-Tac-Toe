@@ -8,30 +8,44 @@
 
 import UIKit
 
-/// Protocol defining required methods from game view controller.
-protocol GameViewControllerDelegate: class {
-    func selectTile(row: Int, col: Int) -> Player?
+// MARK: - GameBoardDelegate
+
+/// A set of methods which allows the delegate to manage user interaction.
+protocol GameBoardDelegate: class {
+    func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Mark?
 }
 
-/// View representing game board.
+// MARK: - GameBoard
+
+/// View representing gameboard.
 class GameBoard: UIView {
-    // MARK: - Public attributes
-    weak var gameVCDelegate: GameViewControllerDelegate? = nil
-    // MARK: - Private attributes
-    private let boardSize: Int
-    private var tiles: [[Tile]]
+    // MARK: Public properties
     
-    // MARK: - Public attributes
+    weak var delegate: GameBoardDelegate? = nil
+    
+    // MARK: Private properties
+    
+    private var tiles: [[Tile]]
+    private let boardSize: Int
+    
+    // MARK: Initialization
+    
+    /**
+     Initializes new game board.
+     
+     - parameter boardSize: Size of gameboard.
+     */
     init(boardSize: Int) {
         self.boardSize = boardSize
-        if self.boardSize < 3 { // TODO
+        if boardSize < 3 {
             fatalError("GameBoard has to be at least 3 tiles in size.")
         }
         
-        self.tiles = [[Tile]]()
+        tiles = [[Tile]]()
         
-        super.init(frame: CGRect.zero) // TODO
+        super.init(frame: CGRect.zero)
         
+        // Initial setup
         configure()
     }
     
@@ -39,13 +53,16 @@ class GameBoard: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: Public methods
+    
     /**
-     Reset gameboard to default.
+     Resets gameboard to default.
      */
     func reset() {
-        // Reset tile views
-        for (_,row) in self.tiles.enumerated() {
-            for (_,tile) in row.enumerated() {
+        // Reset tiles views
+        for (_, row) in tiles.enumerated() {
+            for (_, tile) in row.enumerated() {
                 // Set tile to be blank
                 tile.setImage(nil, for: .normal)
             }
@@ -53,34 +70,34 @@ class GameBoard: UIView {
     }
     
     /**
-     Set tile's view accordingly.
+     Sets mark on tile at given position.
      
-     - parameter row: Row of tile to set.
-     - parameter col: Column of tile to set.
-     - parameter player: Mark to be set.
+     - parameter position: Position of tile to set mark on.
+     - parameter mark: Mark to be set.
      */
-    func setTileView(row: Int, col: Int, player: Player) {
+    func setMark(at position: Position, to mark: Mark) {
         // Get correct image
         let image: UIImage?
-        if player == .X {
+        if mark == .X {
             image = #imageLiteral(resourceName: "cross")
-        } else if player == .O {
+        } else if mark == .O {
             image = #imageLiteral(resourceName: "circle")
         } else {
             image = nil
         }
         
         // Set tile's image
-        self.tiles[row][col].setImage(image, for: .normal)
+        tiles[position.row][position.column].setImage(image, for: .normal)
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
-     Configure view and its subviews.
+     Configures view and its subviews.
      */
     private func configure() {
         // View configuration
-        self.backgroundColor = .black
+        backgroundColor = .black
         
         // Verical stack view for rows of tiles
         let verticalSV = UIStackView()
@@ -100,21 +117,23 @@ class GameBoard: UIView {
             horizontalSV.spacing = 4.0
             horizontalSV.translatesAutoresizingMaskIntoConstraints = false
             
+            // Fill row with tiles
             var tmpRow = [Tile]()
             for col in 0..<boardSize {
-                let tile = Tile(row: row, col: col)
-                tile.gameBoardDelegate = self
+                let tile = Tile(position: Position(row: row, column: col))
+                tile.delegate = self
                 
                 tmpRow.append(tile)
                 horizontalSV.addArrangedSubview(tile)
             }
             
-            self.tiles.append(tmpRow)
+            // Add row to vertical stack view
+            tiles.append(tmpRow)
             verticalSV.addArrangedSubview(horizontalSV)
         }
         
         // Add rows of tiles as subview
-        self.addSubview(verticalSV)
+        addSubview(verticalSV)
         verticalSV.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -123,16 +142,17 @@ class GameBoard: UIView {
 
 
 // MARK: - GameBoardViewDelegate
-extension GameBoard: GameBoardViewDelegate {
+
+extension GameBoard: TileDelegate {
     /**
-     Select concrete tile.
+     Tells the delegate that tile at given position has been selected.
      
-     - parameter row: Row of tile to be selected.
-     - parameter col: Column of tile to be selected.
+     - parameter tile: The tile object informing the delegate of this event.
+     - parameter position: Position of the selected tile.
      
-     - returns: Player which is now marked on tile or "nil" if selection was not possible.
+     - returns: Player which is now marked on tile or "nil" if gameboard selection was not possible.
      */
-    func selectTile(row: Int, col: Int) -> Player? {
-        return self.gameVCDelegate?.selectTile(row: row, col: col)
+    func tile(_ tile: Tile, didSelectTileAt position: Position) -> Mark? {
+        return delegate?.gameBoard(self, didSelectTileAt: position)
     }
 }

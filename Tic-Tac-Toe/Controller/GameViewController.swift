@@ -8,26 +8,37 @@
 
 import UIKit
 
+// MARK: - GameViewController
+
 /// Game view controller.
 class GameViewController: UIViewController {
-    // MARK: - Private attributes
-    private let gameBoard: GameBoard
+    // MARK: Private properties
+    
     private let titleLabel: UILabel
+    private let gameBoard: GameBoard
     private let model: Game
     
-    // MARK: - Public methods
-    init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
-        self.gameBoard = GameBoard(boardSize: boardSize)
-        self.titleLabel = UILabel()
-        self.model = Game(boardSize: boardSize, firstPlayer: firstPlayer, aiPlayer: aiPlayer)
+    // MARK: Initialization
+    
+    /**
+     Initializes new game view controller.
+     
+     - parameter boardSize: Size of gameboard.
+     - parameter firstPlayer: Mark of player which should make first move.
+     - parameter aiPlayer: Mark of player which is AI. "undef" for none.
+     */
+    init(boardSize: Int, firstPlayer: Mark, aiPlayer: Mark) {
+        gameBoard = GameBoard(boardSize: boardSize)
+        titleLabel = UILabel()
+        model = Game(boardSize: boardSize, firstPlayer: firstPlayer, aiPlayer: aiPlayer)
         
         super.init(nibName: nil, bundle: nil)
     
         // Delegates
-        self.gameBoard.gameVCDelegate = self
-        self.model.gameVCDelegate = self
+        gameBoard.delegate = self
+        model.delegate = self
         
-        configure()
+        // Initial setup
         setupObservers()
     }
     
@@ -35,34 +46,43 @@ class GameViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Deinitialization
+    
     deinit {
         removeObservers()
     }
     
+    // MARK: UIViewController
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Configure view
         configure()
-        self.model.makeAITurnIfShould()
+        
+        // Let AI make a first move if it is on turn
+        model.makeAIMoveIfShould()
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
-     Configure view and its subviews.
+     Configures view and its subviews.
      */
     private func configure() {
         // View configuration
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
         
-        // Title
+        // ---------------- Title ----------------
+        // Hide title label on landscape
         titleLabel.isHidden = UIDevice.current.orientation == .landscapeLeft
-            || UIDevice.current.orientation == .landscapeRight
+                              || UIDevice.current.orientation == .landscapeRight
         titleLabel.font = ThemeManager.appFont(size: ThemeManager.titleFontSize)
         titleLabel.text = "Game"
         
-        self.view.addSubview(titleLabel)
+        view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.centerX.equalToSuperview()
         }
         
@@ -71,22 +91,22 @@ class GameViewController: UIViewController {
         backButton.setImage(#imageLiteral(resourceName: "leftArrow"), for: .normal)
         backButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
         
-        self.view.addSubview(backButton)
+        view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
-            make.height.width.equalTo(48)
+            make.height.width.equalTo(ThemeManager.backButtonSize)
             make.left.equalToSuperview().offset(10)
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
         }
         
-        // Show game board
-        self.view.addSubview(self.gameBoard)
-        self.gameBoard.snp.makeConstraints { make in
+        // ---------------- Game board ----------------
+        view.addSubview(gameBoard)
+        gameBoard.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
     }
     
     /**
-     Setup observers.
+     Sets observers.
      */
     private func setupObservers() {
         // GameState observer
@@ -97,7 +117,7 @@ class GameViewController: UIViewController {
     }
     
     /**
-     Remove observers.
+     Removes observers.
      */
     private func removeObservers() {
         // GameState observer
@@ -105,10 +125,10 @@ class GameViewController: UIViewController {
     }
     
     /**
-     Show end game alert.
+     Shows end game alert.
      
      - parameter title: Title to be shown in alert.
-     - parameter image: Image to be shown in alert.
+     - parameter image: Optional image to be shown in alert.
      */
     private func showEndGameAlert(title: String, image: UIImage?) {
         // Alert
@@ -119,7 +139,8 @@ class GameViewController: UIViewController {
             // Reset view
             self?.gameBoard.reset()
             // Reset model
-            self?.model.resetGame()
+            self?.model.reset()
+            
             // Dismiss alert
             alertView?.dismiss(animated: true)
         }
@@ -127,6 +148,7 @@ class GameViewController: UIViewController {
         alertView.addActionButton(title: "Main Menu") { [weak self, weak alertView] in
             // Go to menu
             self?.navigationController?.popToRootViewController(animated: true)
+            
             // Dismiss alert
             alertView?.dismiss(animated: true)
         }
@@ -136,58 +158,70 @@ class GameViewController: UIViewController {
     }
 }
 
-// MARK: - GameViewControllerDelegate
-extension GameViewController: GameViewControllerDelegate {
+// MARK: - GameBoardDelegate
+
+extension GameViewController: GameBoardDelegate {
     /**
-     Select tile at given position.
+     Tells the delegate that tile at given position has been selected.
      
-     - parameter row: Row of tile to be selected.
-     - parameter col: Column of tile to be selected.
+     - parameter gameBoard: The gameboard object informing the delegate of this event.
+     - parameter position: Position of the selected tile.
      
-     - returns: Player which is now marked on tile or "nil" if selection was not possible.
+     - returns: Player which is now marked on tile or "nil" if model selection was not possible.
      */
-    func selectTile(row: Int, col: Int) -> Player? {
-        return self.model.selectTile(row: row, col: col)
+    func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Mark? {
+        return model.selectTile(at: position)
     }
 }
 
 // MARK: - GameDelegate
+
 extension GameViewController: GameDelegate {
-    func setTileView(row: Int, col: Int, value: Player) {
-        gameBoard.setTileView(row: row, col: col, player: value)
+    /**
+     Orders delegate to set view of tile at given position.
+     
+     - parameter game: The game model object ordering the delegate to do this action.
+     - parameter position: Position of tile to set mark on.
+     - parameter mark: Mark to be set.
+     */
+    func game(_ game: Game, setTileViewAt position: Position, to mark: Mark) {
+        gameBoard.setMark(at: position, to: mark)
     }
 }
 
 // MARK: - Device orientation
+
 extension GameViewController {
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         switch UIDevice.current.orientation {
         case .portrait, .portraitUpsideDown:
             // Show game title in portrait mode
-            self.titleLabel.isHidden = false
+            titleLabel.isHidden = false
         case .landscapeLeft, .landscapeRight:
             // Hide game title in landscape mode
-            self.titleLabel.isHidden = true
+            titleLabel.isHidden = true
         default:
             break
         }
     }
 }
 
-// MARK: - Button callbacks
+// MARK: - Buttons callbacks
+
 extension GameViewController {
     /**
-     Callback to be called after tapping on back button.
+     Goes one step back in stack of view controllers. Method to be called after tapping on back button.
      */
     @objc private func backTapped() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 
-// MARK: - Notification callbacks
+// MARK: - Notifications callbacks
+
 extension GameViewController {
     /**
-     Callback to be called after game state has been changed.
+     Method to be called after game state has been changed.
      */
     @objc private func gameStateChanged(notification: Notification) {
         // Get new state
@@ -200,20 +234,18 @@ extension GameViewController {
         let title: String
         let image: UIImage?
         
-        // Check for end state
+        // Check for end state and set title and image accordingly
         switch newState {
         // WIN
         case .winX, .winO:
-            let aiPlayer = self.model.getAIPlayer()
-            
             // Multiplayer
-            if aiPlayer == .undef {
+            if model.aiPlayer == .undef {
                 title = "WINNER IS"
                 image = newState == .winX ? #imageLiteral(resourceName: "cross") : #imageLiteral(resourceName: "circle")
             }
             // Singleplayer
             else {
-                title = newState == aiPlayer.win() ? "DEFEAT" : "VICTORY"
+                title = newState == model.aiPlayer.win() ? "DEFEAT" : "VICTORY"
                 image = nil
             }
         // TIE

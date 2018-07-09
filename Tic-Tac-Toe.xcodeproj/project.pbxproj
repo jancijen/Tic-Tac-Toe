@@ -7,15 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A11E4FE20EC1D4000E98C86 /* GameAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E4FD20EC1D4000E98C86 /* GameAI.swift */; };
+		0A11E4FE20EC1D4000E98C86 /* AIPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E4FD20EC1D4000E98C86 /* AIPlayer.swift */; };
 		0A11E50820ED789A00E98C86 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50720ED789A00E98C86 /* GameViewController.swift */; };
 		0A11E50E20EE90F600E98C86 /* Poppable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50D20EE90F600E98C86 /* Poppable.swift */; };
 		0A11E51020EE92BF00E98C86 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E50F20EE92BF00E98C86 /* AlertView.swift */; };
-		0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51320EE9E9E00E98C86 /* UIButton.swift */; };
+		0A11E51420EE9E9E00E98C86 /* UIButton+Closure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51320EE9E9E00E98C86 /* UIButton+Closure.swift */; };
 		0A11E51820EFDDA400E98C86 /* GameBoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */; };
 		0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51920F0C30B00E98C86 /* TileModel.swift */; };
 		0A11E51E20F0DA3F00E98C86 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51D20F0DA3F00E98C86 /* Game.swift */; };
 		0A11E52020F1514800E98C86 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E51F20F1514800E98C86 /* GameState.swift */; };
+		0A11E52220F2736F00E98C86 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11E52120F2736F00E98C86 /* Position.swift */; };
 		0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF0320E82E59000273EB /* AppDelegate.swift */; };
 		0A15EF0B20E82E5B000273EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A15EF0A20E82E5B000273EB /* Assets.xcassets */; };
 		0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15EF1A20E82F74000273EB /* MenuViewController.swift */; };
@@ -24,20 +25,21 @@
 		0ABD6D2720E9001600B251A8 /* BebasNeue-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0ABD6D2620E9001600B251A8 /* BebasNeue-Regular.ttf */; };
 		0ABD6D2920EBB95B00B251A8 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD6D2820EBB95B00B251A8 /* Tile.swift */; };
 		0ABD6D2B20EBBA0200B251A8 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD6D2A20EBBA0200B251A8 /* GameBoard.swift */; };
-		0ABD6D2D20EBD71A00B251A8 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD6D2C20EBD71A00B251A8 /* Player.swift */; };
+		0ABD6D2D20EBD71A00B251A8 /* Mark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD6D2C20EBD71A00B251A8 /* Mark.swift */; };
 		DA9CAC626AB075037A208EB3 /* Pods_Tic_Tac_Toe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34910912F169AB5AB745239B /* Pods_Tic_Tac_Toe.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0A11E4FD20EC1D4000E98C86 /* GameAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAI.swift; sourceTree = "<group>"; };
+		0A11E4FD20EC1D4000E98C86 /* AIPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPlayer.swift; sourceTree = "<group>"; };
 		0A11E50720ED789A00E98C86 /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		0A11E50D20EE90F600E98C86 /* Poppable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Poppable.swift; sourceTree = "<group>"; };
 		0A11E50F20EE92BF00E98C86 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
-		0A11E51320EE9E9E00E98C86 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		0A11E51320EE9E9E00E98C86 /* UIButton+Closure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Closure.swift"; sourceTree = "<group>"; };
 		0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardModel.swift; sourceTree = "<group>"; };
 		0A11E51920F0C30B00E98C86 /* TileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileModel.swift; sourceTree = "<group>"; };
 		0A11E51D20F0DA3F00E98C86 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		0A11E51F20F1514800E98C86 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		0A11E52120F2736F00E98C86 /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		0A15EF0020E82E59000273EB /* Tic-Tac-Toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tic-Tac-Toe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A15EF0320E82E59000273EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A15EF0A20E82E5B000273EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -48,7 +50,7 @@
 		0ABD6D2620E9001600B251A8 /* BebasNeue-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BebasNeue-Regular.ttf"; sourceTree = "<group>"; };
 		0ABD6D2820EBB95B00B251A8 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		0ABD6D2A20EBBA0200B251A8 /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
-		0ABD6D2C20EBD71A00B251A8 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		0ABD6D2C20EBD71A00B251A8 /* Mark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mark.swift; sourceTree = "<group>"; };
 		21974D2D3E155CDADC57CAAC /* Pods-Tic-Tac-Toe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tic-Tac-Toe.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tic-Tac-Toe/Pods-Tic-Tac-Toe.release.xcconfig"; sourceTree = "<group>"; };
 		34910912F169AB5AB745239B /* Pods_Tic_Tac_Toe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tic_Tac_Toe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4967BF605F75112CE3B9BC51 /* Pods-Tic-Tac-Toe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tic-Tac-Toe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tic-Tac-Toe/Pods-Tic-Tac-Toe.debug.xcconfig"; sourceTree = "<group>"; };
@@ -85,7 +87,7 @@
 		0A11E51220EE9E9100E98C86 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				0A11E51320EE9E9E00E98C86 /* UIButton.swift */,
+				0A11E51320EE9E9E00E98C86 /* UIButton+Closure.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -136,12 +138,13 @@
 		0A15EF1820E82EDD000273EB /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0ABD6D2C20EBD71A00B251A8 /* Player.swift */,
-				0A11E4FD20EC1D4000E98C86 /* GameAI.swift */,
+				0ABD6D2C20EBD71A00B251A8 /* Mark.swift */,
+				0A11E4FD20EC1D4000E98C86 /* AIPlayer.swift */,
 				0A11E51720EFDDA400E98C86 /* GameBoardModel.swift */,
 				0A11E51920F0C30B00E98C86 /* TileModel.swift */,
 				0A11E51D20F0DA3F00E98C86 /* Game.swift */,
 				0A11E51F20F1514800E98C86 /* GameState.swift */,
+				0A11E52120F2736F00E98C86 /* Position.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -266,12 +269,10 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tic-Tac-Toe/Pods-Tic-Tac-Toe-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SCLAlertView/SCLAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SCLAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,15 +308,16 @@
 				0A15EF0420E82E59000273EB /* AppDelegate.swift in Sources */,
 				0A11E50E20EE90F600E98C86 /* Poppable.swift in Sources */,
 				0A11E51820EFDDA400E98C86 /* GameBoardModel.swift in Sources */,
-				0A11E4FE20EC1D4000E98C86 /* GameAI.swift in Sources */,
+				0A11E4FE20EC1D4000E98C86 /* AIPlayer.swift in Sources */,
 				0A11E51A20F0C30B00E98C86 /* TileModel.swift in Sources */,
 				0A11E52020F1514800E98C86 /* GameState.swift in Sources */,
 				0ABD6D2920EBB95B00B251A8 /* Tile.swift in Sources */,
-				0A11E51420EE9E9E00E98C86 /* UIButton.swift in Sources */,
+				0A11E52220F2736F00E98C86 /* Position.swift in Sources */,
+				0A11E51420EE9E9E00E98C86 /* UIButton+Closure.swift in Sources */,
 				0ABD6D2B20EBBA0200B251A8 /* GameBoard.swift in Sources */,
 				0ABD6D1920E8395A00B251A8 /* ThemeManager.swift in Sources */,
 				0A15EF1B20E82F74000273EB /* MenuViewController.swift in Sources */,
-				0ABD6D2D20EBD71A00B251A8 /* Player.swift in Sources */,
+				0ABD6D2D20EBD71A00B251A8 /* Mark.swift in Sources */,
 				0A11E51020EE92BF00E98C86 /* AlertView.swift in Sources */,
 				0A11E50820ED789A00E98C86 /* GameViewController.swift in Sources */,
 				0ABD6D1620E8392200B251A8 /* SettingsViewController.swift in Sources */,

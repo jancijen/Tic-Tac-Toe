@@ -1,5 +1,5 @@
 //
-//  Player.swift
+//  Mark.swift
 //  Tic-Tac-Toe
 //
 //  Created by Jendrusak, Jan on 3.7.18.
@@ -8,18 +8,27 @@
 
 import Foundation
 
-/// Possible symboles for player.
-enum Player {
+// MARK: - Mark
+
+/// Possible marks for player.
+enum Mark {
+    // MARK: Cases
+    
+    /// Player X.
     case X
+    /// Player O.
     case O
+    /// Undefined/Blank.
     case undef
     
+    // MARK: - Public methods
+    
     /**
-     Get opposite symbole.
+     Getter for opposite mark.
      
-     - returns: Opposite symbole.
+     - returns: Opposite mark.
      */
-    func opposite() -> Player {
+    func opposite() -> Mark {
         switch self {
         case .X:
             return .O
@@ -31,9 +40,9 @@ enum Player {
     }
     
     /**
-     Get turn according to player.
+     Getter for turn according to player.
      
-     - returns: Turn of symbole.
+     - returns: Turn of mark.
      */
     func turn() -> GameState {
         switch self {
@@ -42,14 +51,14 @@ enum Player {
         case .O:
             return .turnO
         default:
-            return .tie // TODO
+            return .undef
         }
     }
     
     /**
-     Get win according to player.
+     Getter for win according to player.
      
-     - returns: Win of symbole.
+     - returns: Win of mark.
      */
     func win() -> GameState {
         switch self {
@@ -58,7 +67,7 @@ enum Player {
         case .O:
             return .winO
         default:
-            return .tie // TODO
+            return .undef
         }
     }
 }

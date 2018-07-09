@@ -8,82 +8,103 @@
 
 import Foundation
 
+// MARK: - GameDelegate
+
+/// A set of methods used to update view after model changes.
 protocol GameDelegate: class {
-    func setTileView(row: Int, col: Int, value: Player) -> Void
+    func game(_ game: Game,
+              setTileViewAt position: Position,
+              to mark: Mark)
 }
+
+// MARK: - Game
 
 /// Model representing game logic and data.
 class Game {
-    // MARK: - Public attributes
-    weak var gameVCDelegate: GameDelegate? = nil
-    // MARK: - Private attributes
-    private let boardSize: Int
-    private let firstPlayer: Player
-    private let aiPlayer: Player
-    private let AI: GameAI?
+    // MARK: Public properties
+    
+    weak var delegate: GameDelegate? = nil
+    let aiPlayer: Mark
+    
+    // MARK: Private properties
+    
     private var state: GameState {
         didSet {
             // Post that state has been changed
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "gameState"), object: nil, userInfo: ["newState": state])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "gameState"),
+                                            object: nil,
+                                            userInfo: ["newState": state])
+            // Let AI make a move if it is on turn
+            makeAIMoveIfShould()
         }
     }
+    private let boardSize: Int
+    private let firstPlayer: Mark
+    private let AI: AIPlayer?
     private let gameBoardModel: GameBoardModel
     
-    // MARK: - Public methods
-    init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
+    // MARK: Initialization
+    
+    /**
+     Initializes new game model.
+     
+     - parameter boardSize: Size of gameboard.
+     - parameter firstPlayer: Mark of player which should make first move.
+     - parameter aiPlayer: Mark of player which is AI. "undef" for none.
+     */
+    init(boardSize: Int, firstPlayer: Mark, aiPlayer: Mark) {
         // General
         self.boardSize = boardSize
         self.firstPlayer = firstPlayer
-        self.gameBoardModel = GameBoardModel(boardSize: self.boardSize)
+        gameBoardModel = GameBoardModel(boardSize: boardSize)
         
-        switch self.firstPlayer {
+        switch firstPlayer {
         case .X:
-            self.state = .turnX
+            state = .turnX
         case .O:
-            self.state = .turnO
+            state = .turnO
         default:
-            self.state = .tie // TODO
+            state = .undef
         }
         
         // AI
         self.aiPlayer = aiPlayer
-        if self.aiPlayer != .undef {
-            self.AI = GameAI(symboleAI: aiPlayer)
+        // Initialize AI player if needed
+        if aiPlayer != .undef {
+            AI = AIPlayer(aiMark: aiPlayer)
         } else {
-            self.AI = nil
+            AI = nil
         }
         
         // Delegates
-        self.gameBoardModel.gameDelegate = self
+        gameBoardModel.delegate = self
     }
     
+    // MARK: Public methods
+    
     /**
-     Select concrete tile.
+     Selects concrete tile.
      
-     - parameter row: Row of tile to be selected.
-     - parameter col: Column of tile to be selected.
+     - parameter position: Position of tile to be selected.
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
-    func selectTile(row: Int, col: Int) -> Player? {
+    func selectTile(at position: Position) -> Mark? {
         // Get player on turn
-        let currentPlayer = self.state.playerOnTurn()
+        let currentPlayer = state.playerOnTurn()
         // In case that game ended
         if currentPlayer == .undef {
             return nil
         }
         
         // Try to select tile
-        if self.gameBoardModel.setTile(row: row, col: col, value: currentPlayer, force: false) {
+        if gameBoardModel.setTile(at: position, to: currentPlayer, force: false) {
             // End game check
-            if let endState = self.gameBoardModel.gameEnd() {
-                self.state = endState
+            if let endState = gameBoardModel.getEndState() {
+                state = endState
             } else {
                 // Switch turns
-                self.state = self.state.oppositeTurn()
-                
-                // AI turn (if it is on turn)
-                makeAITurnIfShould()
+                state = state.oppositeTurn()
             }
             
             return currentPlayer
@@ -93,48 +114,24 @@ class Game {
     }
     
     /**
-     Let AI make a move if it is on turn.
+     Resets game model.
      */
-    func makeAITurnIfShould() {
-        // Turn check
-        if self.state == .turnX && self.aiPlayer == .X
-           || self.state == .turnO && self.aiPlayer == .O
-        {
-            // Make a move
-            self.AI?.makeBestMove(gameBoard: self.gameBoardModel)
-        }
-    }
-    
-    /**
-     Get AI player.
-     
-     - returns: AI player.
-     */
-    func getAIPlayer() -> Player {
-        return self.aiPlayer
-    }
-    
-    /**
-     Reset game model.
-     */
-    func resetGame() {
+    func reset() {
         // Reset gameboard model
-        self.gameBoardModel.reset()
+        gameBoardModel.reset()
         // Reset gamestate
-        self.state = self.firstPlayer.turn()
-        
-        // Let AI start if it shouls
-        makeAITurnIfShould()
+        state = firstPlayer.turn()
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
+    
     /**
-     Get player which is currently on turn.
+     Getter for player which is currently on turn.
      
      - returns: Player on turn.
      */
-    private func getCurrentTurn() -> Player {
-        switch self.state {
+    private func getCurrentTurn() -> Mark {
+        switch state {
         case .turnX:
             return .X
         case .turnO:
@@ -145,14 +142,40 @@ class Game {
     }
 }
 
+// MARK: - Observers callbacks
+
+extension Game {
+    /**
+     Lets AI make a move if it is on turn.
+     */
+    func makeAIMoveIfShould() {
+        // Turn check
+        if state == .turnX && aiPlayer == .X
+           || state == .turnO && aiPlayer == .O
+        {
+            // Make a move
+            AI?.makeBestMove(gameBoard: gameBoardModel)
+        }
+    }
+}
+
+
 // MARK: - ModelDelegate
-extension Game: ModelDelegate {
-    func simulateTileTap(row: Int, col: Int) {
+
+extension Game: GameBoardModelDelegate {
+    /**
+     Orders the delegate to tap on tile.
+     
+     - parameter gameBoardModel: The gameboard model object ordering the delegate to do this action.
+     - parameter position: Position of tile to be tapped.
+     */
+    func gameBoardModel(_ gameBoardModel: GameBoardModel, tapOnTileAt position: Position) {
         let currentTurn = getCurrentTurn()
         
-        // Model
-        selectTile(row: row, col: col)
-        // View
-        gameVCDelegate?.setTileView(row: row, col: col, value: currentTurn)
+        // Model tap - data/logic layer
+        selectTile(at: position)
+        
+        // View tap - view layer
+        delegate?.game(self, setTileViewAt: position, to: currentTurn)
     }
 }

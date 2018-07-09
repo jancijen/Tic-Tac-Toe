@@ -9,57 +9,78 @@
 import UIKit
 
 // MARK: - Poppable
-/// Protocol defining required methods and attributes from poppable element.
+
+/// Protocol defining required methods and properties of poppable element.
 protocol Poppable {
+    // MARK: Methods
     func show(animated: Bool)
     func dismiss(animated: Bool)
     
-    var backgroundView: UIView { get }
+    // MARK: Properties
     var alertView: UIView { get }
+    var backgroundView: UIView { get }
 }
 
 // MARK: - Poppable: UIView
+
 extension Poppable where Self: UIView {
     /**
-     Show poppable view.
+     Shows poppable view.
+     
+     - parameter animated: Whether show should be animated.
      */
-    func show(animated:Bool) {
-        self.backgroundView.alpha = 0
-        self.alertView.center = CGPoint(x: self.center.x, y: self.frame.height * 2)
+    func show(animated: Bool) {
+        // Initial view setup before showing
+        backgroundView.alpha = 0
+        alertView.center = CGPoint(x: center.x, y: frame.height * 2)
+        
+        // Add view as a subview
         UIApplication.shared.delegate?.window??.rootViewController?.view.addSubview(self)
+        
+        // Animated
         if animated {
-            UIView.animate(withDuration: 0.33, animations: {
-                self.backgroundView.alpha = 0.66
+            // Background view - show with animation
+            UIView.animate(withDuration: 0.33, animations: { [weak self] in
+                self?.backgroundView.alpha = 0.66
             })
             
-            UIView.animate(withDuration: 0.33, delay: 1.2, usingSpringWithDamping: 0.7, initialSpringVelocity: 10, options: UIViewAnimationOptions(rawValue: 0), animations: {
-                self.alertView.center  = self.center
-            }, completion: { (completed) in
-                
+            // Alert view - show with animation
+            UIView.animate(withDuration: 0.33, delay: 1.2, usingSpringWithDamping: 0.7, initialSpringVelocity: 10, options: UIViewAnimationOptions(rawValue: 0), animations: { [unowned self] in
+                self.alertView.center = self.center
             })
-        } else {
-            self.backgroundView.alpha = 0.66
-            self.alertView.center  = self.center
+        }
+        // Non-animated
+        else {
+            // Show without animation
+            backgroundView.alpha = 0.66
+            alertView.center  = center
         }
     }
     
     /**
-     Dismiss poppable view.
+     Dismisses poppable view.
+     
+     - parameter animated: Whether dismiss should be animated.
      */
-    func dismiss(animated:Bool) {
+    func dismiss(animated: Bool) {
+        // Animated
         if animated {
-            UIView.animate(withDuration: 0.33, animations: {
-                self.backgroundView.alpha = 0
-            }, completion: { (completed) in
-                
+            // Background view - dismiss with animation
+            UIView.animate(withDuration: 0.33, animations: { [weak self] in
+                self?.backgroundView.alpha = 0
             })
-            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 10, options: UIViewAnimationOptions(rawValue: 0), animations: {
+            
+            // Alert view - dismiss with animation
+            UIView.animate(withDuration: 0.33, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 10, options: UIViewAnimationOptions(rawValue: 0), animations: { [unowned self] in
                 self.alertView.center = CGPoint(x: self.center.x, y: self.frame.height + self.alertView.frame.height/2)
-            }, completion: { (completed) in
-                self.removeFromSuperview()
+            }, completion: { [weak self] _ in
+                self?.removeFromSuperview()
             })
-        } else {
-            self.removeFromSuperview()
+        }
+        // Non-animated
+        else {
+            // Dismiss without animation
+            removeFromSuperview()
         }
         
     }

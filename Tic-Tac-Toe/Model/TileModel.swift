@@ -8,39 +8,35 @@
 
 import Foundation
 
-/// Model representing data of tile on gameboard.
+// MARK: - TileModel
+
+/// Model representing tile on gameboard.
 struct TileModel {
-    // MARK: - Private attributes
-    private var tileSymbole: Player = .undef
+    // MARK: Private(set) properties
     
-    // MARK: - Public methods
+    /// Mark on tile.
+    private(set) var mark: Mark = .undef
+    
+    // MARK: Public methods
+    
     /**
-     Reset tile to default.
+     Resets tile to default (blank).
      */
     mutating func reset() {
-        self.tileSymbole = .undef
+        mark = .undef
     }
     
     /**
-     Getter for symbole on tile.
+     Setter for mark on tile.
      
-     - returns: Symbole on tile.
+     - parameter mark: Mark of which player to set on tile.
+     - parameter force: Whether to force to set mark, even if the tile is not empty.
+     
+     - returns: Whether mark was successfully set (tile was empty or it was forced).
      */
-    func getTileSymbole() -> Player {
-        return self.tileSymbole
-    }
-    
-    /**
-     Setter for symbole on tile.
-     
-     - parameter player: Symbole of which player to set on tile.
-     - parameter force: Whether to force to set symbole, even if tile is not empty.
-     
-     - returns: Whether symbole was successfully set (tile was empty or set was forced).
-     */
-    mutating func setTileSymbole(player: Player, force: Bool) -> Bool {
-        if self.tileSymbole == .undef || force {
-            self.tileSymbole = player
+    mutating func setMark(to mark: Mark, force: Bool) -> Bool {
+        if self.mark == .undef || force {
+            self.mark = mark
             return true
         }
         
