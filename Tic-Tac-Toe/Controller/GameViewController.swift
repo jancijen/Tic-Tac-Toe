@@ -20,7 +20,7 @@ class GameViewController: UIViewController {
     
     // MARK: Initialization
     
-    init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
+    init(boardSize: Int, firstPlayer: Mark, aiPlayer: Mark) {
         gameBoard = GameBoard(boardSize: boardSize)
         titleLabel = UILabel()
         model = Game(boardSize: boardSize, firstPlayer: firstPlayer, aiPlayer: aiPlayer)
@@ -162,7 +162,7 @@ extension GameViewController: GameBoardDelegate {
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
-    func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Player? {
+    func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Mark? {
         return model.selectTile(at: position)
     }
 }
@@ -177,7 +177,7 @@ extension GameViewController: GameDelegate {
      - parameter position: Position of tile to set mark on.
      - parameter mark: Mark to be set.
      */
-    func game(_ game: Game, setTileViewAt position: Position, to mark: Player) {
+    func game(_ game: Game, setTileViewAt position: Position, to mark: Mark) {
         gameBoard.setMark(at: position, to: mark)
     }
 }

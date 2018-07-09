@@ -13,7 +13,7 @@ import SnapKit
 
 /// A set of methods which allows the delegate to manage user interaction.
 protocol TileDelegate: class {
-    func tile(_ tile: Tile, didSelectTileAt position: Position) -> Player?
+    func tile(_ tile: Tile, didSelectTileAt position: Position) -> Mark?
 }
 
 // MARK: - Tile

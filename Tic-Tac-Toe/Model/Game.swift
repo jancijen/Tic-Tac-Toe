@@ -14,7 +14,7 @@ import Foundation
 protocol GameDelegate: class {
     func game(_ game: Game,
               setTileViewAt position: Position,
-              to mark: Player)
+              to mark: Mark)
 }
 
 // MARK: - Game
@@ -24,7 +24,7 @@ class Game {
     // MARK: Public properties
     
     weak var delegate: GameDelegate? = nil
-    let aiPlayer: Player
+    let aiPlayer: Mark
     
     // MARK: Private properties
     
@@ -39,13 +39,13 @@ class Game {
         }
     }
     private let boardSize: Int
-    private let firstPlayer: Player
+    private let firstPlayer: Mark
     private let AI: GameAI?
     private let gameBoardModel: GameBoardModel
     
     // MARK: Initialization
     
-    init(boardSize: Int, firstPlayer: Player, aiPlayer: Player) {
+    init(boardSize: Int, firstPlayer: Mark, aiPlayer: Mark) {
         // General
         self.boardSize = boardSize
         self.firstPlayer = firstPlayer
@@ -57,7 +57,7 @@ class Game {
         case .O:
             state = .turnO
         default:
-            state = .tie // TODO
+            state = .undef
         }
         
         // AI
@@ -81,7 +81,7 @@ class Game {
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
-    func selectTile(at position: Position) -> Player? {
+    func selectTile(at position: Position) -> Mark? {
         // Get player on turn
         let currentPlayer = state.playerOnTurn()
         // In case that game ended
@@ -92,7 +92,7 @@ class Game {
         // Try to select tile
         if gameBoardModel.setTile(at: position, to: currentPlayer, force: false) {
             // End game check
-            if let endState = gameBoardModel.gameEnd() {
+            if let endState = gameBoardModel.getEndState() {
                 state = endState
             } else {
                 // Switch turns
@@ -122,7 +122,7 @@ class Game {
      
      - returns: Player on turn.
      */
-    private func getCurrentTurn() -> Player {
+    private func getCurrentTurn() -> Mark {
         switch state {
         case .turnX:
             return .X

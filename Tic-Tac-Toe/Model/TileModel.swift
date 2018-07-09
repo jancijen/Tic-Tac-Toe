@@ -15,7 +15,7 @@ struct TileModel {
     // MARK: Private(set) properties
     
     /// Mark on tile.
-    private(set) var mark: Player = .undef
+    private(set) var mark: Mark = .undef
     
     // MARK: Public methods
     
@@ -34,7 +34,7 @@ struct TileModel {
      
      - returns: Whether mark was successfully set (tile was empty or it was forced).
      */
-    mutating func setMark(to mark: Player, force: Bool) -> Bool {
+    mutating func setMark(to mark: Mark, force: Bool) -> Bool {
         if self.mark == .undef || force {
             self.mark = mark
             return true

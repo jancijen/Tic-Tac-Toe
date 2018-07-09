@@ -14,11 +14,11 @@ import Foundation
 class GameAI {
     // MARK: Private properties
     
-    private let aiMark: Player
+    private let aiMark: Mark
     
     // MARK: Initialization
     
-    init(aiMark: Player) {
+    init(aiMark: Mark) {
         self.aiMark = aiMark
     }
     

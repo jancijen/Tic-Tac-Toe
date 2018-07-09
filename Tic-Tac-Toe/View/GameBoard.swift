@@ -12,7 +12,7 @@ import UIKit
 
 /// A set of methods which allows the delegate to manage user interaction.
 protocol GameBoardDelegate: class {
-    func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Player?
+    func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Mark?
 }
 
 // MARK: - GameBoard
@@ -38,7 +38,7 @@ class GameBoard: UIView {
         
         tiles = [[Tile]]()
         
-        super.init(frame: CGRect.zero) // TODO
+        super.init(frame: CGRect.zero)
         
         // Initial setup
         configure()
@@ -70,7 +70,7 @@ class GameBoard: UIView {
      - parameter position: Position of tile to set mark on.
      - parameter mark: Mark to be set.
      */
-    func setMark(at position: Position, to mark: Player) {
+    func setMark(at position: Position, to mark: Mark) {
         // Get correct image
         let image: UIImage?
         if mark == .X {
@@ -147,7 +147,7 @@ extension GameBoard: TileDelegate {
      
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
-    func tile(_ tile: Tile, didSelectTileAt position: Position) -> Player? {
+    func tile(_ tile: Tile, didSelectTileAt position: Position) -> Mark? {
         return delegate?.gameBoard(self, didSelectTileAt: position)
     }
 }

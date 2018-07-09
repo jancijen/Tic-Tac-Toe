@@ -95,7 +95,7 @@ class GameBoardModel {
      
      - returns: Whether mark was successfully set.
      */
-    func setTile(at position: Position, to mark: Player, force: Bool) -> Bool {
+    func setTile(at position: Position, to mark: Mark, force: Bool) -> Bool {
         // Try to set tile's mark
         let setWasSuccessfull = board[position.row][position.column].setMark(to: mark, force: force)
         
@@ -118,7 +118,7 @@ class GameBoardModel {
      
      - returns: End gamestate if game has ended, otherwise "nil".
      */
-    func gameEnd() -> GameState? { // TODO - rename
+    func getEndState() -> GameState? {
         // Win check
         let winner = getWinner()
         if winner == .X {
@@ -140,7 +140,7 @@ class GameBoardModel {
      
      - returns: Mark of winner if there is one, otherwise "undef".
      */
-    func getWinner() -> Player {
+    func getWinner() -> Mark {
         // Rows check
         for i in 0..<boardSize {
             let rowWinner = sameMarksRow(row: i)
@@ -180,7 +180,7 @@ class GameBoardModel {
      
      - returns: Mark of player which is in whole row, otherwise "undef".
      */
-    private func sameMarksRow(row: Int) -> Player {
+    private func sameMarksRow(row: Int) -> Mark {
         // First mark
         let mark = board[row][0].mark
         
@@ -205,7 +205,7 @@ class GameBoardModel {
      
      - returns: Mark of player which is in whole column, otherwise "undef".
      */
-    private func sameMarksColumn(column: Int) -> Player {
+    private func sameMarksColumn(column: Int) -> Mark {
         // First mark
         let mark = board[0][column].mark
         
@@ -228,7 +228,7 @@ class GameBoardModel {
      
      - returns: Mark of player which is in at least one whole diagonale, otherwise "undef".
      */
-    private func sameMarksDiag() -> Player {
+    private func sameMarksDiag() -> Mark {
         var toReturn = true
         
         // -------- First diagonal --------

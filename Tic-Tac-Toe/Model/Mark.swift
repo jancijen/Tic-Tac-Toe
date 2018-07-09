@@ -1,5 +1,5 @@
 //
-//  Player.swift
+//  Mark.swift
 //  Tic-Tac-Toe
 //
 //  Created by Jendrusak, Jan on 3.7.18.
@@ -8,10 +8,10 @@
 
 import Foundation
 
-// MARK: - Player
+// MARK: - Mark
 
 /// Possible marks for player.
-enum Player {
+enum Mark {
     // MARK: Cases
     
     /// Player X.
@@ -28,7 +28,7 @@ enum Player {
      
      - returns: Opposite mark.
      */
-    func opposite() -> Player {
+    func opposite() -> Mark {
         switch self {
         case .X:
             return .O
@@ -51,7 +51,7 @@ enum Player {
         case .O:
             return .turnO
         default:
-            return .tie // TODO
+            return .undef
         }
     }
     
@@ -67,7 +67,7 @@ enum Player {
         case .O:
             return .winO
         default:
-            return .tie // TODO
+            return .undef
         }
     }
 }

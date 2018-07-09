@@ -169,7 +169,7 @@ extension SettingsViewController {
      */
     @objc private func playTapped() {
         // Get user's choices from switch(es)
-        let playersMark = markSwitch.isOn ? Player.O : Player.X
+        let playersMark = markSwitch.isOn ? Mark.O : Mark.X
         let firstTurn = turnSwitch.isOn ? playersMark.opposite() : playersMark
         
         // Create and show game

@@ -24,6 +24,8 @@ enum GameState {
     case winO
     /// Game is tied.
     case tie
+    /// Undefined.
+    case undef
     
     // MARK: Public methods
     
@@ -32,7 +34,7 @@ enum GameState {
      
      - returns: Player on turn or "undef" if game has ended.
      */
-    func playerOnTurn() -> Player {
+    func playerOnTurn() -> Mark {
         switch self {
         case .turnX:
             return .X
