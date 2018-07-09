@@ -169,7 +169,7 @@ extension SettingsViewController {
         let firstTurn = turnSwitch.isOn ? playersSymbole.opposite() : playersSymbole
         
         // Create and show game
-        if self.isSinglePlayer {
+        if isSinglePlayer {
             let gameVC = GameViewController(boardSize: 3, firstPlayer: firstTurn, aiPlayer: playersSymbole.opposite())
             navigationController?.pushViewController(gameVC, animated: true)
         } else {

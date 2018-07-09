@@ -11,7 +11,7 @@ import SnapKit
 
 // MARK: - TileDelegate
 
-/// Protocol defining required methods of gameboard.
+/// A set of methods which allows the delegate to manage user interaction.
 protocol TileDelegate: class {
     func tile(_ tile: Tile, didSelectTileAt position: Position) -> Player?
 }
@@ -51,13 +51,13 @@ class Tile: UIButton {
      */
     private func configure() {
         // Configure button
-        self.backgroundColor = .white
+        backgroundColor = .white
         self.snp.makeConstraints { make in
             make.height.width.equalTo(Tile.size)
         }
         
         // Set button's tap action
-        self.addTarget(self, action: #selector(tileTapped), for: .touchUpInside)
+        addTarget(self, action: #selector(tileTapped), for: .touchUpInside)
     }
 }
 
@@ -74,11 +74,11 @@ extension Tile {
         // If tile has been selected - set its mark
         switch mark {
         case .X:
-            self.setImage(#imageLiteral(resourceName: "cross"), for: .normal)
+            setImage(#imageLiteral(resourceName: "cross"), for: .normal)
         case .O:
-            self.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
+            setImage(#imageLiteral(resourceName: "circle"), for: .normal)
         default:
-            self.setImage(nil, for: .normal)
+            setImage(nil, for: .normal)
         }
     }
 }

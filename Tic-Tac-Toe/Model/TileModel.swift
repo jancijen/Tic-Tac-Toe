@@ -23,7 +23,7 @@ struct TileModel {
      Reset tile to default (blank).
      */
     mutating func reset() {
-        self.mark = .undef
+        mark = .undef
     }
     
     /**

@@ -83,11 +83,11 @@ class AlertView: UIView, Poppable {
      */
     private func configure(title: String, image: UIImage?) {
         // -------------- Background view --------------
-        backgroundView.frame = self.frame
+        backgroundView.frame = frame
         backgroundView.backgroundColor = .black
         backgroundView.alpha = 0.6
         
-        self.addSubview(backgroundView)
+        addSubview(backgroundView)
         backgroundView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -143,7 +143,7 @@ class AlertView: UIView, Poppable {
         alertView.clipsToBounds = true
         alertView.backgroundColor = .white
         
-        self.addSubview(alertView)
+        addSubview(alertView)
         alertView.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalTo(240)
@@ -175,6 +175,6 @@ extension AlertView {
      */
     @objc private func rotated() {
         // Reset frame of view
-        self.frame = UIScreen.main.bounds
+        frame = UIScreen.main.bounds
     }
 }

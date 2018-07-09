@@ -10,9 +10,9 @@ import Foundation
 
 // MARK: - GameBoardModelDelegate
 
-/// Protocol defining required methods of game model.
+/// A set of methods used to manage "simulated" user (AI) interaction (to update view).
 protocol GameBoardModelDelegate: class {
-    func gameBoardModel(_ gameBoardModel: GameBoardModel, tapOnTileAt position: Position) -> Void
+    func gameBoardModel(_ gameBoardModel: GameBoardModel, tapOnTileAt position: Position)
 }
 
 // MARK: - GameBoardModel

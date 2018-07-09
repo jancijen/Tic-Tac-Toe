@@ -14,12 +14,12 @@ import Foundation
 class GameAI {
     // MARK: Private properties
     
-    private let symboleAI: Player
+    private let aiMark: Player
     
     // MARK: Initialization
     
-    init(symboleAI: Player) {
-        self.symboleAI = symboleAI
+    init(aiMark: Player) {
+        self.aiMark = aiMark
     }
     
     // MARK: Public methods
@@ -43,7 +43,7 @@ class GameAI {
                 // Check whether tile is empty
                 if gameBoard.getTile(at: position).mark == .undef {
                     // Make move
-                    gameBoard.setTile(at: position, to: self.symboleAI, force: true)
+                    gameBoard.setTile(at: position, to: aiMark, force: true)
                     
                     // Recursively call minimax
                     let tmpMove = minimax(gameBoard: gameBoard, depth: 0, isMaximizer: false, alpha: Int.min, beta: Int.max)
@@ -82,7 +82,7 @@ class GameAI {
         let winner = gameBoard.getWinner()
         // WIN
         if winner == .X || winner == .O {
-            return winner == self.symboleAI ? 10 : -10
+            return winner == aiMark ? 10 : -10
         }
         // TIE
         else if gameBoard.isTied() {
@@ -105,7 +105,7 @@ class GameAI {
                     // Check whether tile is empty
                     if gameBoard.getTile(at: position).mark == .undef {
                         // Make move
-                        gameBoard.setTile(at: position, to: self.symboleAI, force: true)
+                        gameBoard.setTile(at: position, to: aiMark, force: true)
                         
                         // Recursively call minimax (depth trick to take shorter sequence of moves)
                         bestMove = max(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp) - depth)
@@ -137,7 +137,7 @@ class GameAI {
                     // Check whether tile is empty
                     if gameBoard.getTile(at: position).mark == .undef {
                         // Make move
-                        gameBoard.setTile(at: position, to: self.symboleAI.opposite(), force: true)
+                        gameBoard.setTile(at: position, to: aiMark.opposite(), force: true)
                         
                         // Recursively call minimax (depth trick to take shorter sequence of moves)
                         bestMove = min(bestMove, minimax(gameBoard: gameBoard, depth: depth + 1, isMaximizer: !isMaximizer, alpha: alphaTmp, beta: betaTmp) + depth)

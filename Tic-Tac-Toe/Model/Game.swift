@@ -10,11 +10,11 @@ import Foundation
 
 // MARK: - GameDelegate
 
-/// Protocol defining required methods of game view controller.
+/// A set of methods used to update view after model changes.
 protocol GameDelegate: class {
     func game(_ game: Game,
               setTileViewAt position: Position,
-              to value: Player) -> Void
+              to mark: Player)
 }
 
 // MARK: - Game
@@ -31,7 +31,9 @@ class Game {
     private var state: GameState {
         didSet {
             // Post that state has been changed
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "gameState"), object: nil, userInfo: ["newState": state])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "gameState"),
+                                            object: nil,
+                                            userInfo: ["newState": state])
             // Let AI make a move if it is on turn
             makeAIMoveIfShould()
         }
@@ -47,27 +49,27 @@ class Game {
         // General
         self.boardSize = boardSize
         self.firstPlayer = firstPlayer
-        self.gameBoardModel = GameBoardModel(boardSize: self.boardSize)
+        gameBoardModel = GameBoardModel(boardSize: boardSize)
         
-        switch self.firstPlayer {
+        switch firstPlayer {
         case .X:
-            self.state = .turnX
+            state = .turnX
         case .O:
-            self.state = .turnO
+            state = .turnO
         default:
-            self.state = .tie // TODO
+            state = .tie // TODO
         }
         
         // AI
         self.aiPlayer = aiPlayer
-        if self.aiPlayer != .undef {
-            self.AI = GameAI(symboleAI: aiPlayer)
+        if aiPlayer != .undef {
+            AI = GameAI(aiMark: aiPlayer)
         } else {
-            self.AI = nil
+            AI = nil
         }
         
         // Delegates
-        self.gameBoardModel.delegate = self
+        gameBoardModel.delegate = self
     }
     
     // MARK: Public methods
@@ -81,20 +83,20 @@ class Game {
      */
     func selectTile(at position: Position) -> Player? {
         // Get player on turn
-        let currentPlayer = self.state.playerOnTurn()
+        let currentPlayer = state.playerOnTurn()
         // In case that game ended
         if currentPlayer == .undef {
             return nil
         }
         
         // Try to select tile
-        if self.gameBoardModel.setTile(at: position, to: currentPlayer, force: false) {
+        if gameBoardModel.setTile(at: position, to: currentPlayer, force: false) {
             // End game check
-            if let endState = self.gameBoardModel.gameEnd() {
-                self.state = endState
+            if let endState = gameBoardModel.gameEnd() {
+                state = endState
             } else {
                 // Switch turns
-                self.state = self.state.oppositeTurn()
+                state = state.oppositeTurn()
             }
             
             return currentPlayer
@@ -106,11 +108,11 @@ class Game {
     /**
      Resets game model.
      */
-    func resetGame() {
+    func reset() {
         // Reset gameboard model
-        self.gameBoardModel.reset()
+        gameBoardModel.reset()
         // Reset gamestate
-        self.state = self.firstPlayer.turn()
+        state = firstPlayer.turn()
     }
     
     // MARK: Private methods
@@ -121,7 +123,7 @@ class Game {
      - returns: Player on turn.
      */
     private func getCurrentTurn() -> Player {
-        switch self.state {
+        switch state {
         case .turnX:
             return .X
         case .turnO:
@@ -140,11 +142,11 @@ extension Game {
      */
     func makeAIMoveIfShould() {
         // Turn check
-        if self.state == .turnX && self.aiPlayer == .X
-            || self.state == .turnO && self.aiPlayer == .O
+        if state == .turnX && aiPlayer == .X
+           || state == .turnO && aiPlayer == .O
         {
             // Make a move
-            self.AI?.makeBestMove(gameBoard: self.gameBoardModel)
+            AI?.makeBestMove(gameBoard: gameBoardModel)
         }
     }
 }

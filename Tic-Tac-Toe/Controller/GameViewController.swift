@@ -132,7 +132,7 @@ class GameViewController: UIViewController {
             // Reset view
             self?.gameBoard.reset()
             // Reset model
-            self?.model.resetGame()
+            self?.model.reset()
             
             // Dismiss alert
             alertView?.dismiss(animated: true)
@@ -163,7 +163,7 @@ extension GameViewController: GameBoardDelegate {
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
     func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Player? {
-        return self.model.selectTile(at: position)
+        return model.selectTile(at: position)
     }
 }
 
@@ -178,7 +178,7 @@ extension GameViewController: GameDelegate {
      - parameter mark: Mark to be set.
      */
     func game(_ game: Game, setTileViewAt position: Position, to mark: Player) {
-        self.gameBoard.setMark(at: position, to: mark)
+        gameBoard.setMark(at: position, to: mark)
     }
 }
 
@@ -189,10 +189,10 @@ extension GameViewController {
         switch UIDevice.current.orientation {
         case .portrait, .portraitUpsideDown:
             // Show game title in portrait mode
-            self.titleLabel.isHidden = false
+            titleLabel.isHidden = false
         case .landscapeLeft, .landscapeRight:
             // Hide game title in landscape mode
-            self.titleLabel.isHidden = true
+            titleLabel.isHidden = true
         default:
             break
         }
@@ -206,7 +206,7 @@ extension GameViewController {
      Goes one step back in stack of view controllers. Method to be called after tapping on back button.
      */
     @objc private func backTapped() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 

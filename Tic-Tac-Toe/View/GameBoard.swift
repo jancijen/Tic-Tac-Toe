@@ -10,10 +10,9 @@ import UIKit
 
 // MARK: - GameBoardDelegate
 
-/// Protocol defining required methods of game view controller.
+/// A set of methods which allows the delegate to manage user interaction.
 protocol GameBoardDelegate: class {
-    func gameBoard(_ gameBoard: GameBoard,
-                   didSelectTileAt position: Position) -> Player?
+    func gameBoard(_ gameBoard: GameBoard, didSelectTileAt position: Position) -> Player?
 }
 
 // MARK: - GameBoard
@@ -33,11 +32,11 @@ class GameBoard: UIView {
     
     init(boardSize: Int) {
         self.boardSize = boardSize
-        if self.boardSize < 3 {
+        if boardSize < 3 {
             fatalError("GameBoard has to be at least 3 tiles in size.")
         }
         
-        self.tiles = [[Tile]]()
+        tiles = [[Tile]]()
         
         super.init(frame: CGRect.zero) // TODO
         
@@ -83,7 +82,7 @@ class GameBoard: UIView {
         }
         
         // Set tile's image
-        self.tiles[position.row][position.column].setImage(image, for: .normal)
+        tiles[position.row][position.column].setImage(image, for: .normal)
     }
     
     // MARK: Private methods
@@ -93,7 +92,7 @@ class GameBoard: UIView {
      */
     private func configure() {
         // View configuration
-        self.backgroundColor = .black
+        backgroundColor = .black
         
         // Verical stack view for rows of tiles
         let verticalSV = UIStackView()
@@ -124,12 +123,12 @@ class GameBoard: UIView {
             }
             
             // Add row to vertical stack view
-            self.tiles.append(tmpRow)
+            tiles.append(tmpRow)
             verticalSV.addArrangedSubview(horizontalSV)
         }
         
         // Add rows of tiles as subview
-        self.addSubview(verticalSV)
+        addSubview(verticalSV)
         verticalSV.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -149,6 +148,6 @@ extension GameBoard: TileDelegate {
      - returns: Player which is now marked on tile or "nil" if selection was not possible.
      */
     func tile(_ tile: Tile, didSelectTileAt position: Position) -> Player? {
-        return self.delegate?.gameBoard(self, didSelectTileAt: position)
+        return delegate?.gameBoard(self, didSelectTileAt: position)
     }
 }
